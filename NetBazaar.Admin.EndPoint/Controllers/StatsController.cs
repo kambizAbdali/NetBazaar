@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBazaar.Application.DTOs.Visitor;
 using NetBazaar.Application.Interfaces.Visitor;
+using System.Runtime.InteropServices;
 
 namespace NetBazaar.Admin.EndPoint.Controllers
 {
@@ -18,7 +19,5 @@ namespace NetBazaar.Admin.EndPoint.Controllers
             ViewBag.TotalCount = report.TotalVisitorsCount;
             return View(report);
         }
-
-
     }
 }
