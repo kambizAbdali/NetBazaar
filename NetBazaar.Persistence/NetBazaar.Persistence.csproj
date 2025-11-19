@@ -7,14 +7,16 @@
   </PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\NetBazaar.Application\NetBazaar.Application.csproj" />
-	  <ProjectReference Include="..\NetBazaar.Domain\NetBazaar.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
+		<PackageReference Include="MongoDB.Driver" Version="3.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\NetBazaar.Application\NetBazaar.Application.csproj" />
 	</ItemGroup>
 </Project>

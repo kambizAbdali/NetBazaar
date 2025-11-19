@@ -1,0 +1,215 @@
+﻿@using NetBazaar.Application.DTOs.Visitor
+@model VisitorAnalyticsReportDto;
+
+@{
+    ViewBag.Title = "آمار سایت";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">آمار سایت</h2>
+
+    <!-- کارت‌های آمار -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-header fw-bold">آمار امروز</div>
+                <div class="card-body">
+                    <p>تعداد بازدید: <span class="fw-bold text-primary">@Model.Today.PageViews</span></p>
+                    <p>تعداد بازدیدکنندگان: <span class="fw-bold text-success">@Model.Today.Visitors</span></p>
+                    <p>بازدید از صفحه در هر بازدید: <span class="fw-bold text-warning">@Model.Today.ViewsPerVisitors</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-header fw-bold">آمار کل</div>
+                <div class="card-body">
+                    <p>تعداد بازدید: <span class="fw-bold text-primary">@Model.Result.TotalPageViews</span></p>
+                    <p>تعداد بازدیدکنندگان: <span class="fw-bold text-success">@Model.Result.TotalVisitors</span></p>
+                    <p>بازدید از صفحه در هر بازدید: <span class="fw-bold text-warning">@Model.Result.PageViewsPerVisit</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نمودار -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+            <span>نمودار بازدید</span>
+            <select id="chartSelector" class="form-select w-auto">
+                <option value="daily">۲۴ ساعت گذشته</option>
+                <option value="monthly" selected>۳۰ روز گذشته</option>
+                <option value="yearly">۱۲ ماه گذشته</option>
+            </select>
+        </div>
+        <div class="card-body">
+            <canvas id="visitsChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">آخرین بازدیدها</div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ردیف</th>
+                        <th>شناسه کاربر</th>
+                        <th>زمان</th>
+                        <th>بات؟</th>
+                        <th>سیستم عامل</th>
+                        <th>مرورگر</th>
+                        <th>لینک ارجاع</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int row = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                    }
+                    @foreach (var v in Model.LastVisitors)
+                    {
+                        <tr>
+                            <td>@row</td>
+                            <td>@v.VisitorId</td>
+                            <td>@v.VisitedAtPersian</td>
+                            <td>@v.IsBot</td>
+                            <td>@v.OperatingSystem</td>
+                            <td>
+                                @{
+                                    string icon = v.Browser switch
+                                    {
+                                        "Chrome" => "~/icon/chrome.png",
+                                        "Firefox" => "~/icon/Firefox.png",
+                                        "Edge" => "~/icon/edge.png",
+                                        _ => "~/icon/browsers_4403541.png",
+                                    };
+                                }
+                                <img height="30" width="30" src="@Url.Content(icon)" alt="@v.Browser" />
+                            </td>
+                            <td>@v.ReferrerUrl</td>
+                            <td>@v.IpAddress</td>
+                        </tr>
+                        row++;
+                    }
+                </tbody>
+
+            </table>
+
+            @{
+                int totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize);
+                int currentPage = ViewBag.Page;
+            }
+
+            <nav>
+                <ul class="pagination">
+                    <!-- Previous -->
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="?page=@(currentPage - 1)">قبلی</a>
+                    </li>
+
+                    <!-- صفحات -->
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i">@i</a>
+                        </li>
+                    }
+
+                    <!-- Next -->
+                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                        <a class="page-link" href="?page=@(currentPage + 1)">بعدی</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // تبدیل اعداد به فارسی
+        function toPersianDigits(str) {
+            const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+            return str.toString().replace(/\d/g, d => persianDigits[d]);
+        }
+
+        const dataSets = {
+            daily: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyChart.Labels)),
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DailyChart.Data))
+            },
+            monthly: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyChart.Labels)),
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyChart.Data))
+            },
+            yearly: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.YearlyChart.Labels)),
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.YearlyChart.Data))
+            }
+        };
+
+        const ctx = document.getElementById('visitsChart').getContext('2d');
+
+        let visitsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataSets.monthly.labels,
+                datasets: [{
+                    label: 'بازدید',
+                    data: dataSets.monthly.data,
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return toPersianDigits(context.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: function(value, index) {
+                                return toPersianDigits(this.getLabelForValue(value));
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return toPersianDigits(value);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // تغییر نمودار بر اساس انتخاب
+        document.getElementById('chartSelector').addEventListener('change', function () {
+            const selected = this.value;
+            visitsChart.data.labels = dataSets[selected].labels;
+            visitsChart.data.datasets[0].data = dataSets[selected].data;
+            visitsChart.update();
+        });
+    </script>
+
+    <style>
+        canvas {
+            font-family: 'Vazir', sans-serif !important;
+        }
+    </style>
+}

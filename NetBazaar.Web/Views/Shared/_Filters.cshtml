@@ -1,0 +1,40 @@
+﻿<div class="card mb-3">
+    <div class="card-body">
+        <form id="filterForm" class="row g-3">
+            <div class="col-12 col-md-4">
+                <label class="form-label">مرتب‌سازی</label>
+                <select class="form-select" name="sort">
+                    <option value="">بدون مرتب‌سازی</option>
+                    <option value="price_asc">ارزان‌ترین</option>
+                    <option value="price_desc">گران‌ترین</option>
+                    <option value="newest">جدیدترین</option>
+                    <option value="popular">محبوب‌ترین</option>
+                </select>
+            </div>
+            <div class="col-6 col-md-4">
+                <label class="form-label">قیمت از</label>
+                <input type="number" class="form-control" name="minPrice" placeholder="0">
+            </div>
+            <div class="col-6 col-md-4">
+                <label class="form-label">قیمت تا</label>
+                <input type="number" class="form-control" name="maxPrice" placeholder="0">
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary">اعمال فیلتر</button>
+                <button type="reset" class="btn btn-outline-secondary ms-2">پاک کردن</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#filterForm').on('submit', function(e){
+            e.preventDefault();
+            const qs = $(this).serialize();
+            const url = new URL(window.location.href);
+            url.search = qs;
+            window.location.href = url.toString();
+        });
+    });
+</script>

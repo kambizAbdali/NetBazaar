@@ -1,0 +1,35 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">نت بازار</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="mainNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">خانه</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Product/List">محصولات</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Favorites">علاقه‌مندی‌ها</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Orders">سفارشات</a></li>
+            </ul>
+            <form class="d-flex me-3" id="searchForm">
+                <input class="form-control" type="search" placeholder="جستجو محصول..." aria-label="Search" name="q">
+                <button class="btn btn-light ms-2" type="submit">جستجو</button>
+            </form>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/Cart">سبد خرید <span class="badge bg-warning text-dark" id="cartCount">0</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/Account/Login">ورود</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Account/Register">ثبت‌نام</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+    $(function(){
+        $('#searchForm').on('submit', function(e){
+            e.preventDefault();
+            const q = $(this).find('input[name="q"]').val();
+            if(q) window.location.href = '/Product/List?q=' + encodeURIComponent(q);
+        });
+    });
+</script>

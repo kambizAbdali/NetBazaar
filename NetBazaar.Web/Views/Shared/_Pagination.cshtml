@@ -1,0 +1,21 @@
+﻿@{
+    // صفحات خام: page و totalPages از querystring یا مقدار پیش‌فرض
+    var page = int.TryParse(Context.Request.Query["page"], out var p) ? p : 1;
+    var totalPages = int.TryParse(Context.Request.Query["total"], out var t) ? t : 5;
+}
+<nav aria-label="صفحه‌بندی">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(page <= 1 ? "disabled" : "")">
+            <a class="page-link" href="?page=@(page - 1)">قبلی</a>
+        </li>
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == page ? "active" : "")">
+                <a class="page-link" href="?page=@i">@i</a>
+            </li>
+        }
+        <li class="page-item @(page >= totalPages ? "disabled" : "")">
+            <a class="page-link" href="?page=@(page + 1)">بعدی</a>
+        </li>
+    </ul>
+</nav>

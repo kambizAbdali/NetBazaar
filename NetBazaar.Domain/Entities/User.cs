@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using NetBazaar.Domain.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace NetBazaar.Domain.Entities
 {
-    public class User
+    [Auditable]
+    public class User : IdentityUser
     {
-        public Guid Id { get; set; } 
-        public string FullName { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
     }
 }

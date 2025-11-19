@@ -1,0 +1,30 @@
+﻿@* simple login partial: if user logged in show name+logout else show login/register *@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="dropdown">
+        <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> @User.Identity.Name
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Profile">پروفایل</a></li>
+            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Addresses">آدرس‌ها</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+                <form method="post" asp-controller="Account" asp-action="Logout" class="m-0">
+                    <button type="submit" class="dropdown-item">خروج</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <div class="d-flex gap-1">
+        <a class="btn btn-sm btn-outline-primary" asp-controller="Account" asp-action="Login">ورود</a>
+        <a class="btn btn-sm btn-primary" asp-controller="Account" asp-action="Register">ثبت‌نام</a>
+    </div>
+}

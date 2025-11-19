@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "تنظیمات سایت";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">تنظیمات سایت</h2>
+
+    <!-- تنظیمات عمومی -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">تنظیمات عمومی</div>
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">نام سایت</label>
+                    <input type="text" class="form-control" value="NetBazaar" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">لوگو</label>
+                    <input type="file" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">رنگ قالب</label>
+                    <input type="color" class="form-control form-control-color" value="#0d6efd" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">زبان پیش‌فرض</label>
+                    <select class="form-select">
+                        <option selected>فارسی</option>
+                        <option>English</option>
+                    </select>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- تنظیمات ایمیل -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">تنظیمات ایمیل</div>
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">ایمیل مدیریت</label>
+                    <input type="email" class="form-control" value="admin@netbazaar.com" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">SMTP سرور</label>
+                    <input type="text" class="form-control" value="smtp.netbazaar.com" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">نام کاربری SMTP</label>
+                    <input type="text" class="form-control" value="admin" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">رمز عبور SMTP</label>
+                    <input type="password" class="form-control" />
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">ذخیره تنظیمات ایمیل</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- تنظیمات امنیتی -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">تنظیمات امنیتی</div>
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">تغییر رمز عبور</label>
+                    <input type="password" class="form-control" placeholder="رمز جدید" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">تکرار رمز عبور</label>
+                    <input type="password" class="form-control" placeholder="تکرار رمز جدید" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">احراز هویت دو مرحله‌ای</label>
+                    <select class="form-select">
+                        <option value="off">غیرفعال</option>
+                        <option value="sms">فعال با پیامک</option>
+                        <option value="email">فعال با ایمیل</option>
+                    </select>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-danger">ذخیره تنظیمات امنیتی</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

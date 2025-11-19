@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "داشبورد مدیریت";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">خوش آمدید به پنل مدیریت فروشگاه</h2>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-people-fill display-6 text-primary"></i>
+                    <h5 class="card-title mt-2">کاربران</h5>
+                    <p class="fs-4 fw-bold text-primary">1,245</p>
+                    <a href="@Url.Action("Index", "Users")" class="btn btn-outline-primary btn-sm">مدیریت کاربران</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-cart-check-fill display-6 text-success"></i>
+                    <h5 class="card-title mt-2">سفارش‌ها</h5>
+                    <p class="fs-4 fw-bold text-success">32</p>
+                    <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-success btn-sm">مشاهده سفارش‌ها</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-box-seam display-6 text-warning"></i>
+                    <h5 class="card-title mt-2">محصولات</h5>
+                    <p class="fs-4 fw-bold text-warning">580</p>
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-outline-warning btn-sm">مدیریت محصولات</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-bar-chart-line-fill display-6 text-danger"></i>
+                    <h5 class="card-title mt-2">بازدید امروز</h5>
+                    <p class="fs-4 fw-bold text-danger">1,120</p>
+                    <a href="@Url.Action("Stats", "Dashboard")" class="btn btn-outline-danger btn-sm">آمار بازدید</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

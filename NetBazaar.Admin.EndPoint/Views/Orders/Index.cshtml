@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "مدیریت سفارش‌ها";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">مدیریت سفارش‌ها</h2>
+
+    <!-- کارت‌های خلاصه -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">کل سفارش‌ها</h6>
+                    <p class="fs-4 fw-bold text-primary">1,250</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">در حال پردازش</h6>
+                    <p class="fs-4 fw-bold text-warning">320</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">ارسال شده</h6>
+                    <p class="fs-4 fw-bold text-info">450</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">تکمیل شده</h6>
+                    <p class="fs-4 fw-bold text-success">480</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فیلتر سفارش‌ها -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="جستجو بر اساس شماره سفارش یا نام مشتری" />
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="">همه وضعیت‌ها</option>
+                        <option value="processing">در حال پردازش</option>
+                        <option value="shipped">ارسال شده</option>
+                        <option value="completed">تکمیل شده</option>
+                        <option value="canceled">لغو شده</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">اعمال فیلتر</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- جدول سفارش‌ها -->
+    <div class="card shadow-sm">
+        <div class="card-header fw-bold">لیست سفارش‌ها</div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>شماره سفارش</th>
+                        <th>مشتری</th>
+                        <th>تاریخ</th>
+                        <th>مبلغ</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1001</td>
+                        <td>کامبیز</td>
+                        <td>1404/08/18</td>
+                        <td>2,500,000 تومان</td>
+                        <td><span class="badge bg-warning">در حال پردازش</span></td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-info">جزئیات</a>
+                            <a href="#" class="btn btn-sm btn-outline-success">تکمیل</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1002</td>
+                        <td>مریم</td>
+                        <td>1404/08/18</td>
+                        <td>1,200,000 تومان</td>
+                        <td><span class="badge bg-success">تکمیل شده</span></td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-info">جزئیات</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1003</td>
+                        <td>علی</td>
+                        <td>1404/08/17</td>
+                        <td>3,800,000 تومان</td>
+                        <td><span class="badge bg-info">ارسال شده</span></td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-info">جزئیات</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "مدیریت دسته‌بندی‌ها";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">مدیریت دسته‌بندی‌ها</h2>
+
+    <!-- کارت‌های خلاصه -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">کل دسته‌ها</h6>
+                    <p class="fs-4 fw-bold text-primary">120</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">دسته‌های اصلی</h6>
+                    <p class="fs-4 fw-bold text-success">15</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">زیرمجموعه‌ها</h6>
+                    <p class="fs-4 fw-bold text-warning">105</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- افزودن دسته جدید -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header fw-bold">افزودن دسته جدید</div>
+        <div class="card-body">
+            <form class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="نام دسته" />
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select">
+                        <option value="">انتخاب دسته والد</option>
+                        <option value="electronics">الکترونیک</option>
+                        <option value="fashion">مد و پوشاک</option>
+                        <option value="home">خانه و آشپزخانه</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-plus-circle me-1"></i> افزودن دسته
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- جدول دسته‌بندی‌ها -->
+    <div class="card shadow-sm">
+        <div class="card-header fw-bold">لیست دسته‌بندی‌ها</div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام دسته</th>
+                        <th>دسته والد</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>C-001</td>
+                        <td>الکترونیک</td>
+                        <td>-</td>
+                        <td><span class="badge bg-success">فعال</span></td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Categories", new { id = 1 })" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                            <a href="@Url.Action("Delete", "Categories", new { id = 1 })" class="btn btn-sm btn-outline-danger">حذف</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C-002</td>
+                        <td>لپ‌تاپ</td>
+                        <td>الکترونیک</td>
+                        <td><span class="badge bg-success">فعال</span></td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Categories", new { id = 2 })" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                            <a href="@Url.Action("Delete", "Categories", new { id = 2 })" class="btn btn-sm btn-outline-danger">حذف</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C-003</td>
+                        <td>کتری برقی</td>
+                        <td>خانه و آشپزخانه</td>
+                        <td><span class="badge bg-warning">غیرفعال</span></td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Categories", new { id = 3 })" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                            <a href="@Url.Action("Delete", "Categories", new { id = 3 })" class="btn btn-sm btn-outline-danger">حذف</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

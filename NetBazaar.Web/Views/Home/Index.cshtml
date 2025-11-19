@@ -1,8 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "خانه";
 }
+<div class="row gy-3">
+    <div class="col-12">
+        <div class="p-4 bg-white shadow-sm rounded">
+            <h2 class="h5 mb-3">صفحه اصلی داینامیک</h2>
+            <p class="text-muted">این بخش می‌تواند با Ajax پر شود: بنرها، محصولات پرفروش، جدیدترین‌ها و ...</p>
+            <div id="homeDynamic">
+                <div class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                    <span class="placeholder col-8"></span>
+                    <span class="placeholder col-6"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="col-12">
+        <h3 class="h6 mb-3">محصولات منتخب</h3>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3" id="featuredProducts">
+            <!-- کارت محصولات -->
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(function(){
+            // نمونه خام بارگذاری داینامیک صفحه اصلی
+            $.getJSON('/api/home', function(data){
+                $('#homeDynamic').html('<div class="alert alert-info">داده‌های نمونه صفحه اصلی بارگذاری شد.</div>');
+                // نمونه رندر کارت‌ها
+                const $grid = $('#featuredProducts');
+                if (data && data.featured){
+                    $grid.empty();
+                    data.featured.forEach(function(p){
+                        $grid.append(`
+                        <div class="col">
+                            <div class="card h-100 shadow-sm">
+                                <img src="${p.image || '/wwwroot/images/placeholders/product.png'}" class="card-img-top" alt="${p.title}">
+                                <div class="card-body">
+                                    <h6 class="card-title">${p.title}</h6>
+                                    <div class="text-muted small">${p.price} تومان</div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                    <a href="/Product/Details?id=${p.id}" class="btn btn-sm btn-outline-primary">مشاهده</a>
+                                    <button class="btn btn-sm btn-primary add-to-cart" data-id="${p.id}">افزودن</button>
+                                </div>
+                            </div>
+                        </div>`);
+                    });
+                }
+            });
+
+            $(document).on('click', '.add-to-cart', function(){
+                const id = $(this).data('id');
+                $.post('/Cart/Add', { id, qty: 1 }, function(){
+                    // بروزرسانی سبد
+                    $.get('/Cart/Mini', function(html){
+                        $('#miniCartItems').html(html);
+                        const count = $('.mini-cart-item').length;
+                        $('#miniCartCount').text(count);
+                        $('#cartCount').text(count);
+                    });
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,160 @@
+﻿<div class="card shadow-sm mb-3">
+    <div class="card-header fw-bold">دسته‌بندی محصولات</div>
+
+    <!-- جستجوی زنده -->
+    <div class="p-2">
+        <input type="text" id="searchInput" class="form-control" placeholder="جستجو در دسته‌ها..." />
+        <div id="searchResult" class="mt-2"></div>
+    </div>
+
+    <!-- منوی دسته‌بندی‌ها -->
+    <ul class="list-group list-group-flush category-menu" id="categoryMenu">
+        <li class="list-group-item has-children">
+            <span class="menu-label">الکترونیک</span>
+            <ul class="list-group sub-menu d-none">
+                <li class="list-group-item has-children">
+                    <a href="/Product/List?cat=laptop" class="text-decoration-none">لپ‌تاپ</a>
+                    <ul class="list-group sub-menu d-none">
+                        <li class="list-group-item"><a href="/Product/List?cat=gaming-laptop" class="text-decoration-none">لپ‌تاپ گیمینگ</a></li>
+                    </ul>
+                </li>
+                <li class="list-group-item"><a href="/Product/List?cat=camera" class="text-decoration-none">دوربین</a></li>
+                <li class="list-group-item"><a href="/Product/List?cat=mobile" class="text-decoration-none">موبایل</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item has-children">
+            <span class="menu-label">مد و پوشاک</span>
+            <ul class="list-group sub-menu d-none">
+                <li class="list-group-item"><a href="/Product/List?cat=men" class="text-decoration-none">مردانه</a></li>
+                <li class="list-group-item"><a href="/Product/List?cat=women" class="text-decoration-none">زنانه</a></li>
+            </ul>
+        </li>
+        <li class="list-group-item no-children"><a href="/Product/List?cat=beauty" class="text-decoration-none">زیبایی و سلامت</a></li>
+        <li class="list-group-item no-children"><a href="/Product/List?cat=home" class="text-decoration-none">خانه و آشپزخانه</a></li>
+    </ul>
+</div>
+
+<style>
+    .category-menu .sub-menu {
+        margin-top: 4px;
+        margin-right: 10px;
+    }
+
+    .menu-label {
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        display: inline-block;
+    }
+
+        .menu-label::after {
+            content: " ▼";
+            font-size: 12px;
+            color: #888;
+            margin-right: 5px;
+        }
+
+    .has-children > a::after {
+        content: " ▼";
+        font-size: 12px;
+        color: #888;
+        margin-right: 5px;
+    }
+
+    .no-children > a {
+        font-style: italic;
+        color: #555;
+    }
+
+    .highlight {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        border-radius: 4px;
+        padding: 2px 4px;
+    }
+</style>
+
+<script>
+    // باز و بسته کردن زیرمنو با کلیک
+    document.querySelectorAll(".menu-label").forEach(label => {
+        label.addEventListener("click", function () {
+            const submenu = this.parentElement.querySelector(".sub-menu");
+            if (submenu) submenu.classList.toggle("d-none");
+        });
+    });
+
+    document.querySelectorAll(".has-children > a").forEach(link => {
+        link.addEventListener("click", function (e) {
+            const submenu = this.parentElement.querySelector(".sub-menu");
+            if (submenu) {
+                e.preventDefault();
+                submenu.classList.toggle("d-none");
+            }
+        });
+    });
+
+    // جستجوی زنده
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const keyword = this.value.trim();
+        const result = searchAndReveal(keyword);
+        const output = document.getElementById("searchResult");
+
+        if (result) {
+            output.innerHTML = `مسیر: ${result.path} <br><a href="${result.link}" class="btn btn-sm btn-outline-primary mt-1">مشاهده دسته</a>`;
+        } else {
+            output.textContent = keyword ? "نتیجه‌ای یافت نشد" : "";
+        }
+
+        if (!keyword) {
+            document.querySelectorAll("#categoryMenu .sub-menu").forEach(el => el.classList.add("d-none"));
+            document.querySelectorAll("#categoryMenu a, #categoryMenu .menu-label").forEach(el => el.classList.remove("highlight"));
+        }
+    });
+
+    function searchAndReveal(keyword) {
+        let found = null;
+
+        document.querySelectorAll("#categoryMenu .sub-menu").forEach(el => el.classList.add("d-none"));
+        document.querySelectorAll("#categoryMenu a, #categoryMenu .menu-label").forEach(el => el.classList.remove("highlight"));
+
+        const items = document.querySelectorAll("#categoryMenu li");
+        items.forEach(item => {
+            const link = item.querySelector(":scope > a, :scope > .menu-label");
+            if (!link) return;
+
+            const text = link.textContent.trim();
+            if (text.includes(keyword)) {
+                let path = [];
+                let current = item;
+                let targetLink = null;
+
+                while (current) {
+                    const parentLink = current.querySelector(":scope > a, :scope > .menu-label");
+                    if (parentLink) {
+                        path.unshift(parentLink.textContent.trim());
+                        if (!targetLink && parentLink.href && parentLink.href.includes("/Product/List")) {
+                            targetLink = parentLink.href;
+                        }
+                        parentLink.classList.add("highlight");
+                    }
+
+                    const submenu = current.querySelector(":scope > .sub-menu");
+                    if (submenu) submenu.classList.remove("d-none");
+
+                    current = current.parentElement.closest("li");
+                    if (current) {
+                        const parentSubmenu = current.querySelector(":scope > .sub-menu");
+                        if (parentSubmenu) parentSubmenu.classList.remove("d-none");
+                    }
+                }
+
+                found = {
+                    path: path.join(" → "),
+                    link: targetLink || "#"
+                };
+            }
+        });
+
+        return found;
+    }
+</script>

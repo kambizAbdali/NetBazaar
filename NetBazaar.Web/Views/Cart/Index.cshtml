@@ -1,0 +1,186 @@
+﻿@model NetBazaar.Web.EndPoint.ViewModels.CartViewModel
+
+@{
+    ViewData["Title"] = "سبد خرید";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>سبد خرید شما</h2>
+        </div>
+    </div>
+
+    @if (Model.Items.Any())
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="row align-items-center mb-3 cart-item" data-item-id="@item.Id">
+                                <div class="col-md-2">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid rounded">
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>@item.ProductName</h5>
+                                    <p class="text-muted small">@item.CategoryName</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group input-group-sm">
+                                        <button class="btn btn-outline-secondary decrease-quantity" type="button">-</button>
+                                        <input type="number" class="form-control text-center quantity-input"
+                                               value="@item.Quantity" min="1" max="10">
+                                        <button class="btn btn-outline-secondary increase-quantity" type="button">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="h5 item-price">@item.TotalPrice.ToString() تومان</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-outline-danger btn-sm remove-item">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>خلاصه سفارش</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>جمع کل:</span>
+                            <span id="subtotal">@Model.TotalPrice.ToString() تومان</span>
+                        </div>
+
+                        <!-- Discount Code -->
+                        <div class="mb-3">
+                            <label for="discount-code" class="form-label">کد تخفیف</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="discount-code" placeholder="کد تخفیف">
+                                <button class="btn btn-outline-primary" type="button" id="apply-discount">اعمال</button>
+                            </div>
+                            <div id="discount-message" class="mt-1"></div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2 text-success" id="discount-section" style="display: none!important;">
+                            <span>تخفیف:</span>
+                            <span id="discount-amount">0 تومان</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>مبلغ قابل پرداخت:</strong>
+                            <strong id="final-price">@Model.TotalPrice.ToString() تومان</strong>
+                        </div>
+
+                        <a href="/checkout" class="btn btn-primary w-100">ادامه فرآیند خرید</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x display-1 text-muted"></i>
+            <h3 class="text-muted mt-3">سبد خرید شما خالی است</h3>
+            <a href="/catalog" class="btn btn-primary mt-3">مشاهده محصولات</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Update quantity
+            $('.increase-quantity, .decrease-quantity').on('click', function() {
+                const $row = $(this).closest('.cart-item');
+                const $input = $row.find('.quantity-input');
+                let quantity = parseInt($input.val());
+
+                if ($(this).hasClass('increase-quantity')) {
+                    quantity = Math.min(quantity + 1, 10);
+                } else {
+                    quantity = Math.max(quantity - 1, 1);
+                }
+
+                $input.val(quantity);
+                updateCartItem($row.data('item-id'), quantity);
+            });
+
+            // Remove item
+            $('.remove-item').on('click', function() {
+                const $row = $(this).closest('.cart-item');
+                removeCartItem($row.data('item-id'));
+            });
+
+            // Apply discount
+            $('#apply-discount').on('click', function() {
+                applyDiscount();
+            });
+        });
+
+        function updateCartItem(itemId, quantity) {
+            $.ajax({
+                url: '/api/cart/update',
+                type: 'POST',
+                data: { itemId, quantity },
+                success: function(response) {
+                    updateCartSummary(response);
+                }
+            });
+        }
+
+        function removeCartItem(itemId) {
+            if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+
+            $.ajax({
+                url: '/api/cart/remove',
+                type: 'POST',
+                data: { itemId },
+                success: function(response) {
+                    $('.cart-item[data-item-id="' + itemId + '"]').remove();
+                    updateCartSummary(response);
+                }
+            });
+        }
+
+        function applyDiscount() {
+            const discountCode = $('#discount-code').val();
+
+            $.ajax({
+                url: '/api/discount/apply',
+                type: 'POST',
+                data: { discountCode },
+                success: function(response) {
+                    if (response.success) {
+                        $('#discount-message').html('<span class="text-success">کد تخفیف با موفقیت اعمال شد</span>');
+                        $('#discount-section').show();
+                        $('#discount-amount').text(response.discountAmount.toLocaleString() + ' تومان');
+                        $('#final-price').text(response.finalPrice.toLocaleString() + ' تومان');
+                    } else {
+                        $('#discount-message').html('<span class="text-danger">' + response.message + '</span>');
+                    }
+                }
+            });
+        }
+
+        function updateCartSummary(cart) {
+            $('#subtotal').text(cart.totalPrice.toLocaleString() + ' تومان');
+            $('#final-price').text(cart.finalPrice.toLocaleString() + ' تومان');
+
+            // Update cart summary in header
+            $('.cart-summary').text(cart.totalItems + ' محصول - ' + cart.finalPrice.toLocaleString() + ' تومان');
+        }
+    </script>
+}

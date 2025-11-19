@@ -1,0 +1,25 @@
+﻿<div class="card shadow-sm mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-bold">سبد خرید</span>
+        <span class="badge bg-primary" id="miniCartCount">0</span>
+    </div>
+    <div class="list-group list-group-flush" id="miniCartItems">
+        <div class="list-group-item text-muted small">سبد شما خالی است.</div>
+    </div>
+    <div class="card-footer">
+        <a href="/Cart" class="btn btn-sm btn-outline-primary w-100">مشاهده سبد</a>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        // نمونه خام Ajax برای بارگذاری مینی‌کارت
+        $.get('/Cart/Mini', function(html){
+            if(html && html.trim().length > 0){
+                $('#miniCartItems').html(html);
+                $('#miniCartCount').text($('.mini-cart-item').length);
+                $('#cartCount').text($('.mini-cart-item').length);
+            }
+        });
+    });
+</script>
