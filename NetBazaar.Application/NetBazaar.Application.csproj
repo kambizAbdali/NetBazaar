@@ -7,10 +7,10 @@
   </PropertyGroup>
 
 	<ItemGroup>
-
+	  <ProjectReference Include="..\NetBazaar.Domain\NetBazaar.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\NetBazaar.Domain\NetBazaar.Domain.csproj" />
+	  <PackageReference Include="AutoMapper" Version="12.0.1" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿using NetBazaar.Infrastructure.DependencyInjection;
+﻿using NetBazaar.Admin.EndPoint.Configuration;
+using NetBazaar.Infrastructure.DependencyInjection;
+using NetBazaar.Infrastructure.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +12,11 @@ builder.Services.AddControllersWithViews(); // اضافه‌شدن MVC (کنتر
 // Use AddInfrastructureServices instead of separate methods
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddDatabaseServices(builder.Configuration);
+
 // Application Services
 builder.Services.AddApplicationServices();
+builder.Services.AddAutoMapper(typeof(ViewModelMappingProfile));
 
 var app = builder.Build();
 
@@ -37,6 +42,7 @@ app.UseStaticFiles(); // برای استاتیک‌ها
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+
 
 // اگر نیاز به روت‌های اضافی دارید:
 // app.MapControllerRoute(

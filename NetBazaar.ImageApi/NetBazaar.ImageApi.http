@@ -1,0 +1,6 @@
+@NetBazaar.ImageApi_HostAddress = http://localhost:5072
+
+GET {{NetBazaar.ImageApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

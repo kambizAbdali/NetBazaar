@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E3F37D81
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBazaar.Admin.EndPoint", "NetBazaar.Admin.EndPoint\NetBazaar.Admin.EndPoint.csproj", "{0CC4CFB9-7A0D-49C8-9C17-3946BCD9294F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBazaar.ImageApi", "NetBazaar.ImageApi\NetBazaar.ImageApi.csproj", "{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{0CC4CFB9-7A0D-49C8-9C17-3946BCD9294F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CC4CFB9-7A0D-49C8-9C17-3946BCD9294F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CC4CFB9-7A0D-49C8-9C17-3946BCD9294F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{8803D9E3-814B-494E-8B1C-EC0861EB1FDC} = {7AB72545-8209-4055-A1FA-851F7DC0728D}
 		{9E5D1E70-034B-44F5-BD3D-68D6BCE34036} = {8803D9E3-814B-494E-8B1C-EC0861EB1FDC}
 		{0CC4CFB9-7A0D-49C8-9C17-3946BCD9294F} = {8803D9E3-814B-494E-8B1C-EC0861EB1FDC}
+		{9A09B210-E1D6-4E00-A4DC-73B578DBA0B0} = {8803D9E3-814B-494E-8B1C-EC0861EB1FDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {549EC485-CA7B-4D7E-83AE-BD7317CBDDF7}

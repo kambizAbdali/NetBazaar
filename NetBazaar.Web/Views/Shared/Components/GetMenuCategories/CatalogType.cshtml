@@ -1,0 +1,199 @@
+﻿@model List<NetBazaar.Application.DTOs.Catalog.MenuItemDto>
+
+<div class="card shadow-sm mb-3 custom-category-menu">
+    <div class="card-header fw-bold bg-primary text-white">دسته‌بندی کالاها</div>
+
+    <div class="p-2">
+        <input type="text" id="searchInput" class="form-control search-input" placeholder="جستجو در دسته‌ها..." />
+        <div id="searchResult" class="mt-2"></div>
+    </div>
+
+    <div class="category-container">
+        <ul class="category-list" id="categoryMenu">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync("Components/GetMenuCategories/_MenuItemRecursive", item)
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    /* استایل‌های اصلی دسته‌بندی */
+    .custom-category-menu {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .custom-category-menu .card-header {
+            border-radius: 0;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+        }
+
+    .search-input {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+        }
+
+    .category-container {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .category-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-item {
+        border-bottom: 1px solid #f0f0f0;
+        position: relative;
+    }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #333;
+        font-weight: 500;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: right;
+    }
+
+        .category-header:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+    .category-link {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        text-decoration: none;
+        color: #555;
+        transition: all 0.3s ease;
+        font-weight: 400;
+    }
+
+        .category-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    .category-icon {
+        margin-left: 10px;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+    }
+
+    .category-label {
+        flex: 1;
+    }
+
+    .category-arrow {
+        margin-right: auto;
+        transition: transform 0.3s ease;
+        color: #999;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .category-item.active > .category-header .category-arrow {
+        transform: rotate(90deg);
+        color: #007bff;
+    }
+
+    /* استایل‌های زیرمنو */
+    .category-submenu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: #fafafa;
+        border-right: 3px solid #007bff;
+        display: none;
+    }
+
+    .category-item.active > .category-submenu {
+        display: block;
+    }
+
+    .category-submenu .category-header {
+        padding-right: 30px;
+        font-size: 0.95rem;
+    }
+
+    .category-submenu .category-link {
+        padding-right: 30px;
+        font-size: 0.95rem;
+    }
+
+    .category-submenu .category-submenu .category-header {
+        padding-right: 45px;
+    }
+
+    .category-submenu .category-submenu .category-link {
+        padding-right: 45px;
+    }
+
+    /* استایل‌های حالت فعال */
+    .category-item.active > .category-header {
+        background-color: #e3f2fd;
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    /* استایل‌های اسکرول بار */
+    .category-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .category-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .category-container::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+        .category-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+    /* استایل‌های جستجو */
+    .search-result-item {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+
+    .highlight {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        font-weight: 600 !important;
+    }
+</style>

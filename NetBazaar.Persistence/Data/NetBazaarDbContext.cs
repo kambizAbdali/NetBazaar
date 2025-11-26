@@ -1,11 +1,10 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using NetBazaar.Domain.Attributes;
-using NetBazaar.Domain.Entities;
+using NetBazaar.Domain.Entities.Catalog;
+using NetBazaar.Persistence.EntityConfiguration;
 using NetBazaar.Persistence.Interfaces.DatabaseContext;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace NetBazaar.Infrastructure.Data
 {
@@ -21,10 +20,25 @@ namespace NetBazaar.Infrastructure.Data
         // public DbSet<Product> Products { get; set; } = null!;
         // public DbSet<Order> Orders { get; set; } = null!;
 
+        public DbSet<CatalogType> CatalogTypes => Set<CatalogType>();
+        public DbSet<CatalogBrand> CatalogBrands => Set<CatalogBrand>();
+        public DbSet<CatalogItem> Catalogs => Set<CatalogItem>();
+
+
+        public DbSet<CatalogItem> CatalogItems { get; set; }
+        public DbSet<CatalogItemFeature> CatalogItemFeatures { get; set; }
+        public DbSet<CatalogItemImage> CatalogItemImages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
                 throw new ArgumentNullException(nameof(modelBuilder));
+
+            modelBuilder.ApplyConfiguration(new CatalogItemConfig());
+            modelBuilder.ApplyConfiguration(new CatalogItemFeatureConfig());
+            modelBuilder.ApplyConfiguration(new CatalogItemImageConfig());
+            modelBuilder.ApplyConfiguration(new CatalogTypeConfig());
+            modelBuilder.ApplyConfiguration(new CatalogBrandConfig());
 
             base.OnModelCreating(modelBuilder);
 
@@ -139,32 +153,3 @@ namespace NetBazaar.Infrastructure.Data
         }
     }
 }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=.;Database=NetBazaar;Trusted_Connection=true;TrustServerCertificate=true;");
-        //    }
-        //}
-
-        //public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        //{
-
-        //}
-        //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        //{
-
-        //}
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-
-        //}
-        //public override int SaveChanges()
-        //{
-
-        //}
-        //public DbSet<Category> Categories => Set<Category>();
-        //public DbSet<Order> Orders => Set<Order>();
-        //public DbSet<OrderItem> OrderItems => Set<OrderItem>();
-        //public DbSet<Customer> Customers => Set<Customer>();
-        //public DbSet<Inventory> Inventories => Set<Inventory>();

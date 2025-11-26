@@ -19,6 +19,26 @@
     <script src="~/js/moment.min.js"></script>
     <script src="~/js/site.js"></script>   
     <script src="~/js/ajax.js"></script>
+
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        // اتصال به هاب وب
+        const webConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/Hubs/OnlineVisitorsHub", { withCredentials: true })
+            .withAutomaticReconnect()
+            .build();
+
+        webConnection.on("OnlineCountUpdated", function(count) {
+            // اگر در وب هم می‌خواهی نشان دهی، جایگزین کن
+            const el = document.getElementById("online-count-web");
+            if (el) el.textContent = count.toString();
+        });
+
+        webConnection.start().catch(err => console.error(err));
+    </script>
+    <script src="~/js/category-menu.js"></script>
+
+
 </head>
 <body class="bg-light">
     <header>
@@ -29,7 +49,7 @@
     <main class="container py-3">
         <div class="row">
             <aside class="col-12 col-lg-3 mb-3">
-                @await Html.PartialAsync("_CategoryMenu")
+                @await Component.InvokeAsync("GetMenuCategories")
                 @await Html.PartialAsync("_MiniCart")
             </aside>
             <section class="col-12 col-lg-9">

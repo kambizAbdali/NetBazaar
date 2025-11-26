@@ -20,6 +20,217 @@ namespace NetBazaar.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogBrand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CatalogBrands", (string)null);
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("CatalogBrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CatalogTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaxStockThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReorderThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogBrandId");
+
+                    b.HasIndex("CatalogTypeId");
+
+                    b.ToTable("CatalogItems", (string)null);
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItemFeature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("CatalogItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Group")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogItemId");
+
+                    b.ToTable("CatalogItemFeatures", (string)null);
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItemImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("CatalogItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Src")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogItemId");
+
+                    b.ToTable("CatalogItemImages", (string)null);
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CatalogTypes", (string)null);
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItem", b =>
+                {
+                    b.HasOne("NetBazaar.Domain.Entities.Catalog.CatalogBrand", "CatalogBrand")
+                        .WithMany("Catalogs")
+                        .HasForeignKey("CatalogBrandId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("NetBazaar.Domain.Entities.Catalog.CatalogType", "CatalogType")
+                        .WithMany("CatalogItems")
+                        .HasForeignKey("CatalogTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CatalogBrand");
+
+                    b.Navigation("CatalogType");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItemFeature", b =>
+                {
+                    b.HasOne("NetBazaar.Domain.Entities.Catalog.CatalogItem", "CatalogItem")
+                        .WithMany("Features")
+                        .HasForeignKey("CatalogItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CatalogItem");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItemImage", b =>
+                {
+                    b.HasOne("NetBazaar.Domain.Entities.Catalog.CatalogItem", "CatalogItem")
+                        .WithMany("Images")
+                        .HasForeignKey("CatalogItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CatalogItem");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogType", b =>
+                {
+                    b.HasOne("NetBazaar.Domain.Entities.Catalog.CatalogType", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogBrand", b =>
+                {
+                    b.Navigation("Catalogs");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogItem", b =>
+                {
+                    b.Navigation("Features");
+
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("NetBazaar.Domain.Entities.Catalog.CatalogType", b =>
+                {
+                    b.Navigation("CatalogItems");
+
+                    b.Navigation("Children");
+                });
 #pragma warning restore 612, 618
         }
     }

@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetBazaar.Application.Common.Configuration; // From Application layer
+using NetBazaar.Application.Common.Configuration;
+using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Application.Interfaces.Visitor;
 using NetBazaar.Infrastructure.Configuration;
 using NetBazaar.Infrastructure.Data;
+using NetBazaar.Infrastructure.MappingProfiles;
+using NetBazaar.Infrastructure.Services.Catalog;
 using NetBazaar.Infrastructure.Services.Visitor;
 using NetBazaar.Infrastructure.Services.Visitors;
 using NetBazaar.Persistence.Data;
@@ -19,30 +22,16 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            // SQL Server Database Services
-            var connectionString = configuration.GetConnectionString("SqlServer");
-            services.AddDbContext<NetBazaarDbContext>(options =>
-                options.UseSqlServer(connectionString));
-
-
-            // MongoDB Configuration - THIS WAS MISSING!
-            services.Configure<MongoDBSettings>(configuration.GetSection("MongoDB"));
-            // MongoDB Services
-            services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
-
-            // Identity Services
-            services.AddIdentityService(configuration);
-
-
-            // Application Cookie Configuration
-            services.ConfigureApplicationCookie(option =>
-            {
-                option.ExpireTimeSpan = TimeSpan.FromMinutes(12);
-                option.LoginPath = "/account/login";
-                option.AccessDeniedPath = "/account/AccessDenied";
-                option.SlidingExpiration = true;
-            });
-
+            services
+                .AddIdentityService(configuration)
+                .AddAutoMapper(typeof(CatalogMappingProfile))
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(12);
+                    options.LoginPath = "/account/login";
+                    options.AccessDeniedPath = "/account/access-denied";
+                    options.SlidingExpiration = true;
+                });
 
             return services;
         }
@@ -50,20 +39,52 @@ namespace NetBazaar.Infrastructure.DependencyInjection
         public static IServiceCollection AddApplicationServices(
             this IServiceCollection services)
         {
+            // Visitor Services
             services.AddTransient<ISaveVisitorInfoService, SaveVisitorInfoService>();
             services.AddTransient<IVisitorStatisticsService, VisitorStatisticsService>();
+            services.AddScoped<IOnlineVisitorsService, OnlineVisitorsService>();
+
+            // Catalog Services
+            services.AddScoped<ICatalogTypeService, CatalogTypeService>();
+            services.AddScoped<ICatalogBrandService, CatalogBrandService>();
+            services.AddScoped<ICatalogItemService, CatalogItemService>();
+            services.AddScoped<IGetMenuItemService, GetMenuItemService>();
+
+            // Validation
+            //services.AddFluentValidationAutoValidation();
+            //services.AddValidatorsFromAssemblyContaining<AddCatalogItemDtoValidator>();
+
             return services;
         }
 
-        // If you're using separate methods, make sure they call the main one
         public static IServiceCollection AddDatabaseServices(
-            this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
-            return services.AddInfrastructureServices(configuration);
+            var connectionString = configuration.GetConnectionString("SqlServer");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("SQL Server connection string 'SqlServer' is not configured.");
+            }
+
+            // SQL Server Database Services
+            services.AddDbContext<NetBazaarDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddScoped<INetBazaarDbContext>(provider =>
+                provider.GetRequiredService<NetBazaarDbContext>());
+
+            // MongoDB Services
+            services.Configure<MongoDBSettings>(configuration.GetSection("MongoDB"));
+            services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
+
+            return services;
         }
 
         public static IServiceCollection AddCustomIdentityServices(
-            this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
             return services.AddInfrastructureServices(configuration);
         }

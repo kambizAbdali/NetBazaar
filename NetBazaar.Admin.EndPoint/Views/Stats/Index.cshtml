@@ -1,6 +1,4 @@
-﻿@using NetBazaar.Application.DTOs.Visitor
-@model VisitorAnalyticsReportDto;
-
+﻿@model VisitorAnalyticsReportDto;
 @{
     ViewBag.Title = "آمار سایت";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,6 +6,7 @@
 
 <div class="container-fluid">
     <h2 class="mb-4">آمار سایت</h2>
+    @await Html.PartialAsync("_ValidationSummary")
 
     <!-- کارت‌های آمار -->
     <div class="row g-4 mb-4">
@@ -17,7 +16,11 @@
                 <div class="card-body">
                     <p>تعداد بازدید: <span class="fw-bold text-primary">@Model.Today.PageViews</span></p>
                     <p>تعداد بازدیدکنندگان: <span class="fw-bold text-success">@Model.Today.Visitors</span></p>
-                    <p>بازدید از صفحه در هر بازدید: <span class="fw-bold text-warning">@Model.Today.ViewsPerVisitors</span></p>
+                    <p>بازدید از صفحه در هر بازدید: <span class="fw-bold text-warning">@Model.Today.ViewsPerVisitors</span>
+                    </p>
+                    <p>تعداد کاربران آنلاین: <span id="online-count-admin" class="fw-bold text-bg-secondary"></span></p>
+
+
                 </div>
             </div>
         </div>

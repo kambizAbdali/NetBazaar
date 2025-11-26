@@ -1,0 +1,21 @@
+﻿<div class="modal fade" id="deleteModal-@Model" tabindex="-1" aria-labelledby="deleteModalLabel-@Model" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="deleteModalLabel-@Model">تأیید حذف</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                آیا مطمئن هستید که می‌خواهید رکورد با شناسه @Model را حذف کنید؟
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" asp-route-id="@Model" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

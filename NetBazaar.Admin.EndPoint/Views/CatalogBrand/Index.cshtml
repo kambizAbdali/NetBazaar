@@ -1,0 +1,47 @@
+﻿@using NetBazaar.Application.DTOs.Catalog
+@using NetBazaar.Application.DTOs.Common
+@model PaginatedResult<CatalogBrandListDto>
+
+
+@{
+    ViewBag.Title = "مدیریت برندها";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>مدیریت برندها</h2>
+<a class="btn btn-success mb-3" href="@Url.Action("Create")">افزودن برند جدید</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>نام برند</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Brand</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", new { id = item.Id })">ویرایش</a>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">حذف</button>
+                    @Html.Partial("_DeleteConfirmationModal", item.Id)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

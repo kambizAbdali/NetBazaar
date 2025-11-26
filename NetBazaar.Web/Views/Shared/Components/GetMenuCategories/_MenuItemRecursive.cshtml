@@ -1,0 +1,25 @@
+﻿@model NetBazaar.Application.DTOs.Catalog.MenuItemDto
+
+@if (Model.SubMenus != null && Model.SubMenus.Any())
+{
+    <li class="category-item has-children" data-category-id="@Model.Id">
+        <button class="category-header">
+            <span class="category-label">@Model.Name</span>
+            <i class="category-arrow">›</i>
+        </button>
+        <ul class="category-submenu">
+            @foreach (var sub in Model.SubMenus)
+            {
+                @await Html.PartialAsync("Components/GetMenuCategories/_MenuItemRecursive", sub)
+            }
+        </ul>
+    </li>
+}
+else
+{
+    <li class="category-item no-children" data-category-id="@Model.Id">
+        <a href="/Product/List?cat=@Model.Id" class="category-link">
+            <span class="category-label">@Model.Name</span>
+        </a>
+    </li>
+}

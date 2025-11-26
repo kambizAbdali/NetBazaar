@@ -1,0 +1,58 @@
+﻿@model NetBazaar.Application.DTOs.Common.PaginatedResult<NetBazaar.Application.DTOs.Catalog.CatalogListDto>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "مدیریت محصولات";
+}
+
+<h2 class="mb-3">مدیریت محصولات</h2>
+<a asp-action="Create" class="btn btn-success mb-3">افزودن محصول جدید</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>شناسه</th>
+            <th>نام</th>
+            <th>قیمت</th>
+            <th>دسته</th>
+            <th>برند</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Price.ToString("N0") ریال</td>
+                <td>@item.TypeName</td>
+                <td>@item.BrandName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">جزئیات</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">ویرایش</a>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">حذف</button>
+                    @Html.Partial("_DeleteConfirmationModal", item.Id)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        @if (Model.HasPreviousPage)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">قبلی</a></li>
+        }
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+            </li>
+        }
+        @if (Model.HasNextPage)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">بعدی</a></li>
+        }
+    </ul>
+</nav>

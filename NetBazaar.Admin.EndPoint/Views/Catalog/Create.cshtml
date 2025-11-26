@@ -1,0 +1,200 @@
+﻿@model NetBazaar.Admin.EndPoint.ViewModels.Catalog.AddCatalogItemViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "ایجاد محصول جدید";
+}
+
+<h2>ایجاد محصول جدید</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label>نام محصول</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>توضیحات</label>
+        <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>قیمت (ریال)</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>دسته‌بندی</label>
+        <select asp-for="CatalogTypeId" asp-items="Model.Types" class="form-select" id="CatalogTypeId"></select>
+        <span asp-validation-for="CatalogTypeId" class="text-danger"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label>برند</label>
+        <select asp-for="CatalogBrandId" asp-items="Model.Brands" class="form-select"></select>
+    </div>
+
+
+    <div class="mb-3">
+        <label>موجودی انبار</label>
+        <input asp-for="StockQuantity" class="form-control .numeric-input" />
+    </div>
+
+    <div class="mb-3">
+        <label>حداقل موجودی برای هشدار</label>
+        <input asp-for="ReorderThreshold" class="form-control .numeric-input" />
+    </div>
+
+    <div class="mb-3">
+        <label>حداکثر ظرفیت انبار</label>
+        <input asp-for="MaxStockThreshold" class="form-control" />
+    </div>
+
+    <!-- بخش ویژگی‌ها -->
+    <h5>ویژگی‌ها</h5>
+    <div class="row mb-3">
+        <div class="col">
+            <input id="featureGroup" class="form-control" placeholder="گروه" />
+        </div>
+        <div class="col">
+            <input id="featureKey" class="form-control" placeholder="کلید" />
+        </div>
+        <div class="col">
+            <input id="featureValue" class="form-control" placeholder="مقدار" />
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success" onclick="addFeature()">افزودن ویژگی</button>
+        </div>
+    </div>
+
+    <div id="featuresContainer"></div>
+
+
+    <!-- بخش تصاویر -->
+    <h5>تصاویر</h5>
+    <div id="imagesContainer"></div>
+    <button type="button" class="btn btn-info mb-3" onclick="addImage()">افزودن تصویر</button>
+
+    <button type="submit" class="btn btn-primary">ثبت محصول</button>
+    <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+               let featureIndex = 0;
+
+        function addFeature() {
+            const group = $('#featureGroup').val();
+            const key = $('#featureKey').val();
+            const value = $('#featureValue').val();
+
+            if (!group || !key || !value) {
+                // ولیدیشن Bootstrap
+                if (!group) $('#featureGroup').addClass('is-invalid'); else $('#featureGroup').removeClass('is-invalid').addClass('is-valid');
+                if (!key) $('#featureKey').addClass('is-invalid'); else $('#featureKey').removeClass('is-invalid').addClass('is-valid');
+                if (!value) $('#featureValue').addClass('is-invalid'); else $('#featureValue').removeClass('is-invalid').addClass('is-valid');
+                return;
+            }
+
+            $('#featuresContainer').append(`
+                <div class="row mb-2">
+                    <div class="col"><input name="Features[${featureIndex}].Group" value="${group}" class="form-control" required /></div>
+                    <div class="col"><input name="Features[${featureIndex}].Key" value="${key}" class="form-control" required /></div>
+                    <div class="col"><input name="Features[${featureIndex}].Value" value="${value}" class="form-control" required /></div>
+                    <div class="col"><button type="button" class="btn btn-danger delete-feature">حذف</button></div>
+                </div>
+            `);
+
+            featureIndex++;
+
+            // پاک کردن فیلدهای ورودی و کلاس‌های ولیدیشن
+            $('#featureGroup').val('').removeClass('is-valid is-invalid');
+            $('#featureKey').val('').removeClass('is-valid is-invalid');
+            $('#featureValue').val('').removeClass('is-valid is-invalid');
+        }
+
+        $(document).on('click', '.delete-feature', function () {
+            $(this).closest('.row').remove();
+        });
+
+
+        let imageIndex = 0;
+
+        function addImage() {
+            $('#imagesContainer').append(`
+                <div class="row mb-2">
+                    <div class="col-10">
+                        <input type="file" class="form-control image-upload" onchange="uploadImage(this, ${imageIndex})" required />
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-danger delete-image">حذف</button>
+                    </div>
+                </div>
+            `);
+            imageIndex++;
+        }
+
+        // حذف تصویر
+        $(document).on('click', '.delete-image', function () {
+            $(this).closest('.row').remove();
+        });
+
+        // آپلود تصویر به API واسط
+        function uploadImage(input, index) {
+            if (!input.files || input.files.length === 0) {
+                $(input).addClass('is-invalid');
+                return;
+            } else {
+                $(input).removeClass('is-invalid').addClass('is-valid');
+            }
+
+            var formData = new FormData();
+            formData.append("file", input.files[0]);
+
+            $.ajax({
+                url: "http://localhost:5072/api/images/upload",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $(input).after(`<input type="hidden" name="Images[${index}].Src" value="${response.url}" />`);
+                },
+                error: function () {
+                    alert("خطا در آپلود تصویر");
+                }
+            });
+        }
+    </script>
+    
+
+
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        // فعال‌سازی CKEditor روی فیلد توضیحات
+        CKEDITOR.replace('Description', {
+            language: 'fa', // زبان فارسی
+            contentsLangDirection: 'rtl', // راست‌چین
+            removePlugins: 'elementspath',
+            resize_enabled: false
+        });
+    </script>
+
+    <script src="~/js/select2/select2.min.js"></script>
+    <link href="~/css/select2/select2.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $('#CatalogTypeId').select2({
+                dir: "rtl",
+                placeholder: "انتخاب دسته‌بندی...",
+                language: "fa"
+            });
+        });
+    </script>
+
+
+}
+

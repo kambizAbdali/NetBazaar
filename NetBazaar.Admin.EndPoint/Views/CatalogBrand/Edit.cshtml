@@ -1,0 +1,21 @@
+﻿@using NetBazaar.Admin.EndPoint.ViewModels
+@using NetBazaar.Admin.EndPoint.ViewModels.Catalog
+@model CatalogBrandViewModel
+
+@{
+    ViewBag.Title = Model.Id == 0 ? "افزودن برند جدید" : "ویرایش برند";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">نام برند</label>
+        <input type="text" class="form-control" asp-for="Brand" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">ذخیره</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">بازگشت</a>
+</form>

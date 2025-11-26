@@ -1,0 +1,75 @@
+﻿@model NetBazaar.Application.DTOs.Catalog.CatalogDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "جزئیات محصول";
+}
+
+<div class="card shadow-lg mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4>جزئیات محصول: @Model.Name</h4>
+    </div>
+    <div class="card-body">
+
+        <dl class="row">
+            <dt class="col-sm-3">نام محصول</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">توضیحات</dt>
+            <dd class="col-sm-9">@Html.Raw(Model.Description)</dd>
+
+            <dt class="col-sm-3">قیمت</dt>
+            <dd class="col-sm-9">@String.Format("{0:N0}", Model.Price) ریال</dd>
+
+            <dt class="col-sm-3">دسته‌بندی</dt>
+            <dd class="col-sm-9">@Model.CatalogType.Type</dd>
+
+            <dt class="col-sm-3">برند</dt>
+            <dd class="col-sm-9">@Model.CatalogBrand.Brand</dd>
+
+            <dt class="col-sm-3">موجودی انبار</dt>
+            <dd class="col-sm-9">@Model.StockQuantity.ToString("N0")</dd>
+
+            <dt class="col-sm-3">حداقل موجودی هشدار</dt>
+            <dd class="col-sm-9">@Model.ReorderThreshold</dd>
+
+            <dt class="col-sm-3">حداکثر ظرفیت انبار</dt>
+            <dd class="col-sm-9">@Model.MaxStockThreshold</dd>
+        </dl>
+
+        <h5 class="mt-4">ویژگی‌ها</h5>
+        <ul class="list-group mb-3">
+            @foreach (var feature in Model.Features)
+            {
+                <li class="list-group-item">
+                    <strong>@feature.Group - @feature.Key:</strong> @feature.Value
+                </li>
+            }
+        </ul>
+
+        <h5 class="mt-4">تصاویر</h5>
+        <div class="row">
+            @foreach (var image in Model.Images)
+            {
+                <div class="col-md-3 mb-3">
+                    <img src="@image.Src" class="img-fluid img-thumbnail" alt="تصویر محصول" />
+                </div>
+            }
+        </div>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">ویرایش</a>
+            <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // تبدیل اعداد به فارسی در بخش نمایش
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("dd").forEach(el => {
+                el.innerHTML = el.innerHTML.replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+            });
+        });
+    </script>
+}
