@@ -93,5 +93,41 @@ namespace NetBazaar.Infrastructure.Services.Catalog
             return _mapper.Map<List<CatalogTypeDto>>(entities);
         }
 
+        /// <summary>
+        // Retrieves all descendant categories of a given category (BFS algorithm).
+        // Returns mapped DTOs; handles missing targets by returning an empty list.
+        // Uses eager loading for children and avoids duplicates during traversal.
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task<List<CatalogTypeDto>> GetAllDescendantsOptimizedAsync(int categoryId)
+        {
+            // دریافت تمام دسته‌بندی‌ها با روابط
+            var allCategories = await _context.CatalogTypes
+                .Include(c => c.Children)
+                .ToListAsync();
+
+            var targetCategory = allCategories.FirstOrDefault(c => c.Id == categoryId);
+            if (targetCategory == null)
+                return new List<CatalogTypeDto>();
+
+            var result = new List<CatalogType> { targetCategory };
+            var queue = new Queue<CatalogType>();
+            queue.Enqueue(targetCategory);
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                foreach (var child in current.Children)
+                {
+                    if (!result.Contains(child))
+                    {
+                        result.Add(child);
+                        queue.Enqueue(child);
+                    }
+                }
+            }
+            return _mapper.Map<List<CatalogTypeDto>>(result);
+        }
     }
 }

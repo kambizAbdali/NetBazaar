@@ -1,5 +1,7 @@
-﻿using NetBazaar.Infrastructure.Data;
+﻿using NetBazaar.Application.Interfaces.Catalog;
+using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.DependencyInjection;
+using NetBazaar.Infrastructure.Services;
 using NetBazaar.Persistence.Data.Seed;
 using NetBazaar.Web.EndPoint.Hubs;
 using NetBazaar.Web.EndPoint.Utilities.Filters;
@@ -35,6 +37,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+
+
+
 
 // اجرای Seed
 using (var scope = app.Services.CreateScope())

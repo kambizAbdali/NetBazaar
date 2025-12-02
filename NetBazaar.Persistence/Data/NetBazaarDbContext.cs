@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using NetBazaar.Domain.Attributes;
+using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
 using NetBazaar.Persistence.EntityConfiguration;
 using NetBazaar.Persistence.Interfaces.DatabaseContext;
@@ -23,11 +24,12 @@ namespace NetBazaar.Infrastructure.Data
         public DbSet<CatalogType> CatalogTypes => Set<CatalogType>();
         public DbSet<CatalogBrand> CatalogBrands => Set<CatalogBrand>();
         public DbSet<CatalogItem> Catalogs => Set<CatalogItem>();
-
-
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogItemFeature> CatalogItemFeatures { get; set; }
         public DbSet<CatalogItemImage> CatalogItemImages { get; set; }
+
+        public DbSet<Basket> Baskets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +41,8 @@ namespace NetBazaar.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CatalogItemImageConfig());
             modelBuilder.ApplyConfiguration(new CatalogTypeConfig());
             modelBuilder.ApplyConfiguration(new CatalogBrandConfig());
+            modelBuilder.ApplyConfiguration(new BasketConfig());
+            modelBuilder.ApplyConfiguration(new BasketItemConfig());
 
             base.OnModelCreating(modelBuilder);
 

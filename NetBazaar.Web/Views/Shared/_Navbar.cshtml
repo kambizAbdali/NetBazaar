@@ -7,18 +7,74 @@
         <div id="mainNav" class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/">خانه</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Product/List">محصولات</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Favorites">علاقه‌مندی‌ها</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Orders">سفارشات</a></li>
+                <li class="nav-item"><a class="nav-link" href="/catalog">محصولات</a></li>
+                <li class="nav-item"><a class="nav-link" href="/favorites">علاقه‌مندی‌ها</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item"><a class="nav-link" href="/orders">سفارشات من</a></li>
+                }
             </ul>
+
             <form class="d-flex me-3" id="searchForm">
                 <input class="form-control" type="search" placeholder="جستجو محصول..." aria-label="Search" name="q">
-                <button class="btn btn-light ms-2" type="submit">جستجو</button>
+                <button class="btn btn-light ms-2" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
             </form>
+
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/Cart">سبد خرید <span class="badge bg-warning text-dark" id="cartCount">0</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/Account/Login">ورود</a></li>
-                <li class="nav-item"><a class="nav-link" href="/Account/Register">ثبت‌نام</a></li>
+                <!-- ویو کامپوننت سبد خرید -->
+                <li class="nav-item">
+                    @await Component.InvokeAsync("Basket")
+                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>
+                            @User.Identity.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/account/profile">
+                                    <i class="fas fa-user-circle me-2"></i>پروفایل
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/orders">
+                                    <i class="fas fa-shopping-bag me-2"></i>سفارشات من
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/favorites">
+                                    <i class="fas fa-heart me-2"></i>علاقه‌مندی‌ها
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i>خروج
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>ورود
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/register">
+                            <i class="fas fa-user-plus me-1"></i>ثبت‌نام
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -29,7 +85,121 @@
         $('#searchForm').on('submit', function(e){
             e.preventDefault();
             const q = $(this).find('input[name="q"]').val();
-            if(q) window.location.href = '/Product/List?q=' + encodeURIComponent(q);
+            if(q) window.location.href = '/catalog?search=' + encodeURIComponent(q);
+        });
+
+        // مدیریت dropdown سبد خرید در حالت موبایل
+        $('.basket-dropdown').on('show.bs.dropdown', function () {
+            $(this).addClass('show');
+        });
+
+        $('.basket-dropdown').on('hide.bs.dropdown', function () {
+            $(this).removeClass('show');
         });
     });
+
+    // تابع برای به‌روزرسانی سبد خرید از طریق رویدادهای سفارشی
+    document.addEventListener('DOMContentLoaded', function() {
+        // گوش دادن به رویداد به‌روزرسانی سبد خرید
+        document.addEventListener('basketUpdated', function(e) {
+            // رفرش صفحه برای به‌روزرسانی ویو کامپوننت
+            setTimeout(() => {
+                // در حالت واقعی می‌توانید از AJAX برای به‌روزرسانی استفاده کنید
+                console.log('Basket updated - refreshing component...');
+            }, 100);
+        });
+
+        // مدیریت فرم‌های حذف در سبد خرید
+        document.addEventListener('submit', function(e) {
+            if (e.target.closest('form[action*="RemoveItem"]')) {
+                e.preventDefault();
+                const form = e.target;
+
+                if (confirm('آیا از حذف این محصول مطمئن هستید؟')) {
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form)
+                    }).then(response => {
+                        if (response.ok) {
+                            // انتشار رویداد به‌روزرسانی
+                            document.dispatchEvent(new CustomEvent('basketUpdated'));
+                            // نمایش پیام موفقیت
+                            showToast('محصول با موفقیت حذف شد', 'success');
+                        }
+                    }).catch(error => {
+                        showToast('خطا در حذف محصول', 'error');
+                    });
+                }
+            }
+        });
+
+        function showToast(message, type) {
+            // ایجاد toast برای نمایش پیام
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            toast.style.top = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.zIndex = '1060';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    });
 </script>
+
+<style>
+    .navbar-nav .dropdown-menu {
+        margin-top: 8px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .badge {
+        font-size: 0.7em;
+        margin-right: 4px;
+    }
+
+    /* استایل برای نمایش بهتر در موبایل */
+    @@media (max-width: 991.98px) {
+        .navbar-nav .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .navbar-nav .dropdown-menu {
+            position: static;
+            float: none;
+            width: 100%;
+            margin-top: 0;
+        }
+
+        .d-flex.me-3 {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin-bottom: 1rem;
+        }
+    }
+
+    /* استایل برای dropdown سبد خرید */
+    .basket-dropdown .dropdown-menu {
+        min-width: 350px;
+    }
+
+    @@media (max-width: 575.98px) {
+        .basket-dropdown .dropdown-menu {
+            min-width: 280px;
+            right: 0;
+            left: auto;
+        }
+    }
+</style>

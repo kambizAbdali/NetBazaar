@@ -1,0 +1,279 @@
+﻿@model NetBazaar.Web.EndPoint.ViewModels.CatalogListViewModel
+
+@{
+    ViewData["Title"] = "محصولات";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3 col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>فیلترها</h5>
+                </div>
+                <div class="card-body">
+                    <form id="filter-form" method="get" action="@Url.Action("List", "Product")">
+                        <input type="hidden" name="categoryId" value="@Model.Filter.CategoryIds.FirstOrDefault()" />
+
+                        <!-- Price Filter -->
+                        <div class="mb-4">
+                            <h6>محدوده قیمت</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" name="minPrice" class="form-control" placeholder="حداقل" value="@Model.Filter.MinPrice" />
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" name="maxPrice" class="form-control" placeholder="حداکثر" value="@Model.Filter.MaxPrice" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Brands -->
+                        <div class="mb-4">
+                            <h6>برندها</h6>
+                            @foreach (var brand in Model.Brands)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="brandIds" value="@brand.Id"
+                                           @(Model.Filter.BrandIds.Contains(brand.Id) ? "checked" : "") />
+                                    <label class="form-check-label">@brand.Name</label>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Sort -->
+                        <div class="mb-3">
+                            <h6>مرتب‌سازی</h6>
+                            <select name="sortBy" class="form-select">
+                               @*  <option value="newest" @(Model.Filter.SortBy=="newest"?"selected":"")>جدیدترین</option>
+                                <option value="priceAsc" @(Model.Filter.SortBy=="priceAsc"?"selected":"")>قیمت: کم به زیاد</option>
+                                <option value="priceDesc" @(Model.Filter.SortBy=="priceDesc"?"selected":"")>قیمت: زیاد به کم</option>
+                                <option value="popular" @(Model.Filter.SortBy=="popular"?"selected":"")>محبوب‌ترین</option> *@
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">اعمال فیلترها</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Products -->
+        <div class="col-lg-9 col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>محصولات</h4>
+                <div class="d-flex align-items-center">
+                    <span class="me-2">نمایش:</span>
+           @*          <select id="page-size" class="form-select form-select-sm" style="width: auto;">
+                        <option value="12" @(Model.Filter.PageSize==12?"selected":"")>12</option>
+                        <option value="24" @(Model.Filter.PageSize==24?"selected":"")>24</option>
+                        <option value="48" @(Model.Filter.PageSize==48?"selected":"")>48</option>
+                    </select> *@
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="row" id="products-grid">
+                @foreach (var product in Model.Products)
+                {
+                    <partial name="_CatalogItem" model="product" />
+                }
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @if (Model.Pagination.HasPrevious)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("List", new { page = Model.Pagination.PageNumber - 1, pageSize = Model.Filter.PageSize, categoryId = Model.Filter.CategoryIds.FirstOrDefault(), sortBy = Model.Filter.SortBy, minPrice = Model.Filter.MinPrice, maxPrice = Model.Filter.MaxPrice, brandIds = Model.Filter.BrandIds })">قبلی</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.Pagination.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("List", new { page = i, pageSize = Model.Filter.PageSize, categoryId = Model.Filter.CategoryIds.FirstOrDefault(), sortBy = Model.Filter.SortBy, minPrice = Model.Filter.MinPrice, maxPrice = Model.Filter.MaxPrice, brandIds = Model.Filter.BrandIds })">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.Pagination.HasNext)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("List", new { page = Model.Pagination.PageNumber + 1, pageSize = Model.Filter.PageSize, categoryId = Model.Filter.CategoryIds.FirstOrDefault(), sortBy = Model.Filter.SortBy, minPrice = Model.Filter.MinPrice, maxPrice = Model.Filter.MaxPrice, brandIds = Model.Filter.BrandIds })">بعدی</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // تابع برای راه‌اندازی event listenerها
+        function initializeAddToCartButtons() {
+            // حذف event listenerهای قبلی
+            $(document).off('click', '[id^="add-to-cart-"]');
+
+            // اضافه کردن event listener جدید با event delegation
+            $(document).on('click', '[id^="add-to-cart-"]', function () {
+                const button = this;
+                const catalogItemId = $(button).data('catalog-id');
+                const productName = $(button).data('product-name');
+
+                console.log('دکمه کلیک شد - catalogItemId:', catalogItemId, 'productName:', productName);
+
+                // بررسی اینکه catalogItemId معتبر باشد
+                if (!catalogItemId || catalogItemId === 0) {
+                    console.error('catalogItemId نامعتبر است:', catalogItemId);
+                    showNotification('error', 'خطا در شناسه محصول');
+                    return;
+                }
+
+                addToCart(catalogItemId, productName, button);
+            });
+        }
+
+        $(document).ready(function () {
+            // راه‌اندازی اولیه
+            initializeAddToCartButtons();
+
+            $('#filter-form').on('submit', function (e) {
+                e.preventDefault();
+                applyFilters();
+            });
+
+            $('#page-size').on('change', function () {
+                applyFilters();
+            });
+        });
+
+        function applyFilters() {
+            const formData = $('#filter-form').serialize();
+            const pageSize = $('#page-size').val();
+
+            $.ajax({
+                url: '@Url.Action("List", "Product")' + '?' + formData + '&pageSize=' + pageSize,
+                type: 'GET',
+                success: function (data) {
+                    $('#products-grid').html($(data).find('#products-grid').html());
+                    $('.pagination').html($(data).find('.pagination').html());
+
+                    // راه‌اندازی مجدد event listenerها پس از به‌روزرسانی محتوا
+                    initializeAddToCartButtons();
+                }
+            });
+        }
+
+        function addToCart(catalogItemId, productName, button) {
+            console.log('افزودن به سبد - catalogItemId:', catalogItemId);
+
+            // نمایش حالت لودینگ
+            $(button).addClass('loading');
+            const originalText = $(button).html();
+            $(button).html('<i class="fas fa-spinner fa-spin me-1"></i> در حال افزودن...');
+
+            // غیرفعال کردن دکمه برای جلوگیری از کلیک‌های متعدد
+            $(button).prop('disabled', true);
+
+            // ارسال درخواست AJAX به BasketController
+            $.ajax({
+                url: '/basket/additem',
+                method: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                data: JSON.stringify({
+                    catalogItemId: catalogItemId,
+                    quantity: 1
+                }),
+                success: function (data) {
+                    if (data.success) {
+                        // نمایش موفقیت
+                        $(button).removeClass('loading');
+                        $(button).addClass('success');
+                        $(button).html('<i class="fas fa-check me-1"></i> افزوده شد');
+
+                        // به‌روزرسانی تعداد آیتم‌های سبد خرید
+                        updateCartCount(data.basketItemsCount);
+
+                        // نمایش نوتیفیکیشن
+                        showNotification('success', `"${productName}" با موفقیت به سبد خرید افزوده شد`);
+
+                        // بازگشت به حالت اولیه بعد از 2 ثانیه
+                        setTimeout(() => {
+                            $(button).removeClass('success');
+                            $(button).html(originalText);
+                            $(button).prop('disabled', false);
+                        }, 2000);
+                    } else {
+                        throw new Error(data.message || 'خطا در افزودن به سبد خرید');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // نمایش خطا
+                    $(button).removeClass('loading');
+                    $(button).addClass('error');
+                    $(button).html('<i class="fas fa-times me-1"></i> خطا');
+                    $(button).prop('disabled', false);
+
+                    showNotification('error', error || 'خطا در افزودن به سبد خرید');
+
+                    // بازگشت به حالت اولیه بعد از 3 ثانیه
+                    setTimeout(() => {
+                        $(button).removeClass('error');
+                        $(button).html(originalText);
+                    }, 3000);
+                }
+            });
+        }
+
+        function updateCartCount(count) {
+            console.log('به‌روزرسانی تعداد سبد خرید:', count);
+
+            // به‌روزرسانی نمایش تعداد آیتم‌های سبد خرید
+            $('.cart-count, .cart-badge, .basket-count').each(function() {
+                $(this).text(count);
+                if (count > 0) {
+                    $(this).show().removeClass('d-none');
+                } else {
+                    $(this).hide().addClass('d-none');
+                }
+            });
+
+            // اگر از SignalR استفاده می‌کنید
+            if (window.cartHubConnection) {
+                window.cartHubConnection.invoke('UpdateCartCount', count);
+            }
+        }
+
+        function showNotification(type, message) {
+            // حذف نوتیفیکیشن قبلی اگر وجود دارد
+            $('.cart-notification').remove();
+
+            // ایجاد نوتیفیکیشن جدید
+            const notification = $(`
+                <div class="alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show cart-notification">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                        <span>${message}</span>
+                        <button type="button" class="btn-close me-auto" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            `);
+
+            $('body').append(notification);
+
+            // حذف خودکار نوتیفیکیشن بعد از 5 ثانیه
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+    </script>
+}

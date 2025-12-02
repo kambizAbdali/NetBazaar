@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
+using NetBazaar.Application.DTOs.Basket;
 using NetBazaar.Application.DTOs.Catalog;
+using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
+using System;
+using System.Linq;
 
 namespace NetBazaar.Infrastructure.MappingProfiles
 {
@@ -51,6 +55,39 @@ namespace NetBazaar.Infrastructure.MappingProfiles
 
             CreateMap<CatalogItemImageDto, CatalogItemImage>()
                 .ReverseMap();
+
+
+            CreateMap<CatalogItem, CatalogPLPDto>()
+           .ForMember(d => d.FirstImageSrc, opt => opt.MapFrom(s =>
+               s.Images.OrderBy(i => i.SortOrder).Select(i => i.Src).FirstOrDefault()))
+           .ForMember(d => d.Rating, opt => opt.MapFrom(s =>
+               s.Ratings.Any() ? Math.Round(s.Ratings.Average(r => r.Score), 1) : 0))
+           .ForMember(d => d.ReviewCount, opt => opt.MapFrom(s => s.Ratings.Count))
+           .ForMember(d => d.IsFeatured, opt => opt.MapFrom(s =>
+               s.Tags.Any(t => t.Value == "Featured")))
+           .ForMember(d => d.BrandName, opt => opt.MapFrom(s => s.CatalogBrand.Brand)).ReverseMap();
+
+
+            // مپینگ Basket به BasketDto
+            CreateMap<Basket, BasketDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.BuyerId, opt => opt.MapFrom(src => src.BuyerId))
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
+                //.ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.GetTotalPrice()))
+                .ForMember(dest => dest.TotalItems, opt => opt.MapFrom(src => src.GetTotalItemsCount()));
+
+            // مپینگ BasketItem به BasketItemDto
+            CreateMap<BasketItem, BasketItemDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CatalogItemId, opt => opt.MapFrom(src => src.CatalogItemId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.GetTotalPrice()));
+
+            // مپینگ معکوس اگر نیاز بود
+            CreateMap<BasketDto, Basket>();
+            CreateMap<BasketItemDto, BasketItem>();
         }
     }
 }

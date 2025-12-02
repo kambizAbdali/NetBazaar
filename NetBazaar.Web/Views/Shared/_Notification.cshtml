@@ -1,0 +1,72 @@
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show notification-toast" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-check-circle me-2"></i>
+            <span>@TempData["Success"]</span>
+            <button type="button" class="btn-close me-auto" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show notification-toast" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span>@TempData["Error"]</span>
+            <button type="button" class="btn-close me-auto" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+}
+
+@if (TempData["Warning"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show notification-toast" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span>@TempData["Warning"]</span>
+            <button type="button" class="btn-close me-auto" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+}
+
+@if (TempData["Info"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show notification-toast" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle me-2"></i>
+            <span>@TempData["Info"]</span>
+            <button type="button" class="btn-close me-auto" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+}
+
+<style>
+    .notification-toast {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        min-width: 350px;
+        max-width: 500px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 8px;
+    }
+</style>
+
+<script>
+    // حذف خودکار نوتیفیکیشن بعد از 5 ثانیه
+    document.addEventListener('DOMContentLoaded', function() {
+        const alerts = document.querySelectorAll('.notification-toast');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        });
+    });
+</script>

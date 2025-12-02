@@ -35,19 +35,32 @@ namespace NetBazaar.ImageApi.Controllers
             return Ok(new { url });
         }
 
-        // خواندن تصویر
+        //// خواندن تصویر
+        //[HttpGet("{fileName}")]
+        //public IActionResult Get(string fileName)
+        //{
+        //    var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+        //    var filePath = Path.Combine(uploadsFolder, fileName);
+
+        //    if (!System.IO.File.Exists(filePath))
+        //        return NotFound();
+
+        //    var contentType = "image/" + Path.GetExtension(fileName).Trim('.');
+        //    var fileBytes = System.IO.File.ReadAllBytes(filePath);
+        //    return File(fileBytes, contentType);
+        //}
+
+        // خواندن تصویر با نام فایل (اختیاری – اگر لازم شد)
         [HttpGet("{fileName}")]
         public IActionResult Get(string fileName)
         {
-            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploadsFolder, fileName);
+            var filePath = Path.Combine(_env.WebRootPath, "images", "uploads", fileName);
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound();
 
-            var contentType = "image/" + Path.GetExtension(fileName).Trim('.');
-            var fileBytes = System.IO.File.ReadAllBytes(filePath);
-            return File(fileBytes, contentType);
+            var contentType = "image/" + Path.GetExtension(fileName).Trim('.').ToLowerInvariant();
+            return PhysicalFile(filePath, contentType);
         }
     }
 }

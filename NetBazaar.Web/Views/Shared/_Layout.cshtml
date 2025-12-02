@@ -11,13 +11,17 @@
     <title>@title</title>
     <meta name="description" content="فروشگاه مدرن نت بازار" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script src="~/js/basket-update.js" asp-append-version="true"></script>
+
+
     <link href="~/css/vazirmatn-font-face.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/moment.min.js"></script>
-    <script src="~/js/site.js"></script>   
+    <script src="~/js/site.js"></script>
     <script src="~/js/ajax.js"></script>
 
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
@@ -41,6 +45,7 @@
 
 </head>
 <body class="bg-light">
+    @Html.AntiForgeryToken()
     <header>
         @await Html.PartialAsync("_Navbar")
         @await Html.PartialAsync("_DiscountBanner")
@@ -48,10 +53,13 @@
 
     <main class="container py-3">
         <div class="row">
-            <aside class="col-12 col-lg-3 mb-3">
-                @await Component.InvokeAsync("GetMenuCategories")
-                @await Html.PartialAsync("_MiniCart")
-            </aside>
+            @if (TempData["HideMenuCategories"] as bool? != true)
+            {
+                <aside class="col-12 col-lg-3 mb-3">
+                    @await Component.InvokeAsync("GetMenuCategories")
+                    @await Html.PartialAsync("_MiniCart")
+                </aside>
+            }
             <section class="col-12 col-lg-9">
                 @RenderBody()
             </section>
@@ -64,4 +72,33 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+
+@await Html.PartialAsync("_OperationResultModal")
+@await Html.PartialAsync("_Notification")
 </html>
+
+<script>
+    // تابع global برای به‌روزرسانی سبد خرید
+    window.updateBasket = function(itemsCount) {
+        const basketBadge = document.querySelector('#basketDropdown .badge');
+        const basketCountElements = document.querySelectorAll('.basket-count, .cart-count');
+
+        if (itemsCount > 0) {
+            if (basketBadge) {
+                basketBadge.textContent = itemsCount;
+                basketBadge.style.display = 'inline';
+            }
+            basketCountElements.forEach(el => {
+                el.textContent = itemsCount;
+                el.style.display = 'inline';
+            });
+        } else {
+            if (basketBadge) {
+                basketBadge.style.display = 'none';
+            }
+            basketCountElements.forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+    };
+</script>
