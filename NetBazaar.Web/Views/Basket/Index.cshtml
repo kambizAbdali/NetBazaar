@@ -1,0 +1,386 @@
+﻿@model NetBazaar.Web.EndPoint.ViewModels.Basket.BasketViewModel
+@{
+    ViewData["Title"] = "سبد خرید";
+    TempData["HideMenuCategories"] = true;
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">سبد خرید</li>
+                </ol>
+            </nav>
+
+            <h2 class="mb-4">سبد خرید شما</h2>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model.IsEmpty)
+            {
+                <div class="text-center py-5">
+                    <div class="empty-cart-icon mb-4">
+                        <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted mb-3">سبد خرید شما خالی است</h4>
+                    <p class="text-muted mb-4">می‌توانید با مراجعه به صفحه محصولات، محصولات مورد نظر خود را به سبد خرید اضافه کنید.</p>
+                    <a href="/catalog" class="btn btn-primary btn-lg">مشاهده محصولات</a>
+                </div>
+            }
+            else
+            {
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0">@Model.TotalItems محصول در سبد خرید</h5>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <form asp-action="Clear" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')">
+                                        <i class="fas fa-trash me-1"></i>خالی کردن سبد
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>محصول</th>
+                                        <th>قیمت واحد</th>
+                                        <th>تعداد</th>
+                                        <th>قیمت کل</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr id="basket-item-@item.Id">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@item.ImageUrl" alt="@item.Name"
+                                                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-1">@item.Name</h6>
+                                                        <small class="text-muted">@item.BrandName - @item.CategoryName</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <span class="fw-bold">@item.DisplayUnitPrice</span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="quantity-controls d-flex align-items-center">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm decrease-quantity"
+                                                            data-item-id="@item.Id"
+                                                            @(item.Quantity <= 1 ? "disabled" : "")>
+                                                        <i class="fas fa-minus">-</i>
+                                                    </button>
+                                                    <input type="number" class="form-control form-control-sm quantity-input mx-2 text-center"
+                                                           value="@item.Quantity" min="1" max="@item.AvailableStock"
+                                                           data-item-id="@item.Id" style="width: 70px;">
+
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm increase-quantity"
+                                                            data-item-id="@item.Id"
+                                                            @(item.Quantity >= item.AvailableStock ? "disabled" : "")>
+                                                        <i class="fas fa-plus">+</i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <span class="fw-bold text-primary item-total-price">@item.DisplayTotalPrice</span>
+                                            </td>
+
+
+
+                                            <td class="align-middle">
+                                                <button type="button"
+                                                        class="btn btn-outline-danger btn-sm remove-item"
+                                                        data-item-id="@item.Id"
+                                                        onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </td>
+
+
+
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <a href="/Product" class="btn btn-outline-primary">
+                                    <i class="fas fa-arrow-right me-2"></i>ادامه خرید
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>تعداد کل محصولات:</span>
+                                            <span class="fw-bold">@Model.TotalItems عدد</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span>جمع کل سبد خرید:</span>
+                                            <span class="fw-bold text-primary h5" id="basket-total-price">
+                                                @Model.TotalPrice.ToString("N0") تومان
+                                            </span>
+                                        </div>
+                                        <div class="d-grid">
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <a href="/checkout" class="btn btn-success btn-lg">
+                                                    <i class="fas fa-credit-card me-2"></i>تکمیل فرآیند خرید
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/account/login?returnUrl=/basket" class="btn btn-warning btn-lg">
+                                                    <i class="fas fa-sign-in-alt me-2"></i>ورود برای تکمیل خرید
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // افزایش تعداد
+            $('.increase-quantity').on('click', function () {
+                var itemId = $(this).data('item-id');
+                var input = $(`input[data-item-id="${itemId}"]`);
+                var currentValue = parseInt(input.val());
+                var maxStock = parseInt(input.attr('max'));
+
+                console.log('increase - itemId:', itemId);
+                console.log('increase - currentValue:', currentValue);
+                console.log('increase - maxStock:', maxStock);
+
+                if (currentValue < maxStock) {
+                    input.val(currentValue + 1);
+                    updateQuantity(itemId, currentValue + 1);
+                }
+            });
+
+            // کاهش تعداد
+            $('.decrease-quantity').on('click', function () {
+                var itemId = $(this).data('item-id');
+                var input = $(`input[data-item-id="${itemId}"]`);
+                var currentValue = parseInt(input.val());
+
+                console.log('decrease - itemId:', itemId);
+                console.log('decrease - currentValue:', currentValue);
+                console.log('decrease - input:', input);
+
+                if (currentValue > 1) {
+                    input.val(currentValue - 1);
+                    updateQuantity(itemId, currentValue - 1);
+                }
+            });
+
+            // تغییر مستقیم تعداد
+            $('.quantity-input').on('change', function () {
+                var itemId = $(this).data('item-id');
+                var newQuantity = parseInt($(this).val());
+                var maxStock = parseInt($(this).attr('max'));
+
+                if (isNaN(newQuantity) || newQuantity < 1) {
+                    $(this).val(1);
+                    newQuantity = 1;
+                } else if (newQuantity > maxStock) {
+                    $(this).val(maxStock);
+                    newQuantity = maxStock;
+                }
+
+                updateQuantity(itemId, newQuantity);
+            });
+
+            // به‌روزرسانی تعداد از طریق AJAX
+            function updateQuantity(itemId, quantity) {
+                $.ajax({
+                    url: '/basket/UpdateQuantity',
+                    type: 'POST',
+                    data: {
+                        basketItemId: itemId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // به‌روزرسانی قیمت‌ها
+                            $(`#basket-item-${itemId} .item-total-price`).text(response.itemTotalPrice + ' تومان');
+                            $('#basket-total-price').text(response.basketTotalPrice + ' تومان');
+
+                            // به‌روزرسانی وضعیت دکمه‌ها
+                            var input = $(`input[data-item-id="${itemId}"]`);
+                            var maxStock = parseInt(input.attr('max'));
+
+                            $(`button.decrease-quantity[data-item-id="${itemId}"]`).prop('disabled', quantity <= 1);
+                            $(`button.increase-quantity[data-item-id="${itemId}"]`).prop('disabled', quantity >= maxStock);
+
+                            // نمایش پیام موفقیت
+                            showToast('تعداد با موفقیت به‌روزرسانی شد', 'success');
+
+                            // رفرش مینی سبد خرید
+                            refreshMiniBasket();
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        showToast('خطا در به‌روزرسانی تعداد', 'error');
+                    }
+                });
+            }
+
+            function showToast(message, type) {
+                // ایجاد و نمایش toast
+                const toast = document.createElement('div');
+                toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+                toast.style.top = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.zIndex = '9999';
+                toast.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+
+            // تابع برای رفرش MiniBasket با AJAX
+            async function refreshMiniBasket() {
+                try {
+                    const response = await fetch('/basket/GetMiniBasket');
+                    if (response.ok) {
+                        const miniBasketHtml = await response.text();
+
+                        // پیدا کردن المان MiniBasket و جایگزینی محتوا
+                        const miniBasketContainer = document.querySelector('.basket-dropdown').closest('.dropdown');
+                        if (miniBasketContainer) {
+                            // ایجاد یک المان موقت برای پارس کردن HTML
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = miniBasketHtml;
+
+                            // جایگزینی محتوای MiniBasket
+                            const newMiniBasket = tempDiv.querySelector('.dropdown');
+                            if (newMiniBasket) {
+                                miniBasketContainer.outerHTML = newMiniBasket.outerHTML;
+
+                                // راه‌اندازی مجدد event listenerهای Bootstrap
+                                const dropdownElement = document.querySelector('#basketDropdown');
+                                if (dropdownElement) {
+                                    new bootstrap.Dropdown(dropdownElement);
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error refreshing mini basket:', error);
+                }
+            }
+        });
+
+
+                $(document).ready(function () {
+            // حذف آیتم با AJAX
+            $('.remove-item').on('click', function () {
+                var itemId = $(this).data('item-id');
+
+                $.ajax({
+                    url: '/basket/RemoveItem',
+                    type: 'POST',
+                    data: { basketItemId: itemId },
+                    success: function (response) {
+                        if (response.success) {
+                            // حذف ردیف از جدول
+                            $('#basket-item-' + itemId).remove();
+
+                            // به‌روزرسانی جمع کل و تعداد کل
+                            $('#basket-total-price').text(response.basketTotalPrice + ' تومان');
+                            // اگر تعداد کل هم برگشتی داری:
+                            // $('#total-items').text(response.totalItems + ' محصول در سبد خرید');
+
+                            showToast('محصول با موفقیت حذف شد', 'success');
+                            refreshMiniBasket();
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        showToast('خطا در حذف محصول', 'error');
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+
+    <style>
+        .quantity-controls {
+            max-width: 140px;
+        }
+
+        .quantity-input {
+            -moz-appearance: textfield;
+        }
+
+            .quantity-input::-webkit-outer-spin-button,
+            .quantity-input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+        .empty-cart-icon {
+            opacity: 0.5;
+        }
+
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #6c757d;
+        }
+    </style>
+}

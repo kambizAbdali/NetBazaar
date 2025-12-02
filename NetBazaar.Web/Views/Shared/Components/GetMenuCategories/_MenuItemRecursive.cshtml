@@ -4,7 +4,9 @@
 {
     <li class="category-item has-children" data-category-id="@Model.Id">
         <button class="category-header">
+            <a href="/product?categoryId=@Model.Id" class="nav-link">
             <span class="category-label">@Model.Name</span>
+            </a>
             <i class="category-arrow">›</i>
         </button>
         <ul class="category-submenu">
@@ -18,7 +20,7 @@
 else
 {
     <li class="category-item no-children" data-category-id="@Model.Id">
-        <a href="/Product/List?cat=@Model.Id" class="category-link">
+        <a href="/product?categoryId=@Model.Id" class="category-link">
             <span class="category-label">@Model.Name</span>
         </a>
     </li>

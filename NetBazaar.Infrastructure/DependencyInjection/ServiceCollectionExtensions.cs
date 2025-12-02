@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBazaar.Application.Common.Configuration;
+using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Application.Interfaces.Visitor;
 using NetBazaar.Infrastructure.Configuration;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.MappingProfiles;
+using NetBazaar.Infrastructure.Services.Basket;
 using NetBazaar.Infrastructure.Services.Catalog;
 using NetBazaar.Infrastructure.Services.Visitor;
 using NetBazaar.Infrastructure.Services.Visitors;
@@ -49,6 +51,13 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             services.AddScoped<ICatalogBrandService, CatalogBrandService>();
             services.AddScoped<ICatalogItemService, CatalogItemService>();
             services.AddScoped<IGetMenuItemService, GetMenuItemService>();
+            services.AddScoped<IGetCatalogItemDetailService, GetCatalogItemDetailService>();
+
+            services.AddScoped<IImageUrlService, ImageUrlService>(); // ثبت با اینترفیس
+            services.AddScoped<IGetCatalogItemPLPService, GetCatalogItemPLPService>();
+
+            services.AddScoped<IBasketService, BasketService>();
+
 
             // Validation
             //services.AddFluentValidationAutoValidation();

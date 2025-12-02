@@ -18,6 +18,6 @@ namespace NetBazaar.Application.Interfaces.Catalog
 
         // ✅ متد جدید برای گرفتن همه دسته‌بندی‌ها
         Task<List<CatalogTypeDto>> GetAllAsync();
-        Task<List<CatalogType>> GetAllWithHierarchyAsync();
+        Task<List<CatalogTypeDto>> GetAllDescendantsOptimizedAsync(int categoryId);
     }
 }

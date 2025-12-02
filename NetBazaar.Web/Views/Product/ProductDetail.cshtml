@@ -1,0 +1,582 @@
+﻿@model NetBazaar.Application.DTOs.Catalog.CatalogDetailDto
+
+@{
+    ViewData["Title"] = "جزئیات محصول";
+    TempData["HideMenuCategories"] = true;
+}
+
+<!-- استایل های اضافی برای صفحه محصول -->
+<style>
+    /* استایل گالری تصاویر */
+    .product-gallery .thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .product-gallery .thumbnail.active {
+            border-color: #198754;
+        }
+
+        .product-gallery .thumbnail:hover {
+            border-color: #198754;
+        }
+
+    .main-image {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: #f8f9fa;
+        padding: 10px;
+    }
+
+    /* استایل دکمه افزودن به سبد خرید */
+    .add-to-cart-btn {
+        background: linear-gradient(135deg, #198754 0%, #157347 100%);
+        border: none;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+        .add-to-cart-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+    .loading-spinner {
+        display: none;
+    }
+
+    .add-to-cart-btn.loading .spinner-text {
+        display: none;
+    }
+
+    .add-to-cart-btn.loading .loading-spinner {
+        display: inline-block;
+    }
+
+    /* استایل امتیاز */
+    .rating-stars {
+        font-size: 0.9rem;
+    }
+
+    /* استایل badgeها */
+    .discount-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .stock-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .feature-badge {
+        background-color: #e9ecef;
+        color: #495057;
+        font-weight: 500;
+    }
+
+    /* استایل breadcrumb */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #6c757d;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item.active {
+        color: #495057;
+    }
+
+    /* استایل بخش قیمت */
+    .price-section .text-decoration-line-through {
+        font-size: 0.9rem;
+    }
+
+    /* استایل input تعداد */
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+    }
+
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .quantity-input[type=number] {
+            -moz-appearance: textfield;
+        }
+</style>
+
+<div class="container py-4">
+    <!-- مسیر ناوبری (Breadcrumb) -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">خانه</a></li>
+            <li class="breadcrumb-item"><a href="/catalog" class="text-decoration-none">فروشگاه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- گالری تصاویر -->
+        <div class="col-lg-6 mb-4">
+            <div class="product-gallery">
+                <!-- تصویر اصلی -->
+                <div id="mainImage" class="mb-3 text-center">
+                    <img src="@(Model.Images?.FirstOrDefault() ?? "/images/placeholder.jpg")"
+                         class="main-image img-fluid rounded-3 shadow-sm"
+                         alt="@Model.Name"
+                         style="max-height: 500px; object-fit: contain;" />
+                </div>
+
+                <!-- تصاویر کوچک -->
+                @if (Model.Images != null && Model.Images.Any())
+                {
+                    <div class="d-flex justify-content-center flex-wrap gap-2">
+                        @for (int i = 0; i < Model.Images.Count; i++)
+                        {
+                            <img src="@Model.Images[i]"
+                                 class="thumbnail @(i == 0 ? "active" : "")"
+                                 alt="@Model.Name - تصویر @(i + 1)"
+                                 data-index="@i" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- اطلاعات محصول -->
+        <div class="col-lg-6">
+            <div class="product-details">
+                <!-- هدر محصول -->
+                <div class="product-header mb-4">
+                    <h1 class="h3 fw-bold text-dark mb-2">@Model.Name</h1>
+                    <div class="d-flex align-items-center flex-wrap gap-3 mb-2">
+                        @if (!string.IsNullOrEmpty(Model.BrandName))
+                        {
+                            <span class="text-muted">
+                                <i class="fas fa-tag me-1"></i> برند: @Model.BrandName
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.CategoryName))
+                        {
+                            <span class="text-muted">
+                                <i class="fas fa-folder me-1"></i> دسته: @Model.CategoryName
+                            </span>
+                        }
+                    </div>
+
+                    <!-- امتیاز و نظرات -->
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="rating-stars">
+                            @{
+                                var fullStars = (int)Model.Rating;
+                                var hasHalfStar = Model.Rating - fullStars >= 0.5;
+                                var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                            }
+
+                            @for (int i = 0; i < fullStars; i++)
+                            {
+                                <i class="fas fa-star text-warning"></i>
+                            }
+
+                            @if (hasHalfStar)
+                            {
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                            }
+
+                            @for (int i = 0; i < emptyStars; i++)
+                            {
+                                <i class="far fa-star text-warning"></i>
+                            }
+                        </div>
+                        <span class="text-muted">(@Model.Rating.ToString("0.0"))</span>
+                        <span class="text-muted">•</span>
+                        <a href="#reviews" class="text-decoration-none text-muted">
+                            <i class="fas fa-comment me-1"></i>@Model.ReviewCount نظر
+                        </a>
+                    </div>
+                </div>
+
+                <!-- بخش قیمت -->
+                <div class="price-section mb-4">
+                    @if (Model.DiscountPercent.HasValue && Model.DiscountPercent.Value > 0)
+                    {
+                        var originalPrice = Math.Round(Model.Price / (1 - (Model.DiscountPercent.Value / 100.0)));
+                        <div class="d-flex align-items-center flex-wrap gap-3">
+                            <div>
+                                <span class="h3 fw-bold text-danger">@Model.Price.ToString("N0") تومان</span>
+                                <small class="text-muted text-decoration-line-through d-block">@originalPrice.ToString("N0") تومان</small>
+                            </div>
+                            <span class="badge discount-badge bg-danger">
+                                <i class="fas fa-percentage me-1"></i>@Model.DiscountPercent% تخفیف
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="h3 fw-bold text-dark">@Model.Price.ToString("N0") تومان</span>
+                    }
+
+                    <!-- موجودی -->
+                    <div class="mt-2">
+                        @if (Model.StockQuantity > 0)
+                        {
+                            <span class="badge stock-badge bg-success">
+                                <i class="fas fa-check-circle me-1"></i>موجود در انبار
+                            </span>
+                            <small class="text-muted ms-2">(@Model.StockQuantity عدد باقی مانده)</small>
+                        }
+                        else
+                        {
+                            <span class="badge stock-badge bg-secondary">
+                                <i class="fas fa-times-circle me-1"></i>ناموجود
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- توضیحات محصول -->
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">توضیحات محصول</h5>
+                    <p class="text-muted lh-lg">
+                        @Html.Raw(Model.Description ?? "توضیحاتی برای این محصول موجود نیست.")
+                    </p>
+                </div>
+
+                <!-- ویژگی‌های محصول -->
+                @if (Model.Features != null && Model.Features.Any())
+                {
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">ویژگی‌های اصلی</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var feature in Model.Features)
+                            {
+                                <span class="badge feature-badge px-3 py-2">@feature</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- فرم افزودن به سبد خرید -->
+                @if (Model.StockQuantity > 0)
+                {
+                    <div class="mt-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="quantity" class="col-form-label fw-bold">تعداد:</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="number"
+                                       id="quantity"
+                                       name="quantity"
+                                       value="1"
+                                       min="1"
+                                       max="@Model.StockQuantity"
+                                       class="form-control quantity-input" />
+                            </div>
+                            <div class="col">
+                                <button type="button" id="addToCartBtn" class="btn add-to-cart-btn w-100"
+                                        data-product-id="@Model.Id">
+                                    <span class="spinner-text">
+                                        <i class="fas fa-shopping-cart me-2"></i>
+                                        افزودن به سبد خرید
+                                    </span>
+                                    <span class="loading-spinner">
+                                        <i class="fas fa-spinner fa-spin me-2"></i>
+                                        در حال افزودن...
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <button class="btn btn-secondary w-100 py-2" disabled>
+                        <i class="fas fa-bell me-2"></i>
+                        در صورت موجود شدن به من اطلاع بده
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast کوچک و ساده -->
+<div id="addToCartToast" class="toast align-items-center position-fixed top-0 start-50 translate-middle-x mt-3"
+     style="z-index: 1060; max-width: 280px; font-size: 0.85rem;"
+     role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex p-2">
+        <i class="fas fa-check-circle text-success me-2 mt-1" style="font-size: 0.9rem;"></i>
+        <div class="toast-body p-0" id="toastMessage" style="flex: 1;">
+            محصول با موفقیت به سبد خرید اضافه شد
+        </div>
+        <button type="button" class="btn-close btn-close-sm ms-2" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - initializing product page');
+
+            // مدیریت گالری تصاویر
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const mainImage = document.querySelector('#mainImage img');
+
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    console.log('Thumbnail clicked:', this.src);
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    mainImage.src = this.src;
+                });
+            });
+
+            // مدیریت تغییر تعداد
+            const quantityInput = document.getElementById('quantity');
+            if (quantityInput) {
+                quantityInput.addEventListener('change', function() {
+                    if (this.value < 1) this.value = 1;
+                    if (this.value > @Model.StockQuantity) this.value = @Model.StockQuantity;
+                });
+
+                quantityInput.addEventListener('input', function() {
+                    if (this.value < 1) this.value = 1;
+                    if (this.value > @Model.StockQuantity) this.value = @Model.StockQuantity;
+                });
+            }
+
+            // مدیریت افزودن به سبد خرید
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', addToCart);
+                console.log('Add to cart button initialized');
+            }
+
+            // راه‌اندازی toast
+            const toastElement = document.getElementById('addToCartToast');
+            if (toastElement) {
+                window.addToCartToast = new bootstrap.Toast(toastElement, {
+                    autohide: true,
+                    delay: 3000
+                });
+                console.log('Toast initialized');
+            }
+        });
+
+        async function addToCart() {
+            console.log('Add to cart function called');
+
+            const button = document.getElementById('addToCartBtn');
+            const quantityInput = document.getElementById('quantity');
+            const productId = button.getAttribute('data-product-id');
+            const quantity = parseInt(quantityInput.value);
+
+            console.log('Product ID:', productId, 'Quantity:', quantity);
+
+            // اعتبارسنجی
+            if (quantity < 1 || quantity > @Model.StockQuantity) {
+                showToast('تعداد وارد شده معتبر نیست', 'error');
+                return;
+            }
+
+            // نمایش حالت لودینگ
+            button.disabled = true;
+            button.classList.add('loading');
+            console.log('Button disabled and loading state applied');
+
+            try {
+                // ساخت URL با پارامترهای query string - این خط اول باید باشد
+                const url = `/Basket/AddItem?catalogItemId=${productId}&quantity=${quantity}`;
+                console.log('Making request to:', url);
+
+                // دریافت توکن ضد جعل
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+                console.log('Token found:', !!token);
+
+                // استفاده از FormData به جای JSON
+                const formData = new FormData();
+                formData.append('catalogItemId', productId);
+                formData.append('quantity', quantity.toString());
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token || ''
+                    },
+                    body: formData
+                });
+
+                console.log('Response status:', response.status);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Response result:', result);
+
+                    if (result.success) {
+                        // نمایش پیام موفقیت
+                        showToast(result.message || 'محصول با موفقیت به سبد خرید افزوده شد', 'success');
+
+                        // به‌روزرسانی MiniBasket
+                        if (result.basketItemsCount !== undefined) {
+                            updateMiniBasket(result.basketItemsCount);
+                        }
+
+                        // بازگشت به حالت عادی پس از 2 ثانیه
+                        setTimeout(() => {
+                            resetButtonState();
+                        }, 2000);
+                    } else {
+                        showToast(result.message || 'خطا در افزودن محصول به سبد خرید', 'error');
+                        resetButtonState();
+                    }
+                } else {
+                    console.error('Response not OK:', response.status);
+                    // اگر پاسخ OK نبود، سعی کنیم خطا را بخوانیم
+                    try {
+                        const errorResult = await response.json();
+                        showToast(errorResult.message || 'خطا در افزودن محصول به سبد خرید', 'error');
+                    } catch {
+                        if (response.status === 400) {
+                            showToast('پارامترهای ارسالی معتبر نیستند', 'error');
+                        } else {
+                            showToast('خطا در ارتباط با سرور', 'error');
+                        }
+                    }
+                    resetButtonState();
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showToast('خطا در افزودن محصول به سبد خرید', 'error');
+                resetButtonState();
+            }
+        }
+
+        function resetButtonState() {
+            const button = document.getElementById('addToCartBtn');
+            if (button) {
+                button.disabled = false;
+                button.classList.remove('loading');
+                console.log('Button state reset');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            console.log('Showing toast:', message, type);
+
+            const toastElement = document.getElementById('addToCartToast');
+            const toastMessage = document.getElementById('toastMessage');
+
+            if (!toastElement || !toastMessage) {
+                console.error('Toast elements not found');
+                return;
+            }
+
+            // تنظیم پیام
+            toastMessage.textContent = message;
+
+            // تنظیم استایل بر اساس نوع
+            if (type === 'success') {
+                toastElement.classList.remove('bg-danger', 'text-bg-danger');
+                toastElement.classList.add('bg-success', 'text-bg-success');
+            } else {
+                toastElement.classList.remove('bg-success', 'text-bg-success');
+                toastElement.classList.add('bg-danger', 'text-bg-danger');
+            }
+
+            // نمایش toast
+            if (window.addToCartToast) {
+                window.addToCartToast.show();
+            } else {
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+            }
+        }
+
+        // تابع برای به‌روزرسانی MiniBasket
+        function updateMiniBasket(itemsCount) {
+            console.log('Updating mini basket with count:', itemsCount);
+
+            // به‌روزرسانی badge تعداد
+            const basketBadge = document.querySelector('#basketDropdown .badge');
+            const basketCountElements = document.querySelectorAll('.basket-count, .cart-count');
+
+            if (itemsCount > 0) {
+                if (basketBadge) {
+                    basketBadge.textContent = itemsCount;
+                    basketBadge.style.display = 'inline';
+                }
+                basketCountElements.forEach(el => {
+                    el.textContent = itemsCount;
+                    el.style.display = 'inline';
+                });
+            } else {
+                if (basketBadge) {
+                    basketBadge.style.display = 'none';
+                }
+                basketCountElements.forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+
+            // رفرش MiniBasket با AJAX
+            refreshMiniBasket();
+        }
+
+        // تابع برای رفرش MiniBasket با AJAX
+        async function refreshMiniBasket() {
+            try {
+                console.log('Refreshing mini basket...');
+                const response = await fetch('/Basket/GetMiniBasket');
+                if (response.ok) {
+                    const miniBasketHtml = await response.text();
+                    console.log('Mini basket HTML received');
+
+                    // پیدا کردن المان MiniBasket و جایگزینی محتوا
+                    const miniBasketContainer = document.querySelector('.basket-dropdown')?.closest('.dropdown');
+                    if (miniBasketContainer) {
+                        // ایجاد یک المان موقت برای پارس کردن HTML
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = miniBasketHtml;
+
+                        // جایگزینی محتوای MiniBasket
+                        const newMiniBasket = tempDiv.querySelector('.dropdown');
+                        if (newMiniBasket) {
+                            miniBasketContainer.outerHTML = newMiniBasket.outerHTML;
+                            console.log('Mini basket updated');
+
+                            // راه‌اندازی مجدد event listenerهای Bootstrap
+                            const dropdownElement = document.querySelector('#basketDropdown');
+                            if (dropdownElement) {
+                                new bootstrap.Dropdown(dropdownElement);
+                                console.log('Bootstrap dropdown reinitialized');
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error refreshing mini basket:', error);
+            }
+        }
+    </script>
+}

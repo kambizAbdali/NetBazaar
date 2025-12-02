@@ -3,12 +3,17 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "NetBazaar.Admin.EndPoint\\NetBazaar.Admin.EndPoint.csproj",
+        "Path": "NetBazaar.ImageApi\\NetBazaar.ImageApi.csproj",
         "Action": "Start",
         "DebugTarget": "http"
       },
       {
-        "Path": "NetBazaar.ImageApi\\NetBazaar.ImageApi.csproj",
+        "Path": "NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "NetBazaar.Admin.EndPoint\\NetBazaar.Admin.EndPoint.csproj",
         "Action": "Start",
         "DebugTarget": "http"
       }

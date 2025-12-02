@@ -1,0 +1,135 @@
+﻿@model NetBazaar.Web.EndPoint.ViewModels.Basket.MiniBasketViewModel
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle"
+            type="button" id="basketDropdown" data-bs-toggle="dropdown"
+            aria-expanded="false" data-bs-auto-close="outside">
+
+
+        <i class="nav-item"></i>
+        سبد خرید
+        @if (Model.ItemsCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @Model.ItemsCount
+                <span class="visually-hidden">تعداد آیتم‌های سبد خرید</span>
+            </span>
+        }
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-end basket-dropdown" aria-labelledby="basketDropdown">
+        <div class="px-3 py-2" style="min-width: 320px;">
+            @if (Model.IsEmpty)
+            {
+                <div class="text-center py-3">
+                    <i class="fas fa-shopping-cart fa-2x text-muted mb-2"></i>
+                    <p class="text-muted mb-0">سبد خرید شما خالی است</p>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                    <h6 class="mb-0">سبد خرید شما</h6>
+                    <small class="text-muted">@Model.ItemsCount کالا</small>
+                </div>
+
+                <div class="mini-basket-items" style="max-height: 300px; overflow-y: auto;">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="mini-basket-item mb-3 pb-2 border-bottom">
+                            <div class="d-flex align-items-start">
+                                <img src="@item.ImageUrl" alt="@item.Name"
+                                     class="rounded me-2 flex-shrink-0"
+                                     style="width: 50px; height: 50px; object-fit: cover;">
+                                <div class="flex-grow-1 me-2">
+                                    <h6 class="mb-1 text-sm">@item.ShortName</h6>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">@item.Quantity عدد</small>
+                                        <small class="fw-bold text-primary">@item.DisplayTotalPrice</small>
+                                    </div>
+                                </div>
+                                <form asp-controller="Basket" asp-action="RemoveItem" method="post" class="flex-shrink-0">
+                                    <input type="hidden" name="basketItemId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.ItemsCount > 3)
+                    {
+                        <div class="text-center mt-2">
+                            <small class="text-muted">و @(Model.ItemsCount - 3) محصول دیگر</small>
+                        </div>
+                    }
+                </div>
+
+                <div class="row align-items-center mt-3 pt-2 border-top">
+                    <div class="col">
+                        <strong>جمع کل:</strong>
+                        <div class="fw-bold text-primary">@Model.DisplayTotalPrice</div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="/basket" class="btn btn-primary btn-sm">
+                            مشاهده سبد
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .basket-dropdown {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .mini-basket-items::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .mini-basket-items::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+
+    .mini-basket-items::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+
+        .mini-basket-items::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+    .text-sm {
+        font-size: 0.875rem;
+    }
+
+    .mini-basket-item:last-child {
+        border-bottom: none !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رفرش خودکار سبد خرید هنگام تغییر
+        function refreshBasket() {
+            // می‌توانید از SignalR یا Polling برای رفرش استفاده کنید
+            // در اینجا از یک interval ساده استفاده می‌کنیم
+            setTimeout(() => {
+                // این کد می‌تواند ویو کامپوننت را رفرش کند
+                console.log('Refreshing basket...');
+            }, 30000); // هر 30 ثانیه
+        }
+
+        refreshBasket();
+    });
+</script>
