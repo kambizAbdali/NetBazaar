@@ -2,6 +2,7 @@
 using NetBazaar.Domain.Entities;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
+using NetBazaar.Domain.Entities.Users;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace NetBazaar.Persistence.Interfaces.DatabaseContext
         DbSet<CatalogItemImage> CatalogItemImages { get; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
 
         // Save methods remain the same
         public int SaveChanges();

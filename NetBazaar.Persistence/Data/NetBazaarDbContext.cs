@@ -1,8 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NetBazaar.Domain.Attributes;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
+using NetBazaar.Domain.Entities.Users;
 using NetBazaar.Persistence.EntityConfiguration;
 using NetBazaar.Persistence.Interfaces.DatabaseContext;
 using System.Reflection;
@@ -30,6 +30,7 @@ namespace NetBazaar.Infrastructure.Data
 
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

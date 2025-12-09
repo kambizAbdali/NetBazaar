@@ -28,6 +28,12 @@ namespace NetBazaar.Persistence.EntityConfiguration
             // ایندکس برای جستجوی سریع
             builder.HasIndex(b => b.BuyerId)
                 .IsUnique();
+
+            // Shadow property mapping
+            builder.Property<bool>("IsRemoved")
+                .HasDefaultValue(false)
+                .IsRequired();
+
         }
     }
 }
