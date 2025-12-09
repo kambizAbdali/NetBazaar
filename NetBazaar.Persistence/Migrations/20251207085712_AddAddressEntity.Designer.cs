@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetBazaar.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using NetBazaar.Infrastructure.Data;
 namespace NetBazaar.Persistence.Migrations
 {
     [DbContext(typeof(NetBazaarDbContext))]
-    partial class NetBazaarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251207085712_AddAddressEntity")]
+    partial class AddAddressEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

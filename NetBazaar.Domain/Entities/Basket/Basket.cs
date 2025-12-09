@@ -12,11 +12,7 @@ namespace NetBazaar.Domain.Entities.Basket
         // سازنده خصوصی برای EF Core
         private Basket() { }
 
-        // سازنده اصلی
-        public Basket(string buyerId)
-        {
-            BuyerId = buyerId ?? throw new ArgumentNullException(nameof(buyerId));
-        }
+       
 
         public int Id { get; private set; }
 
@@ -79,5 +75,15 @@ namespace NetBazaar.Domain.Entities.Basket
         {
             return _items.Sum(item => item.Quantity);
         }
+
+        public bool IsRemoved { get; private set; } = false;
+        public Basket(string buyerId)
+        {
+            BuyerId = buyerId ?? throw new ArgumentNullException(nameof(buyerId));
+            IsRemoved = false; // ensure explicit default on construction
+        }
+
+        public void MarkAsRemoved() => IsRemoved = true;
+        public void MarkAsUnremoved() => IsRemoved = false;
     }
 }

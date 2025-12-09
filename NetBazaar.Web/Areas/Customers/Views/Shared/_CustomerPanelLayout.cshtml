@@ -1,0 +1,323 @@
+﻿@* مسیر: Areas/Customers/Views/Shared/_CustomerPanelLayout.cshtml *@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - پنل مشتری | نت بازار</title>
+
+    <!-- Fonts -->
+    <link href="~/css/vazirmatn-font-face.css" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/css/customer-panel.css" rel="stylesheet" />
+    <!-- Icons -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap-icons.css" rel="stylesheet" />
+
+
+
+    <!-- Custom CSS -->
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/customer-panel.css" rel="stylesheet" asp-append-version="true" />
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/ajax.js" asp-append-version="true"></script>
+    <script src="~/js/basket-update.js" asp-append-version="true"></script>
+
+</head>
+<body class="customer-panel-body">
+    @Html.AntiForgeryToken()
+
+    <!-- Top Navigation -->
+    <header class="customer-panel-header shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <i class="bi bi-house-door me-2"></i>
+                    <span>بازگشت به فروشگاه</span>
+                </a>
+
+                <div class="d-flex align-items-center">
+                    <!-- Basket -->
+                    <div class="dropdown me-3">
+                        @await Component.InvokeAsync("Basket")
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center"
+                                type="button" id="userMenu" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <span>پنل کاربری</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li>
+                                <a class="dropdown-item" href="/Profile">
+                                    <i class="bi bi-person me-2"></i>ویرایش پروفایل
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="/Account/Logout">
+                                    <i class="bi bi-box-arrow-left me-2"></i>خروج
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid customer-panel-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-lg-2 col-xl-2 customer-sidebar bg-gradient-primary">
+                <div class="sidebar-header text-center py-4">
+                    <div class="avatar-placeholder mb-3">
+                        <i class="bi bi-person-circle text-white" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="text-white mb-1">پنل مشتری</h5>
+                    <small class="text-white-50">خوش آمدید!</small>
+                </div>
+
+                <nav class="sidebar-nav mt-4">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Customers/Dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                <span>داشبورد</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Customers/Address">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                <span>مدیریت آدرس‌ها</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Orders">
+                                <i class="bi bi-receipt me-2"></i>
+                                <span>سفارش‌های من</span>
+                                <span class="badge bg-light text-primary float-start ms-2 order-count">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Customers/Wishlist">
+                                <i class="bi bi-heart me-2"></i>
+                                <span>لیست علاقه‌مندی</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Customers/Tickets">
+                                <i class="bi bi-headset me-2"></i>
+                                <span>پشتیبانی</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Profile">
+                                <i class="bi bi-gear me-2"></i>
+                                <span>تنظیمات حساب</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Quick Stats -->
+                    <div class="sidebar-stats mt-5 p-3 bg-white rounded-3">
+                        <h6 class="text-center mb-3">آمار سریع</h6>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-value text-primary" id="orderCount">0</div>
+                                    <small class="text-muted">سفارش‌ها</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-value text-success" id="wishlistCount">0</div>
+                                    <small class="text-muted">علاقه‌مندی</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="col-lg-10 col-xl-10 customer-main-content">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mt-3 mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                        <li class="breadcrumb-item"><a href="/Customers">پنل مشتری</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                    </ol>
+                </nav>
+
+                <!-- Page Header -->
+                <div class="page-header mb-4">
+                    <h2 class="fw-bold text-primary">
+                        <i class="bi @(ViewData["PageIcon"] as string ?? "bi-grid") me-2"></i>
+                        @ViewData["Title"]
+                    </h2>
+                    <p class="text-muted">@ViewData["PageDescription"]</p>
+                </div>
+
+                <!-- Content -->
+                <div class="customer-content-container p-4 bg-white rounded-3 shadow-sm">
+                    @RenderBody()
+                </div>
+
+                <!-- Footer -->
+                <footer class="customer-panel-footer mt-4 py-3 text-center text-muted border-top">
+                    <small>
+                        <i class="bi bi-shield-check me-1"></i>
+                        پنل مشتری نت بازار - تمامی حقوق محفوظ است © @DateTime.Now.Year
+                    </small>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    @await Html.PartialAsync("_Notification")
+
+    <!-- SignalR -->
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        // اتصال به هاب وب
+        const webConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/Hubs/OnlineVisitorsHub", { withCredentials: true })
+            .withAutomaticReconnect()
+            .build();
+
+        webConnection.on("OnlineCountUpdated", function(count) {
+            const el = document.getElementById("online-count-web");
+            if (el) el.textContent = count.toString();
+        });
+
+        webConnection.start().catch(err => console.error(err));
+    </script>
+
+    <!-- Global Functions -->
+    <script>
+        // تابع global برای به‌روزرسانی سبد خرید
+        window.updateBasket = function(itemsCount) {
+            const basketBadge = document.querySelector('#basketDropdown .badge');
+            const basketCountElements = document.querySelectorAll('.basket-count, .cart-count');
+
+            if (itemsCount > 0) {
+                if (basketBadge) {
+                    basketBadge.textContent = itemsCount;
+                    basketBadge.style.display = 'inline';
+                }
+                basketCountElements.forEach(el => {
+                    el.textContent = itemsCount;
+                    el.style.display = 'inline';
+                });
+            } else {
+                if (basketBadge) {
+                    basketBadge.style.display = 'none';
+                }
+                basketCountElements.forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        };
+
+        // بارگذاری آمار کاربر
+        $(document).ready(function() {
+            loadUserStats();
+        });
+
+        function loadUserStats() {
+            $.ajax({
+                url: '/Customers/GetUserStats',
+                type: 'GET',
+                success: function(data) {
+                    if (data.success) {
+                        $('#orderCount').text(data.orderCount);
+                        $('#wishlistCount').text(data.wishlistCount);
+                        $('.order-count').text(data.orderCount);
+                    }
+                }
+            });
+        }
+
+             $(document).ready(function() {
+                 // فعال‌سازی tooltip
+                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                     return new bootstrap.Tooltip(tooltipTriggerEl);
+                 });
+
+                 // نمایش پیام موفقیت با Toast
+                 var successMessage = '@TempData["SuccessMessage"]';
+                 if (successMessage) {
+                     showToast('success', successMessage);
+                 }
+
+                 // نمایش پیام خطا با Toast
+                 var errorMessage = '@TempData["ErrorMessage"]';
+                 if (errorMessage) {
+                     showToast('error', errorMessage);
+                 }
+             });
+
+             function showToast(type, message) {
+                 // اگر container وجود ندارد، ایجادش کن
+                 if (!$('.toast-container').length) {
+                     $('body').append('<div class="toast-container position-fixed top-0 end-0 p-3"></div>');
+                 }
+
+                 const toastId = 'toast-' + Date.now();
+                 const toastHtml = `
+                     <div id="${toastId}" class="toast align-items-center text-bg-${type === 'success' ? 'success' : 'danger'} border-0"
+                          role="alert" aria-live="assertive" aria-atomic="true">
+                         <div class="d-flex">
+                             <div class="toast-body">
+                                 <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'} me-2"></i>
+                                 ${message}
+                             </div>
+                             <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                     data-bs-dismiss="toast" aria-label="Close"></button>
+                         </div>
+                     </div>
+                 `;
+
+                 $('.toast-container').append(toastHtml);
+                 const toastElement = document.getElementById(toastId);
+                 const toast = new bootstrap.Toast(toastElement, {
+                     animation: true,
+                     autohide: true,
+                     delay: 5000
+                 });
+                 toast.show();
+
+                 // پاک‌سازی بعد از بسته شدن
+                 toastElement.addEventListener('hidden.bs.toast', function () {
+                     $(this).remove();
+                 });
+             }
+
+             // تأیید حذف در فرم‌های inline (برای روش جایگزین)
+             function confirmDelete(form) {
+                 if (confirm('آیا از حذف این آدرس مطمئن هستید؟')) {
+                     form.submit();
+                 }
+                 return false;
+             }
+    </script>
+
+<style>
+
+</style>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

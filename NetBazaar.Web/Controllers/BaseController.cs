@@ -17,5 +17,22 @@ namespace NetBazaar.EndPoint.Controllers
         {
             TempData["HideMenuCategories"] = false;
         }
+
+        protected string GetErrorMessage(Exception ex)
+        {
+            // لاگ کردن خطای کامل برای توسعه‌دهندگان
+            // _logger?.LogError(ex, "System error occurred");
+
+            // بررسی نوع خطا و بازگرداندن پیام مناسب
+            return ex switch
+            {
+                UnauthorizedAccessException => "دسترسی غیرمجاز.",
+                ArgumentNullException => "اطلاعات ارسالی ناقص است.",
+                InvalidOperationException => "عملیات درخواستی مجاز نمی‌باشد.",
+                KeyNotFoundException => "مورد درخواستی یافت نشد.",
+                TimeoutException => "زمان عملیات به پایان رسید. لطفاً مجدداً تلاش کنید.",
+                _ => $"عملیات با خطا مواجه شد. لطفاً مجدداً تلاش کنید:\n{ex.Message}."
+            };
+        }
     }
 }
