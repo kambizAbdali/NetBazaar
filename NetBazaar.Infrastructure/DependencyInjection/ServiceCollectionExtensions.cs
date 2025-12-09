@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using NetBazaar.Application.Common.Configuration;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Application.Interfaces.Catalog;
+using NetBazaar.Application.Interfaces.User;
 using NetBazaar.Application.Interfaces.Visitor;
 using NetBazaar.Infrastructure.Configuration;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.MappingProfiles;
+using NetBazaar.Infrastructure.MappingProfiles.NetBazaar.Infrastructure.MappingProfiles;
 using NetBazaar.Infrastructure.Services.Basket;
 using NetBazaar.Infrastructure.Services.Catalog;
 using NetBazaar.Infrastructure.Services.Visitor;
@@ -27,6 +29,7 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             services
                 .AddIdentityService(configuration)
                 .AddAutoMapper(typeof(CatalogMappingProfile))
+                .AddAutoMapper(typeof(AddressMappingProfile))
                 .ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(12);
@@ -57,12 +60,12 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             services.AddScoped<IGetCatalogItemPLPService, GetCatalogItemPLPService>();
 
             services.AddScoped<IBasketService, BasketService>();
-
+            services.AddScoped<IUserAddressService, UserAddressService>();
 
             // Validation
             //services.AddFluentValidationAutoValidation();
             //services.AddValidatorsFromAssemblyContaining<AddCatalogItemDtoValidator>();
-
+                    
             return services;
         }
 
@@ -86,7 +89,7 @@ namespace NetBazaar.Infrastructure.DependencyInjection
 
             // MongoDB Services
             services.Configure<MongoDBSettings>(configuration.GetSection("MongoDB"));
-            services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
+            services.AddScoped(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
 
             return services;
         }

@@ -1,0 +1,207 @@
+﻿@model List<UserAddressDto>
+@{
+    ViewData["Title"] = "مدیریت آدرس‌ها";
+    Layout = "~/Areas/Customers/Views/Shared/_CustomerPanelLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-geo-alt me-2"></i>آدرس‌های ثبت‌شده
+                </h3>
+                <a href="@Url.Action("Create")" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> افزودن آدرس جدید
+                </a>
+            </div>
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-2"></i>
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (Model.Count == 0)
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-geo-alt text-muted" style="font-size: 4rem;"></i>
+                        <h4 class="mt-3 text-muted">شما هنوز هیچ آدرسی ثبت نکرده‌اید.</h4>
+                        <p class="text-muted">با افزودن آدرس، می‌توانید در خریدهای خود از آن استفاده کنید.</p>
+                        <a href="@Url.Action("Create")" class="btn btn-primary mt-2">
+                            <i class="bi bi-plus-circle"></i> افزودن اولین آدرس
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>گیرنده</th>
+                                    <th>شماره تماس</th>
+                                    <th>کد پستی</th>
+                                    <th>آدرس</th>
+                                    <th>پیش‌فرض</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var address in Model)
+                                {
+                                    <tr class="@(address.IsDefault ? "table-success" : "")">
+                                        <td>
+                                            <strong>@address.ReceiverName</strong>
+                                        </td>
+                                        <td dir="ltr" class="text-left">
+                                            @address.PhoneNumber
+                                        </td>
+                                        <td dir="ltr" class="text-left">
+                                            @address.PostalCode
+                                        </td>
+                                        <td style="max-width: 300px;">
+                                            <div class="text-truncate" style="max-width: 300px;"
+                                                 data-bs-toggle="tooltip"
+                                                 data-bs-title="@address.AddressText">
+                                                @address.AddressText
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if (address.IsDefault)
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-star-fill"></i> پیش‌فرض
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="SetDefaultAddress" method="post" class="d-inline">
+                                                    <input type="hidden" name="addressId" value="@address.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success"
+                                                            title="تنظیم به عنوان پیش‌فرض">
+                                                        <i class="bi bi-star"></i> پیش‌فرض کن
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <!-- دکمه ویرایش -->
+                                                <a href="@Url.Action("Edit", new { id = address.Id })"
+                                                   class="btn btn-outline-warning"
+                                                   title="ویرایش">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+
+                                                <!-- دکمه حذف -->
+                                                <button type="button"
+                                                        class="btn btn-outline-danger"
+                                                        title="حذف"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal-@address.Id">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+
+                                            <!-- Modal حذف برای هر آدرس -->
+                                            <div class="modal fade" id="deleteModal-@address.Id" tabindex="-1"
+                                                 aria-labelledby="deleteModalLabel-@address.Id" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel-@address.Id">
+                                                                تأیید حذف آدرس
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="alert alert-warning">
+                                                                <div class="d-flex">
+                                                                    <i class="bi bi-exclamation-triangle fs-4 me-3"></i>
+                                                                    <div>
+                                                                        <h6 class="alert-heading">آیا از حذف این آدرس مطمئن هستید؟</h6>
+                                                                        <hr>
+                                                                        <p class="mb-1"><strong>گیرنده:</strong> @address.ReceiverName</p>
+                                                                        <p class="mb-1"><strong>آدرس:</strong> @address.AddressText</p>
+                                                                        @if (address.IsDefault)
+                                                                        {
+                                                                            <p class="mb-1 text-danger">
+                                                                                <i class="bi bi-exclamation-circle"></i>
+                                                                                این آدرس به عنوان پیش‌فرض تنظیم شده است.
+                                                                            </p>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p class="text-muted small">
+                                                                <i class="bi bi-info-circle"></i>
+                                                                این عمل قابل بازگشت نیست.
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form asp-action="Delete" method="post">
+                                                                <input type="hidden" name="id" value="@address.Id" />
+                                                                <button type="submit" class="btn btn-danger">
+                                                                    <i class="bi bi-trash"></i> حذف
+                                                                </button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                <i class="bi bi-x"></i> لغو
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>توجه:</strong> شما می‌توانید چندین آدرس ثبت کنید، اما تنها یک آدرس می‌تواند به عنوان پیش‌فرض انتخاب شود.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+ 
+
+    <style>
+        .table td {
+            vertical-align: middle;
+        }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+}

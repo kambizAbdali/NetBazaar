@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Customers\Models\" />
     <Folder Include="wwwroot\js\select2\" />
   </ItemGroup>
 

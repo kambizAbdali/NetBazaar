@@ -3,92 +3,40 @@
   "WorkspaceRootPath": "D:\\.Net\\NetBazaar\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\controllers\\basketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\controllers\\basketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\areas\\customers\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\areas\\customers\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9F1B92A9-BEBD-44D2-BB15-11CF70F907A3}|NetBazaar.Infrastructure\\NetBazaar.Infrastructure.csproj|d:\\.net\\netbazaar\\netbazaar.infrastructure\\services\\basket\\basketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F1B92A9-BEBD-44D2-BB15-11CF70F907A3}|NetBazaar.Infrastructure\\NetBazaar.Infrastructure.csproj|solutionrelative:netbazaar.infrastructure\\services\\basket\\basketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\areas\\customers\\controller\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\areas\\customers\\controller\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDF00F07-7C14-41F5-9B9D-22A5096A9963}|NetBazaar.Domain\\NetBazaar.Domain.csproj|d:\\.net\\netbazaar\\netbazaar.domain\\entities\\basket\\basket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDF00F07-7C14-41F5-9B9D-22A5096A9963}|NetBazaar.Domain\\NetBazaar.Domain.csproj|solutionrelative:netbazaar.domain\\entities\\basket\\basket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\areas\\customers\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\areas\\customers\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|d:\\.net\\netbazaar\\netbazaar.persistence\\entityconfiguration\\basketitemconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|solutionrelative:netbazaar.persistence\\entityconfiguration\\basketitemconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\areas\\customers\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\areas\\customers\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9F1B92A9-BEBD-44D2-BB15-11CF70F907A3}|NetBazaar.Infrastructure\\NetBazaar.Infrastructure.csproj|d:\\.net\\netbazaar\\netbazaar.infrastructure\\services\\catalog\\catalogitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F1B92A9-BEBD-44D2-BB15-11CF70F907A3}|NetBazaar.Infrastructure\\NetBazaar.Infrastructure.csproj|solutionrelative:netbazaar.infrastructure\\services\\catalog\\catalogitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|d:\\.net\\netbazaar\\netbazaar.persistence\\netbazaardbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|solutionrelative:netbazaar.persistence\\netbazaardbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\_validationsummary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\_validationsummary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDF00F07-7C14-41F5-9B9D-22A5096A9963}|NetBazaar.Domain\\NetBazaar.Domain.csproj|d:\\.net\\netbazaar\\netbazaar.domain\\entities\\basket\\basketitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDF00F07-7C14-41F5-9B9D-22A5096A9963}|NetBazaar.Domain\\NetBazaar.Domain.csproj|solutionrelative:netbazaar.domain\\entities\\basket\\basketitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\areas\\customers\\views\\shared\\_customerpanellayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\areas\\customers\\views\\shared\\_customerpanellayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|d:\\.net\\netbazaar\\netbazaar.application\\dtos\\basket\\additemtobasketdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|solutionrelative:netbazaar.application\\dtos\\basket\\additemtobasketdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\viewcomponents\\basketviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\viewcomponents\\basketviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|d:\\.net\\netbazaar\\netbazaar.application\\interfaces\\basket\\ibasketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|solutionrelative:netbazaar.application\\interfaces\\basket\\ibasketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|d:\\.net\\netbazaar\\netbazaar.persistence\\entityconfiguration\\catalogitemconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13076FCF-8325-46B7-B0DA-DC9E06405F6A}|NetBazaar.Persistence\\NetBazaar.Persistence.csproj|solutionrelative:netbazaar.persistence\\entityconfiguration\\catalogitemconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|d:\\.net\\netbazaar\\netbazaar.application\\dtos\\basket\\basketdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|solutionrelative:netbazaar.application\\dtos\\basket\\basketdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\basket\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\basket\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\components\\basket\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\components\\basket\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\components\\getmenucategories\\_menuitemrecursive.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\components\\getmenucategories\\_menuitemrecursive.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\product\\productdetail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\product\\productdetail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|d:\\.net\\netbazaar\\netbazaar.web\\views\\shared\\_catalogitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9E5D1E70-034B-44F5-BD3D-68D6BCE34036}|NetBazaar.Web\\NetBazaar.Web.EndPoint.csproj|solutionrelative:netbazaar.web\\views\\shared\\_catalogitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|d:\\.net\\netbazaar\\netbazaar.application\\dtos\\user\\createorupdateuseraddressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42AE6A7D-7DD6-46BE-9726-DE9BA1A64FA0}|NetBazaar.Application\\NetBazaar.Application.csproj|solutionrelative:netbazaar.application\\dtos\\user\\createorupdateuseraddressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -98,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 21,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -106,288 +54,119 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CatalogItemService.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Infrastructure\\Services\\Catalog\\CatalogItemService.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Infrastructure\\Services\\Catalog\\CatalogItemService.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Infrastructure\\Services\\Catalog\\CatalogItemService.cs",
-              "RelativeToolTip": "NetBazaar.Infrastructure\\Services\\Catalog\\CatalogItemService.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAGsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T17:18:07.817Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "20251202170639_UpdateBasketItemConfig-1.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs",
-              "RelativeToolTip": "NetBazaar.Persistence\\Migrations\\20251202170639_UpdateBasketItemConfig-1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T17:06:39.971Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "CatalogItemConfig.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\EntityConfiguration\\CatalogItemConfig.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Persistence\\EntityConfiguration\\CatalogItemConfig.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\EntityConfiguration\\CatalogItemConfig.cs",
-              "RelativeToolTip": "NetBazaar.Persistence\\EntityConfiguration\\CatalogItemConfig.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T15:10:35.573Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "20251201132632_UpdateBasketItemConfig.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs",
-              "RelativeToolTip": "NetBazaar.Persistence\\Migrations\\20251201132632_UpdateBasketItemConfig.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T13:26:32.338Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "BasketDto.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\Basket\\BasketDto.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Application\\DTOs\\Basket\\BasketDto.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\Basket\\BasketDto.cs",
-              "RelativeToolTip": "NetBazaar.Application\\DTOs\\Basket\\BasketDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T11:36:32.953Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "IBasketService.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\Interfaces\\Basket\\IBasketService.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Application\\Interfaces\\Basket\\IBasketService.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\Interfaces\\Basket\\IBasketService.cs",
-              "RelativeToolTip": "NetBazaar.Application\\Interfaces\\Basket\\IBasketService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAA1wBAAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T09:56:14.278Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Basket.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Domain\\Entities\\Basket\\Basket.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Domain\\Entities\\Basket\\Basket.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Domain\\Entities\\Basket\\Basket.cs",
-              "RelativeToolTip": "NetBazaar.Domain\\Entities\\Basket\\Basket.cs",
-              "ViewState": "AgIAADcAAAAAAAAAAADwv0MAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T08:41:12.153Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "BasketItem.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Domain\\Entities\\Basket\\BasketItem.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Domain\\Entities\\Basket\\BasketItem.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Domain\\Entities\\Basket\\BasketItem.cs",
-              "RelativeToolTip": "NetBazaar.Domain\\Entities\\Basket\\BasketItem.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAxwCMAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T08:31:16.614Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BasketItemConfig.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\EntityConfiguration\\BasketItemConfig.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Persistence\\EntityConfiguration\\BasketItemConfig.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\EntityConfiguration\\BasketItemConfig.cs",
-              "RelativeToolTip": "NetBazaar.Persistence\\EntityConfiguration\\BasketItemConfig.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T07:53:51.393Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "NetBazaarDbContextFactory.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\NetBazaarDbContextFactory.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Persistence\\NetBazaarDbContextFactory.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Persistence\\NetBazaarDbContextFactory.cs",
-              "RelativeToolTip": "NetBazaar.Persistence\\NetBazaarDbContextFactory.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T07:42:09.783Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BasketService.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Infrastructure\\Services\\Basket\\BasketService.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Infrastructure\\Services\\Basket\\BasketService.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Infrastructure\\Services\\Basket\\BasketService.cs*",
-              "RelativeToolTip": "NetBazaar.Infrastructure\\Services\\Basket\\BasketService.cs*",
-              "ViewState": "AgIAAK0AAAAAAAAAAAAzwL0AAAAIAAAAAAAAAA==",
+              "Title": "AddressController.cs",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Controller\\AddressController.cs",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Areas\\Customers\\Controller\\AddressController.cs",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Controller\\AddressController.cs",
+              "RelativeToolTip": "NetBazaar.Web\\Areas\\Customers\\Controller\\AddressController.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAAADgAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T14:20:08.794Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "_Navbar.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\_Navbar.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\_Navbar.cshtml",
-              "ViewState": "AgIAADUAAAAAAAAAAAAzwEEAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T22:37:45.11Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Default.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\Components\\Basket\\Default.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\Components\\Basket\\Default.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\Components\\Basket\\Default.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\Components\\Basket\\Default.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T14:23:05.815Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "_MenuItemRecursive.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\Components\\GetMenuCategories\\_MenuItemRecursive.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\Components\\GetMenuCategories\\_MenuItemRecursive.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\Components\\GetMenuCategories\\_MenuItemRecursive.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\Components\\GetMenuCategories\\_MenuItemRecursive.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T22:36:49.495Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "BaseController.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\BaseController.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Controllers\\BaseController.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\BaseController.cs",
-              "RelativeToolTip": "NetBazaar.Web\\Controllers\\BaseController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T21:33:58.014Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "_CatalogItem.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_CatalogItem.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\_CatalogItem.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_CatalogItem.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\_CatalogItem.cshtml",
-              "ViewState": "AgIAAGsAAAAAAAAAAAAAAHgAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T20:54:31.645Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Basket\\Index.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Basket\\Index.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Basket\\Index.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Basket\\Index.cshtml",
-              "ViewState": "AgIAAEQBAAAAAAAAAAAAAGUBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T15:41:26.681Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "BasketViewComponent.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\ViewComponents\\BasketViewComponent.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\ViewComponents\\BasketViewComponent.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\ViewComponents\\BasketViewComponent.cs",
-              "RelativeToolTip": "NetBazaar.Web\\ViewComponents\\BasketViewComponent.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAswDsAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T14:48:04.381Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ProductController.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\ProductController.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Controllers\\ProductController.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\ProductController.cs",
-              "RelativeToolTip": "NetBazaar.Web\\Controllers\\ProductController.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAzwGoAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T14:32:42.429Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAUAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T14:19:47.244Z",
+              "WhenOpened": "2025-12-07T19:49:26.016Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BasketController.cs",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\BasketController.cs",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Controllers\\BasketController.cs",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Controllers\\BasketController.cs",
-              "RelativeToolTip": "NetBazaar.Web\\Controllers\\BasketController.cs",
-              "ViewState": "AgIAAIsAAAAAAAAAAAAkwJYAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-29T20:53:42.398Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Index.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Index.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Index.cshtml*",
+              "RelativeToolTip": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Index.cshtml*",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAAAGMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-07T19:45:17.904Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ProductDetail.cshtml",
-              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Product\\ProductDetail.cshtml",
-              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Product\\ProductDetail.cshtml",
-              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Product\\ProductDetail.cshtml",
-              "RelativeToolTip": "NetBazaar.Web\\Views\\Product\\ProductDetail.cshtml",
-              "ViewState": "AgIAAD4BAAAAAAAAAAAAAEoBAABHAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Edit.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Edit.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Edit.cshtml",
+              "RelativeToolTip": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T14:15:02.036Z",
+              "WhenOpened": "2025-12-07T19:43:52.095Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Create.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Create.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Create.cshtml",
+              "RelativeToolTip": "NetBazaar.Web\\Areas\\Customers\\Views\\Address\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-07T19:43:36.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Account\\Register.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "NetBazaar.Web\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-07T19:43:03.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_ValidationSummary.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_ValidationSummary.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Views\\Shared\\_ValidationSummary.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Views\\Shared\\_ValidationSummary.cshtml",
+              "RelativeToolTip": "NetBazaar.Web\\Views\\Shared\\_ValidationSummary.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-07T19:42:27.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CreateOrUpdateUserAddressDto.cs",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\User\\CreateOrUpdateUserAddressDto.cs",
+              "RelativeDocumentMoniker": "NetBazaar.Application\\DTOs\\User\\CreateOrUpdateUserAddressDto.cs",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\User\\CreateOrUpdateUserAddressDto.cs",
+              "RelativeToolTip": "NetBazaar.Application\\DTOs\\User\\CreateOrUpdateUserAddressDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T19:22:14.579Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AddItemToBasketDto.cs",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\Basket\\AddItemToBasketDto.cs",
+              "RelativeDocumentMoniker": "NetBazaar.Application\\DTOs\\Basket\\AddItemToBasketDto.cs",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Application\\DTOs\\Basket\\AddItemToBasketDto.cs",
+              "RelativeToolTip": "NetBazaar.Application\\DTOs\\Basket\\AddItemToBasketDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T19:22:09.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_CustomerPanelLayout.cshtml",
+              "DocumentMoniker": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Shared\\_CustomerPanelLayout.cshtml",
+              "RelativeDocumentMoniker": "NetBazaar.Web\\Areas\\Customers\\Views\\Shared\\_CustomerPanelLayout.cshtml",
+              "ToolTip": "D:\\.Net\\NetBazaar\\NetBazaar.Web\\Areas\\Customers\\Views\\Shared\\_CustomerPanelLayout.cshtml",
+              "RelativeToolTip": "NetBazaar.Web\\Areas\\Customers\\Views\\Shared\\_CustomerPanelLayout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-07T18:26:04.646Z",
               "EditorCaption": ""
             }
           ]

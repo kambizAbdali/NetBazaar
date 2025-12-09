@@ -11,7 +11,7 @@ namespace NetBazaar.Application.DTOs.Basket
         public List<BasketItemDto> Items { get; set; } = new();
         public decimal TotalPrice => Items.Sum(item => item.TotalPrice);
         public int TotalItems => Items.Sum(item => item.Quantity);
-        public bool IsRemoved { get; private set; }
+        public bool IsRemoved { get; private set; }=false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
