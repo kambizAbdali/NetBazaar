@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetBazaar.Application.Interfaces.Basket;
+using NetBazaar.Infrastructure.Services.Catalog;
 using NetBazaar.Web.EndPoint.Utilities;
 using NetBazaar.Web.EndPoint.ViewModels;
 using NetBazaar.Web.EndPoint.ViewModels.Basket;
@@ -11,11 +12,13 @@ namespace NetBazaar.Web.EndPoint.ViewComponents
     {
         private readonly IBasketService _basketService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IImageUrlService _imageUrlService;
 
-        public BasketViewComponent(IBasketService basketService, IHttpContextAccessor httpContextAccessor)
+        public BasketViewComponent(IBasketService basketService, IHttpContextAccessor httpContextAccessor, IImageUrlService imageUrlService)
         {
             _basketService = basketService;
             _httpContextAccessor = httpContextAccessor;
+            _imageUrlService = imageUrlService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -38,7 +41,7 @@ namespace NetBazaar.Web.EndPoint.ViewComponents
                         Id = item.Id,
                         CatalogItemId = item.CatalogItemId,
                         Name = item.CatalogItemName,
-                        ImageUrl = item.CatalogItemImageUrl,
+                        ImageUrl = _imageUrlService.Normalize( item.CatalogItemImageUrl, ImageType.Product),
                         Quantity = item.Quantity,
                         UnitPrice = item.UnitPrice,
                         TotalPrice = item.TotalPrice

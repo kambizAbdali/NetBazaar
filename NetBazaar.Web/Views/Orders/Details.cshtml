@@ -1,0 +1,90 @@
+﻿@model NetBazaar.Application.DTOs.Order.OrderDto
+@{
+    ViewData["Title"] = "جزئیات سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">جزئیات سفارش شماره @Model.Id</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>اطلاعات سفارش</strong>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">تاریخ سفارش:</dt>
+                <dd class="col-sm-9">@Model.OrderDate.ToString("yyyy/MM/dd HH:mm")</dd>
+
+                <dt class="col-sm-3">وضعیت سفارش:</dt>
+                <dd class="col-sm-9">@Model.OrderStatus</dd>
+
+                <dt class="col-sm-3">وضعیت پرداخت:</dt>
+                <dd class="col-sm-9">@Model.PaymentStatus</dd>
+
+                <dt class="col-sm-3">روش پرداخت:</dt>
+                <dd class="col-sm-9">@Model.PaymentMethod</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>آدرس تحویل</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>گیرنده:</strong> @Model.ReceiverName</p>
+            <p><strong>آدرس:</strong> @Model.AddressText</p>
+            <p><strong>شهر:</strong> @Model.City</p>
+            <p><strong>کد پستی:</strong> @Model.PostalCode</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>آیتم‌های سفارش</strong>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>تصویر</th>
+                        <th>محصول</th>
+                        <th>قیمت واحد</th>
+                        <th>تعداد</th>
+                        <th>قیمت کل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@item.PictureUri" alt="@item.ProductName"
+                                     style="width:60px;height:60px;object-fit:cover;" class="rounded" />
+                            </td>
+                            <td>@item.ProductName</td>
+                            <td>@item.UnitPrice.ToString("N0") تومان</td>
+                            <td>@item.Units</td>
+                            <td class="fw-bold text-primary">@item.TotalPrice.ToString("N0") تومان</td>
+                        </tr>
+                    }
+                    <!-- ردیف جمع کل -->
+                    <tr class="table-info fw-bold">
+                        <td colspan="4" class="text-end">جمع کل سفارش:</td>
+                        <td>@Model.TotalPrice.ToString("N0") تومان</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <strong>جمع کل سفارش:</strong>
+        <span class="fw-bold h5">@Model.TotalPrice.ToString("N0") تومان</span>
+    </div>
+
+    <a href="@Url.Action("Index", "Orders")" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> بازگشت به لیست سفارش‌ها
+    </a>
+</div>

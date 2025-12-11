@@ -12,10 +12,12 @@ namespace NetBazaar.Infrastructure.Services.Catalog
     public class GetCatalogItemDetailService : IGetCatalogItemDetailService
     {
         private readonly INetBazaarDbContext _context;
+        private readonly IImageUrlService _imageUrlService;
 
-        public GetCatalogItemDetailService(INetBazaarDbContext context)
+        public GetCatalogItemDetailService(INetBazaarDbContext context, IImageUrlService imageUrlService)
         {
             _context = context;
+            _imageUrlService = imageUrlService;
         }
 
         public CatalogDetailDto GetCatalogItemDetail(long id)
@@ -37,7 +39,8 @@ namespace NetBazaar.Infrastructure.Services.Catalog
                 Description = item.Description,
                 Price = item.Price,
                 DiscountPercent = item.DiscountPercent,
-                Images = item.Images.OrderBy(i => i.SortOrder).Select(i => i.Src).ToList(),
+                Images = item.Images.OrderBy(i => i.SortOrder)
+                .Select(i => _imageUrlService.Normalize(i.Src, ImageType.Product)).ToList(),
                 Rating = item.Ratings.Any() ? Math.Round(item.Ratings.Average(r => r.Score), 1) : 0,
                 ReviewCount = item.Ratings.Count(),
                 BrandName = item.CatalogBrand.Brand,

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver.Core.Misc;
 using NetBazaar.Application.DTOs.Basket;
 using NetBazaar.Application.Interfaces.Basket;
@@ -76,6 +77,12 @@ namespace NetBazaar.Infrastructure.Services.Basket
                         }).ToList()
                 })
                 .FirstOrDefaultAsync();
+
+
+            // نرمال‌سازی تصاویر برای هر آیتم کاتالوگ
+            foreach (var item in basketQuery.Items)
+                if (item.CatalogItemImageUrl.IsNullOrEmpty())
+                    item.CatalogItemImageUrl = _imageUrlService.Normalize(item?.CatalogItemImageUrl, ImageType.Product);
 
             return basketQuery;
         }
@@ -229,6 +236,12 @@ namespace NetBazaar.Infrastructure.Services.Basket
                     .Where(item => !item.IsRemoved)
                     .ToList();
 
+                // نرمال‌سازی تصاویر برای هر آیتم کاتالوگ
+                foreach (var item in activeItems)
+                    if (item.CatalogItem?.Images.Count > 0)
+                        foreach (var image in item.CatalogItem.Images)
+                            image.Src = _imageUrlService.Normalize(image.Src, ImageType.Product);
+                
                 // جایگزینی لیست داخلی _items با آیتم‌های فعال
                 var itemsField = typeof(Domain.Entities.Basket.Basket)
                     .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -238,7 +251,7 @@ namespace NetBazaar.Infrastructure.Services.Basket
 
             return basket;
         }
-
+           
 
         private async Task<Domain.Entities.Basket.Basket> CreateBasketForUserAsync(string buyerId)
         {
@@ -276,7 +289,7 @@ namespace NetBazaar.Infrastructure.Services.Basket
             var firstImage = catalogItem.Images?.FirstOrDefault();
             if (firstImage != null)
             {
-                itemDto.CatalogItemImageUrl = firstImage.Src;
+                itemDto.CatalogItemImageUrl =_imageUrlService.Normalize(firstImage.Src,ImageType.Product);
             }
         }
 

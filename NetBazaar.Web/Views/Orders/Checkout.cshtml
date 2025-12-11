@@ -1,0 +1,136 @@
+﻿@model NetBazaar.Web.EndPoint.ViewModels.Order.CheckoutViewModel
+@{
+    ViewData["Title"] = "نهایی‌سازی سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">نهایی‌سازی سفارش</h2>
+
+    <!-- نمایش سبد خرید -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>سبد خرید شما</strong>
+        </div>
+        <div class="card-body">
+            @if (Model.Basket == null || !Model.Basket.Items.Any())
+            {
+                <div class="alert alert-warning">
+                    سبد خرید شما خالی است.
+                </div>
+            }
+            else
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>محصول</th>
+                            <th>تعداد</th>
+                            <th>قیمت واحد</th>
+                            <th>قیمت کل</th>
+                            <th>تصویر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Basket.Items)
+                        {
+                            <tr>
+                                <td>@item.CatalogItemName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("N0") تومان</td>
+                                <td>@item.TotalPrice.ToString("N0") تومان</td>
+                                <td>
+                                    <img src="@item.CatalogItemImageUrl"
+                                         alt="@item.CatalogItemName"
+                                         style="width:60px;height:60px;object-fit:cover;"
+                                         class="rounded" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="alert alert-info">
+                    جمع کل: <strong>@Model.Basket.TotalPrice.ToString("N0") تومان</strong>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- فرم ثبت سفارش -->
+    <form asp-action="Checkout" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- انتخاب آدرس -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <strong>انتخاب آدرس تحویل</strong>
+            </div>
+            <div class="card-body">
+                @if (Model.Addresses == null || !Model.Addresses.Any())
+                {
+                    <div class="alert alert-warning">
+                        شما هیچ آدرسی ثبت نکرده‌اید.
+                        <a href="/UserAddresses/Create" class="btn btn-primary btn-sm ms-2">افزودن آدرس جدید</a>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var address in Model.Addresses)
+                    {
+                        <div class="form-check mb-2">
+                            @if (address.IsDefault)
+                            {
+                                <input class="form-check-input" type="radio"
+                                       asp-for="SelectedAddressId"
+                                       value="@address.Id"
+                                       checked="checked" />
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="radio"
+                                       asp-for="SelectedAddressId"
+                                       value="@address.Id" />
+                            }
+
+
+                            <label class="form-check-label">
+                                <strong>@address.ReceiverName</strong> - @address.PhoneNumber <br />
+                                @address.AddressText (@address.PostalCode)
+                            </label>
+                        </div>
+                    }
+                    <span asp-validation-for="SelectedAddressId" class="text-danger"></span>
+                }
+            </div>
+        </div>
+
+        <!-- انتخاب روش پرداخت -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <strong>روش پرداخت</strong>
+            </div>
+            <div class="card-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="CashOnDelivery" checked />
+                    <label class="form-check-label">پرداخت در محل</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Online" />
+                    <label class="form-check-label">پرداخت آنلاین</label>
+                </div>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- دکمه ثبت سفارش -->
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success btn-lg">
+                <i class="fas fa-credit-card me-2"></i> پرداخت و ثبت نهایی سفارش
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

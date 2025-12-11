@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetBazaar.Domain.Entities.Basket;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace NetBazaar.Persistence.EntityConfiguration
@@ -18,7 +19,7 @@ namespace NetBazaar.Persistence.EntityConfiguration
             builder.Property(b => b.BuyerId)
                 .IsRequired()
                 .HasMaxLength(256);
-
+            builder.HasQueryFilter(b => !b.IsRemoved);
             // ارتباط یک به چند با BasketItem
             builder.HasMany(b => b.Items)
                 .WithOne(i => i.Basket)
@@ -30,9 +31,9 @@ namespace NetBazaar.Persistence.EntityConfiguration
                 .IsUnique();
 
             // Shadow property mapping
-            builder.Property<bool>("IsRemoved")
+           /* builder.Property<bool>("IsRemoved")
                 .HasDefaultValue(false)
-                .IsRequired();
+                .IsRequired();*/
 
         }
     }

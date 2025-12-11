@@ -1,0 +1,42 @@
+﻿@model List<OrderDto>
+@{
+    ViewData["Title"] = "سفارش‌های من";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>سفارش‌های من</h2>
+
+@if (!Model.Any())
+{
+    <p>شما هیچ سفارشی ثبت نکرده‌اید.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>شماره سفارش</th>
+                <th>تاریخ</th>
+                <th>وضعیت</th>
+                <th>مبلغ کل</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.OrderDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@order.OrderStatus</td>
+                    <td>@order.TotalPrice.ToString("N0") تومان</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Orders", new { id = order.Id })" class="btn btn-sm btn-primary">
+                            جزئیات
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
