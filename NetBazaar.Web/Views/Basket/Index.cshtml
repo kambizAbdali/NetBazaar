@@ -80,7 +80,7 @@
                                         <tr id="basket-item-@item.Id">
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="@item.ImageUrl" alt="@item.Name"
+                                                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? Url.Content("~/image/defaultproduct.png") : item.ImageUrl)"
                                                          class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
                                                     <div>
                                                         <h6 class="mb-1">@item.Name</h6>

@@ -1,16 +1,23 @@
-﻿using NetBazaar.Application.Interfaces.Catalog;
+﻿using FluentValidation.AspNetCore;
+using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.DependencyInjection;
 using NetBazaar.Infrastructure.Services;
 using NetBazaar.Persistence.Data.Seed;
 using NetBazaar.Web.EndPoint.Hubs;
 using NetBazaar.Web.EndPoint.Utilities.Filters;
+using NetBazaar.Web.EndPoint.Validators;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<CheckoutViewModelValidator>();
+    });
 
 // Core ASP.NET Core Services
 builder.Services.AddAuthorization();

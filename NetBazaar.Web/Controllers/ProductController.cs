@@ -15,6 +15,7 @@ public class ProductController : BaseController
     private readonly ICatalogTypeService _catalogTypeService;
     private readonly IBasketService _basketService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IImageUrlService _imageUrlService;
 
     public ProductController(
         IGetCatalogItemPLPService plpService,
@@ -22,7 +23,8 @@ public class ProductController : BaseController
         IGetCatalogItemDetailService catalogDetailService,
         ICatalogTypeService catalogTypeService,
         IBasketService basketService,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IImageUrlService imageUrlService)
     {
         _plpService = plpService;
         _brandService = brandService;
@@ -30,6 +32,7 @@ public class ProductController : BaseController
         _catalogTypeService = catalogTypeService;
         _basketService = basketService;
         _httpContextAccessor = httpContextAccessor;
+        _imageUrlService = imageUrlService;
     }
 
     [HttpGet]
@@ -68,7 +71,7 @@ public class ProductController : BaseController
                     Id = d.Id,
                     Name = d.Name,
                     ShortDescription = d.Name, // می‌توانی خلاصه از Description بسازی
-                    MainImageUrl = d.FirstImageSrc ?? string.Empty,
+                    MainImageUrl = _imageUrlService.Normalize(d.FirstImageSrc,ImageType.Product),
                     DiscountPercentage = d.DiscountPercent,
                     DisplayPrice = d.Price.ToString("N0"),
                     OriginalPrice = originalPrice,
@@ -117,6 +120,7 @@ public class ProductController : BaseController
     public IActionResult ProductDetail(long id)
     {
         var dto = _CatalogDetailService.GetCatalogItemDetail(id);
+        
         if (dto == null)
         {
             return NotFound();

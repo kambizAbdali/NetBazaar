@@ -13,7 +13,7 @@ using System.Text;
 namespace NetBazaar.Infrastructure.Configuration
 {
     public static class IdentityConfig
-    { 
+    {
         public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("SqlServer");

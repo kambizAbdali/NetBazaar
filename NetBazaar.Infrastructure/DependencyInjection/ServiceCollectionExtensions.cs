@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using NetBazaar.Application.Common.Configuration;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Application.Interfaces.Catalog;
+using NetBazaar.Application.Interfaces.Order;
 using NetBazaar.Application.Interfaces.User;
 using NetBazaar.Application.Interfaces.Visitor;
+using NetBazaar.Application.Services;
 using NetBazaar.Infrastructure.Configuration;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.MappingProfiles;
@@ -62,6 +64,7 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IUserAddressService, UserAddressService>();
 
+            services.AddScoped<IOrderService, OrderService>();
             // Validation
             //services.AddFluentValidationAutoValidation();
             //services.AddValidatorsFromAssemblyContaining<AddCatalogItemDtoValidator>();

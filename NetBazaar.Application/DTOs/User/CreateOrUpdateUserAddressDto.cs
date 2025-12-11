@@ -30,5 +30,7 @@ namespace NetBazaar.Application.DTOs.User
 
         [Display(Name = "آدرس پیش‌فرض")]
         public bool IsDefault { get; set; }
+
+        public string City { get; set; } = "";
     }
 }

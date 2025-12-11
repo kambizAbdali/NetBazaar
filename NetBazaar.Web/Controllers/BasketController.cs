@@ -346,7 +346,7 @@ namespace NetBazaar.Web.EndPoint.Controllers
             {
                 var buyerId = await GetOrCreateBuyerIdAsync();
                 var basket = await _basketService.GetBasketForUserAsync(buyerId);
-
+                
                 var viewModel = new MiniBasketViewModel
                 {
                     ItemsCount = basket?.TotalItems ?? 0,
@@ -362,7 +362,7 @@ namespace NetBazaar.Web.EndPoint.Controllers
                         TotalPrice = item.TotalPrice,
                     }).ToList() ?? new List<MiniBasketItemViewModel>()
                 };
-
+                
                 return PartialView("Components/Basket/Default", viewModel);
             }
             catch (Exception ex)

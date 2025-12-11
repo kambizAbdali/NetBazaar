@@ -8,6 +8,7 @@
         public string PhoneNumber { get; private set; } = null!;
         public string PostalCode { get; private set; } = null!;
         public string AddressText { get; private set; } = null!;
+        public string City { get; set; } = null!;
         public bool IsDefault { get; private set; }
 
         // سازنده EF
