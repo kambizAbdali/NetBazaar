@@ -97,6 +97,6 @@ public class OrdersController : BaseController
         if (vm.PaymentMethod == PaymentMethod.CashOnDelivery)
             return RedirectToAction("Index", "Orders");
 
-        return RedirectToAction("PaymentGateway", "Payment", new { orderId });
+        return RedirectToAction("Index", "Payment", new { orderId });
     }
 }

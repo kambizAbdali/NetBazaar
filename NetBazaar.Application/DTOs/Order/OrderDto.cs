@@ -10,7 +10,9 @@
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string PaymentMethod { get; set; }
-        public string PaymentStatus { get; set; }
+        public string PaymentMethodKey { get; set; }
+        public string PaymenStatus { get; set; }
+        public string PaymentStatusKey { get; set; }= string.Empty;
         public string OrderStatus { get; set; }
 
         public List<OrderItemDto> Items { get; set; } = new();

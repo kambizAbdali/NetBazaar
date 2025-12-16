@@ -3,6 +3,7 @@ using NetBazaar.Domain.Attributes;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
 using NetBazaar.Domain.Entities.Orders;
+using NetBazaar.Domain.Entities.Payments;
 using NetBazaar.Domain.Entities.Users;
 using NetBazaar.Persistence.Configurations;
 using NetBazaar.Persistence.EntityConfiguration;
@@ -33,10 +34,9 @@ namespace NetBazaar.Infrastructure.Data
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
-
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-
+        public DbSet<Payment> Payments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
@@ -52,6 +52,7 @@ namespace NetBazaar.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new OrderConfig());
             modelBuilder.ApplyConfiguration(new OrderItemConfig());
             modelBuilder.ApplyConfiguration(new UserAddressConfig());
+            modelBuilder.ApplyConfiguration(new PaymentConfig());
             base.OnModelCreating(modelBuilder);
 
             // اعمال Auditable برای موجودیت‌های دارای ویژگی AuditableAttribute

@@ -19,6 +19,7 @@ else
                 <th>تاریخ</th>
                 <th>وضعیت</th>
                 <th>مبلغ کل</th>
+                <th>روش پرداخت</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,10 +31,19 @@ else
                     <td>@order.OrderDate.ToString("yyyy/MM/dd HH:mm")</td>
                     <td>@order.OrderStatus</td>
                     <td>@order.TotalPrice.ToString("N0") تومان</td>
+                    <td>@order.PaymentMethod</td>
                     <td>
                         <a href="@Url.Action("Details", "Orders", new { id = order.Id })" class="btn btn-sm btn-primary">
                             جزئیات
                         </a>
+                        <!-- نمایش دکمه پرداخت فقط اگر وضعیت پرداخت Pending باشد -->
+                        @if (order.PaymentStatusKey.ToString() == "Pending" && order.PaymentMethodKey == "Online")
+                        {
+                            <a href="@Url.Action("Index", "Payment", new { orderId = @order.Id })"
+                               class="btn btn-primary">
+                                <i class="bi bi-credit-card"></i> تکمیل فرایند پرداخت
+                            </a>
+                        }
                     </td>
                 </tr>
             }
