@@ -20,7 +20,7 @@
                 <dd class="col-sm-9">@Model.OrderStatus</dd>
 
                 <dt class="col-sm-3">وضعیت پرداخت:</dt>
-                <dd class="col-sm-9">@Model.PaymentStatus</dd>
+                <dd class="col-sm-9">@Model.PaymenStatus</dd>
 
                 <dt class="col-sm-3">روش پرداخت:</dt>
                 <dd class="col-sm-9">@Model.PaymentMethod</dd>
@@ -84,6 +84,15 @@
         <span class="fw-bold h5">@Model.TotalPrice.ToString("N0") تومان</span>
     </div>
 
+   
+   <!-- نمایش دکمه پرداخت فقط اگر وضعیت پرداخت Pending باشد -->
+    @if (Model.PaymentStatusKey.ToString() == "Pending")
+    {
+            <a href="@Url.Action("Index", "Payment", new { orderId = Model.Id })"
+               class="btn btn-primary">
+                <i class="bi bi-credit-card"></i> تکمیل فرایند پرداخت
+            </a>
+    }
     <a href="@Url.Action("Index", "Orders")" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> بازگشت به لیست سفارش‌ها
     </a>

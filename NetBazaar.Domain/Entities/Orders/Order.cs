@@ -28,6 +28,10 @@ namespace NetBazaar.Domain.Entities.Orders
         public PaymentStatus PaymentStatus { get; private set; }
         public OrderStatus OrderStatus { get; private set; }
 
+        // زمان‌های وضعیت
+        public DateTime? PaidDate { get; private set; }
+        public DateTime? CancellationDate { get; private set; }
+        public DateTime? DeliveryDate { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
 
         public void AddOrderItem(OrderItem orderItem) 
@@ -38,5 +42,26 @@ namespace NetBazaar.Domain.Entities.Orders
         {
             Address = address;
         }
+
+        public void MarkAsPaid()
+        {
+            PaymentStatus = PaymentStatus.Paid;
+            PaidDate = DateTime.Now;
+        }
+
+        public void CancelOrder()
+        {
+            OrderStatus = OrderStatus.Cancelled;
+            CancellationDate = DateTime.Now;
+        }
+
+        public void MarkAsDelivered()
+        {
+            OrderStatus = OrderStatus.Delivered;
+            DeliveryDate = DateTime.Now;
+        }
+
+        // مجموع مبلغ سفارش (UnitPrice × Units برای همه آیتم‌ها)
+        public decimal GetTotalAmount() => _orderItems.Sum(i => i.UnitPrice * i.Units);
     }
 }

@@ -22,7 +22,9 @@ namespace NetBazaar.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City))
                 .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.Address.PostalCode))
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.PaymentMethod.ToPersianString()))
-                .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaymentStatus.ToPersianString()))
+                .ForMember(dest => dest.PaymentMethodKey, opt => opt.MapFrom(src => src.PaymentMethod.ToString()))
+                .ForMember(dest => dest.PaymenStatus, opt => opt.MapFrom(src => src.PaymentStatus.ToPersianString()))
+                .ForMember(dest => dest.PaymentStatusKey, opt => opt.MapFrom(src => src.PaymentStatus.ToString()))
                 .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus.ToPersianString()))
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderItems));
         }

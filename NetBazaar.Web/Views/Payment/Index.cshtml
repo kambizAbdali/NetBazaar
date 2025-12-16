@@ -1,0 +1,15 @@
+﻿@model NetBazaar.Application.DTOs.Payment.PaymentDto
+@{
+    ViewData["Title"] = "پرداخت سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4 text-center">
+    <h2 class="mb-4">پرداخت سفارش شماره @Model.OrderId</h2>
+    <p>مبلغ قابل پرداخت: <strong>@Model.Amount.ToString("N0") تومان</strong></p>
+    <p>توضیحات: @Model.Description</p>
+
+    <div class="alert alert-info">
+        شما به درگاه زرین‌پال هدایت خواهید شد...
+    </div>
+</div>
