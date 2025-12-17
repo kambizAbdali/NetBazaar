@@ -5,6 +5,7 @@ using NetBazaar.Application.Common.Configuration;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Application.Interfaces.Order;
+using NetBazaar.Application.Interfaces.Payment;
 using NetBazaar.Application.Interfaces.User;
 using NetBazaar.Application.Interfaces.Visitor;
 using NetBazaar.Application.Services;
@@ -14,6 +15,7 @@ using NetBazaar.Infrastructure.MappingProfiles;
 using NetBazaar.Infrastructure.MappingProfiles.NetBazaar.Infrastructure.MappingProfiles;
 using NetBazaar.Infrastructure.Services.Basket;
 using NetBazaar.Infrastructure.Services.Catalog;
+using NetBazaar.Infrastructure.Services.Payment;
 using NetBazaar.Infrastructure.Services.Visitor;
 using NetBazaar.Infrastructure.Services.Visitors;
 using NetBazaar.Persistence.Data;
@@ -68,7 +70,11 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             // Validation
             //services.AddFluentValidationAutoValidation();
             //services.AddValidatorsFromAssemblyContaining<AddCatalogItemDtoValidator>();
-                    
+
+            // Program.cs
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IZarinPalService, ZarinPalService>();
+
             return services;
         }
 

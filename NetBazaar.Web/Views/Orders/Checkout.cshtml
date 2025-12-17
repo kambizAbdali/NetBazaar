@@ -62,15 +62,24 @@
 
         <!-- انتخاب آدرس -->
         <div class="card mb-4">
-            <div class="card-header">
-                <strong>انتخاب آدرس تحویل</strong>
+            <div class="card-header d-flex justify-content-between align-items-center">
+              
+
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-geo-alt me-2"></i>انتخاب آدرس تحویل
+                </h3>
+
+                <a href="/Customers/Address/Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> افزودن آدرس جدید
+                </a>
+
             </div>
             <div class="card-body">
+
                 @if (Model.Addresses == null || !Model.Addresses.Any())
                 {
                     <div class="alert alert-warning">
                         شما هیچ آدرسی ثبت نکرده‌اید.
-                        <a href="/UserAddresses/Create" class="btn btn-primary btn-sm ms-2">افزودن آدرس جدید</a>
                     </div>
                 }
                 else
