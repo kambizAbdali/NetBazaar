@@ -16,4 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\NetBazaar.Persistence\NetBazaar.Persistence.csproj" />
   </ItemGroup>
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
+		<!-- فعال‌سازی -->
+	</PropertyGroup>
+
 </Project>

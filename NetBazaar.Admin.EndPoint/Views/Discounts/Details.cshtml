@@ -1,0 +1,57 @@
+﻿@model NetBazaar.Domain.Discounts.Discount
+@{
+    ViewData["Title"] = "جزئیات تخفیف";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-4">
+    <h2>جزئیات تخفیف</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">نام</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">نوع</dt>
+
+        <dd class="col-sm-9">@Model.DiscountType.GetDisplayName()</dd>
+
+        <dt class="col-sm-3">مقدار</dt>
+        <dd class="col-sm-9">
+            @if (Model.UsePercentage)
+            {
+                @($"{Model.DiscountPercentage}%")
+            }
+            else
+            {
+
+                @($"{Model.DiscountAmount?.ToString("N0")} ریال")
+            }
+        </dd>
+
+        <dt class="col-sm-3">بازه</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("yyyy/MM/dd") - @Model.EndDate.ToString("yyyy/MM/dd")</dd>
+
+        <dt class="col-sm-3">کد تخفیف</dt>
+        <dd class="col-sm-9">@Model.CouponCode</dd>
+
+        <dt class="col-sm-3">محصولات مرتبط</dt>
+        <dd class="col-sm-9">
+            @if (Model.CatalogItems != null && Model.CatalogItems.Any())
+            {
+                <ul>
+                    @foreach (var ci in Model.CatalogItems)
+                    {
+                        <li>@ci.Name (Id: @ci.Id)</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>هیچ محصولی مرتبط نشده است.</span>
+            }
+        </dd>
+    </dl>
+
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">ویرایش</a>
+    <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
+</div>

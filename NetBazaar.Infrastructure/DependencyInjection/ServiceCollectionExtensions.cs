@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetBazaar.Application.Common.Configuration;
+using NetBazaar.Application.Interfaces;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Application.Interfaces.Order;
@@ -34,6 +35,7 @@ namespace NetBazaar.Infrastructure.DependencyInjection
                 .AddIdentityService(configuration)
                 .AddAutoMapper(typeof(CatalogMappingProfile))
                 .AddAutoMapper(typeof(AddressMappingProfile))
+                .AddAutoMapper(typeof(DiscountMappingProfile))
                 .ConfigureApplicationCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(12);
@@ -71,10 +73,10 @@ namespace NetBazaar.Infrastructure.DependencyInjection
             //services.AddFluentValidationAutoValidation();
             //services.AddValidatorsFromAssemblyContaining<AddCatalogItemDtoValidator>();
 
-            // Program.cs
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IZarinPalService, ZarinPalService>();
-
+            
+            services.AddScoped<IDiscountService, DiscountService>();
             return services;
         }
 

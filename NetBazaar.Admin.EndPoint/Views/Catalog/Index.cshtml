@@ -31,28 +31,14 @@
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">جزئیات</a>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">ویرایش</a>
                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">حذف</button>
-                    @Html.Partial("_DeleteConfirmationModal", item.Id)
+                    @await Html.PartialAsync("_DeleteConfirmationModal", item.Id)
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<nav>
-    <ul class="pagination">
-        @if (Model.HasPreviousPage)
-        {
-            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">قبلی</a></li>
-        }
-        @for (int i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
-            </li>
-        }
-        @if (Model.HasNextPage)
-        {
-            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">بعدی</a></li>
-        }
-    </ul>
-</nav>
+@if (Model.TotalPages > 1)
+{
+    @await Html.PartialAsync("_Pagination", Model)
+}

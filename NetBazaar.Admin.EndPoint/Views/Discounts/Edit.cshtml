@@ -1,0 +1,224 @@
+﻿@model NetBazaar.Admin.EndPoint.ViewModels.Discounts.CreateDiscountViewModel
+@{
+    ViewData["Title"] = "ویرایش تخفیف";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4"><i class="bi bi-percent me-2"></i>@ViewData["Title"]</h2>
+
+    <form asp-action="Edit" method="post" class="card p-4 shadow-sm">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        @Html.AntiForgeryToken()
+
+        <!-- نام تخفیف -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">نام تخفیف</label>
+            <input asp-for="Name" class="form-control" placeholder="مثال: تخفیف ویژه نوروز" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="row align-items-center mb-3">
+            <!-- نیاز به کد تخفیف -->
+            <div class="col-auto">
+                <div class="form-check">
+                    <input asp-for="RequiresCouponCode" class="form-check-input" id="requiresCoupon" />
+                    <label class="form-check-label" for="requiresCoupon">نیاز به کد تخفیف</label>
+                </div>
+            </div>
+
+            <!-- کد تخفیف -->
+            <div class="col" id="couponCodeWrapper">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <label class="form-label fw-bold mb-0">کد تخفیف</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="CouponCode" class="form-control" placeholder="مثال: NOWRUZ1404" />
+                        <span asp-validation-for="CouponCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تاریخ شروع و پایان -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">تاریخ شروع</label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">تاریخ پایان</label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+            </div>
+        </div>
+
+        <!-- نوع تخفیف -->
+        <div class="form-check mb-3">
+            <input asp-for="UsePercentage" class="form-check-input" id="usePercentage" />
+            <label class="form-check-label" for="usePercentage">استفاده از درصد</label>
+        </div>
+
+        <!-- درصد تخفیف -->
+        <div class="mb-3" id="percentageWrapper">
+            <label class="form-label fw-bold">درصد تخفیف</label>
+            <input asp-for="DiscountPercentage" class="form-control" placeholder="مثال: 20" />
+            <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+        </div>
+
+        <!-- مبلغ تخفیف -->
+        <div class="mb-3" id="amountWrapper">
+            <label class="form-label fw-bold">مبلغ تخفیف (ریال)</label>
+            <input asp-for="DiscountAmount" class="form-control" placeholder="مثال: 50000" />
+            <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+        </div>
+
+        <!-- نوع تخفیف -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">نوع تخفیف</label>
+            <select asp-for="DiscountType" class="form-select">
+                @foreach (var t in Enum.GetValues(typeof(NetBazaar.Domain.Discounts.DiscountType)))
+                {
+                    <option value="@t">@((t as Enum).GetDisplayName())</option>
+                }
+            </select>
+        </div>
+
+        <!-- محدودیت -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">محدودیت</label>
+            <select asp-for="LimitationType" class="form-select" id="limitationTypeSelect">
+                @foreach (var t in Enum.GetValues(typeof(NetBazaar.Domain.Discounts.DiscountLimitationType)))
+                {
+                    <option value="@t">@((t as Enum).GetDisplayName())</option>
+                }
+            </select>
+        </div>
+
+        <!--محدودیت تعداد -->
+        <div class="mb-3" id="LimitationTimesWrapper" style="display: none;">
+            <label class="form-label fw-bold">تعداد محدودیت</label>
+            <input asp-for="LimitationTimes" class="form-control" placeholder="مثال: 20" />
+            <span asp-validation-for="LimitationTimes" class="text-danger"></span>
+        </div>
+
+
+<!-- بخش جدید Multi-Select -->
+<div class="mb-3">
+    <label class="form-label fw-bold">محصولات</label>
+    
+    <!-- Select اصلی -->
+    <select id="catalogItemsSelect" class="form-control" multiple="multiple" 
+            placeholder="برای جستجو تایپ کنید... (اختیاری)">
+        @if (Model.CatalogItems != null)
+        {
+            foreach (var item in Model.CatalogItems)
+            {
+                <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+            }
+        }
+    </select>
+    
+    <!-- فیلد مخفی برای ذخیره آی‌دی‌ها -->
+    <input type="hidden" asp-for="CatalogItemIdsRaw" id="catalogItemIdsRaw" />
+    
+    <small class="form-text text-muted">
+        محصولات مرتبط با این تخفیف را انتخاب کنید (اختیاری). برای جستجو تایپ کنید.
+    </small>
+    <span asp-validation-for="SelectedCatalogItemIds" class="text-danger"></span>
+</div>
+
+
+
+
+        <!-- دکمه‌ها -->
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i>ثبت</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-x-circle me-1"></i>انصراف</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        $(document).ready(function () {
+            // مقداردهی اولیه Tom Select
+            var select = new TomSelect('#catalogItemsSelect', {
+                plugins: ['remove_button'],
+                valueField: 'value',
+                labelField: 'text',
+                searchField: 'text',
+                options: @Html.Raw(Model.CatalogItems != null ? 
+                    Json.Serialize(Model.CatalogItems) : "[]"),
+                items: @Html.Raw(Model.SelectedCatalogItemIds != null ? 
+                    Json.Serialize(Model.SelectedCatalogItemIds.Select(id => id.ToString())) : "[]"),
+                create: false,
+                maxItems: null,
+                placeholder: 'برای جستجو تایپ کنید... (اختیاری)',
+                render: {
+                    option: function(data, escape) {
+                        return '<div class="d-flex justify-content-between">' +
+                               '<span>' + escape(data.text) + '</span>' +
+                               '</div>';
+                    },
+                    item: function(data, escape) {
+                        return '<div>' + escape(data.text) + '</div>';
+                    }
+                },
+                onInitialize: function() {
+                    // مقداردهی اولیه بر اساس داده‌های موجود
+                    var initialIds = $('#catalogItemIdsRaw').val();
+                    if (initialIds) {
+                        this.setValue(initialIds.split(','));
+                    }
+                },
+                onChange: function(values) {
+                    // به‌روزرسانی فیلد مخفی
+                    $('#catalogItemIdsRaw').val(values.join(','));
+                }
+            });
+
+            // توابع قبلی برای نمایش/مخفی کردن بخش‌ها
+            function toggleCoupon() {
+                if ($("#requiresCoupon").is(":checked")) {
+                    $("#couponCodeWrapper").show();
+                } else {
+                    $("#couponCodeWrapper").hide();
+                }
+            }
+
+            function toggleDiscountType() {
+                if ($("#usePercentage").is(":checked")) {
+                    $("#percentageWrapper").show();
+                    $("#amountWrapper").hide();
+                } else {
+                    $("#percentageWrapper").hide();
+                    $("#amountWrapper").show();
+                }
+            }
+
+            function toggleLimitationTimes() {
+                const selectedValue = $("#limitationTypeSelect").val();
+                if (selectedValue === 'NTimesOnly') {
+                    $("#LimitationTimesWrapper").show();
+                } else {
+                    $("#LimitationTimesWrapper").hide();
+                }
+            }
+
+            // اجرای اولیه
+            toggleCoupon();
+            toggleDiscountType();
+            toggleLimitationTimes();
+
+            // رویدادها
+            $("#requiresCoupon").change(toggleCoupon);
+            $("#usePercentage").change(toggleDiscountType);
+            $("#limitationTypeSelect").change(toggleLimitationTimes);
+        });
+    </script>
+}
+    <!-- در _AdminLayout.cshtml در بخش head یا قبل از بستن body -->
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using NetBazaar.Domain.Discounts;
 using NetBazaar.Domain.Entities;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
@@ -29,6 +30,7 @@ namespace NetBazaar.Persistence.Interfaces.DatabaseContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         // Save methods remain the same
         public int SaveChanges();

@@ -13,5 +13,7 @@ namespace NetBazaar.Application.Interfaces.Catalog
         Task<CatalogDto?> GetByIdAsync(long id);
         Task EditAsync(long id, CatalogDto dto);
         Task RemoveAsync(long id);
+        // در ICatalogItemService
+        Task<List<CatalogItemDropdownDto>> GetItemsForDropdownAsync();
     }
 }

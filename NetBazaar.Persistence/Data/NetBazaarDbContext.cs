@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetBazaar.Domain.Attributes;
+using NetBazaar.Domain.Discounts;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Domain.Entities.Catalog;
 using NetBazaar.Domain.Entities.Orders;
@@ -37,6 +38,7 @@ namespace NetBazaar.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Discount> Discounts {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
@@ -53,6 +55,7 @@ namespace NetBazaar.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new OrderItemConfig());
             modelBuilder.ApplyConfiguration(new UserAddressConfig());
             modelBuilder.ApplyConfiguration(new PaymentConfig());
+            modelBuilder.ApplyConfiguration(new DiscountConfig());   
             base.OnModelCreating(modelBuilder);
 
             // اعمال Auditable برای موجودیت‌های دارای ویژگی AuditableAttribute
