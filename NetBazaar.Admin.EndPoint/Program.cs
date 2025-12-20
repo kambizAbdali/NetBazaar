@@ -1,12 +1,15 @@
 ﻿using NetBazaar.Admin.EndPoint.Configuration;
+using NetBazaar.Admin.EndPoint.Filters;
 using NetBazaar.Infrastructure.DependencyInjection;
 using NetBazaar.Infrastructure.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews(); // اضافه‌شدن MVC (کنترلرها و ویوها)
-
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+    options.Filters.Add<PreserveModelFilter>(); //To fully utilize GlobalExceptionFilter, we may need another Action Filter to preserve the model"
+});
 
 
 // Use AddInfrastructureServices instead of separate methods

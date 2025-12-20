@@ -1,0 +1,129 @@
+﻿@* Views/Shared/_Pagination.cshtml *@
+@{
+    // دریافت مدل به صورت dynamic
+    var model = Model as dynamic;
+    int pageIndex = model?.PageIndex ?? 1;
+    int totalPages = model?.TotalPages ?? 1;
+    bool hasPreviousPage = model?.HasPreviousPage ?? false;
+    bool hasNextPage = model?.HasNextPage ?? false;
+    
+    // گرفتن نام action و controller
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    
+    // جمع‌آوری پارامترهای کوئری فعلی
+    var queryParams = new Dictionary<string, string>();
+    foreach (var key in Context.Request.Query.Keys)
+    {
+        if (key != "page") // صفحه جداگانه اضافه می‌شود
+        {
+            queryParams[key] = Context.Request.Query[key];
+        }
+    }
+}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @* دکمه قبلی *@
+        <li class="page-item @(!hasPreviousPage ? "disabled" : "")">
+            @if (hasPreviousPage)
+            {
+                queryParams["page"] = (pageIndex - 1).ToString();
+                <a class="page-link" 
+                   asp-action="@action" 
+                   asp-controller="@controller"
+                   asp-all-route-data="queryParams">
+                    &laquo; قبلی
+                </a>
+            }
+            else
+            {
+                <span class="page-link">&laquo; قبلی</span>
+            }
+        </li>
+
+        @* صفحات *@
+        @{
+            int startPage = Math.Max(1, pageIndex - 2);
+            int endPage = Math.Min(totalPages, pageIndex + 2);
+            
+            // صفحه اول
+            if (startPage > 1)
+            {
+                queryParams["page"] = "1";
+                <li class="page-item">
+                    <a class="page-link" 
+                       asp-action="@action" 
+                       asp-controller="@controller"
+                       asp-all-route-data="queryParams">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+            
+            // صفحات میانی
+            for (int i = startPage; i <= endPage; i++)
+            {
+                queryParams["page"] = i.ToString();
+                <li class="page-item @(i == pageIndex ? "active" : "")">
+                    <a class="page-link" 
+                       asp-action="@action" 
+                       asp-controller="@controller"
+                       asp-all-route-data="queryParams">@i</a>
+                </li>
+            }
+            
+            // صفحه آخر
+            if (endPage < totalPages)
+            {
+                @if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                queryParams["page"] = totalPages.ToString();
+                <li class="page-item">
+                    <a class="page-link" 
+                       asp-action="@action" 
+                       asp-controller="@controller"
+                       asp-all-route-data="queryParams">@totalPages</a>
+                </li>
+            }
+        }
+
+        @* دکمه بعدی *@
+        <li class="page-item @(!hasNextPage ? "disabled" : "")">
+            @if (hasNextPage)
+            {
+                queryParams["page"] = (pageIndex + 1).ToString();
+                <a class="page-link" 
+                   asp-action="@action" 
+                   asp-controller="@controller"
+                   asp-all-route-data="queryParams">
+                    بعدی &raquo;
+                </a>
+            }
+            else
+            {
+                <span class="page-link">بعدی &raquo;</span>
+            }
+        </li>
+    </ul>
+    
+    @* اطلاعات صفحه *@
+    @if (totalPages > 0)
+    {
+        <div class="text-center text-muted mt-2 small">
+            صفحه @pageIndex از @totalPages 
+            @if (model?.TotalCount != null)
+            {
+                <span> - کل: @Model.TotalCount رکورد</span>
+            }
+        </div>
+    }
+</nav>

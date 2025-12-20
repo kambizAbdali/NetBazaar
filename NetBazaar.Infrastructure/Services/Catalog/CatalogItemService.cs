@@ -106,5 +106,20 @@ namespace NetBazaar.Infrastructure.Services.Catalog
             _context.CatalogItems.Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+        // در CatalogItemService
+        public async Task<List<CatalogItemDropdownDto>> GetItemsForDropdownAsync()
+        {
+            return await _context.CatalogItems
+                .AsNoTracking()
+                .OrderBy(ci => ci.Name)
+                .Select(ci => new CatalogItemDropdownDto
+                {
+                    Id = ci.Id,
+                    Name = ci.Name,
+                    Price = ci.Price
+                })
+                .ToListAsync();
+        }
     }
 }

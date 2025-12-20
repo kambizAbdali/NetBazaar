@@ -1,0 +1,70 @@
+﻿@model NetBazaar.Application.DTOs.Common.PaginatedResult<NetBazaar.Application.DTOs.Discounts.DiscountListItemDto>
+@{
+    ViewData["Title"] = "تخفیف‌ها";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-4">
+    <h2>تخفیف‌ها</h2>
+    <a class="btn btn-primary mb-3" asp-controller="Discounts" asp-action="Create">ایجاد تخفیف جدید</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>نوع تخفیف</th>
+                 <th> محدودیت برای تخفیف</th>
+                <th>مقدار</th>
+                <th>بازه</th>
+                <th>کد</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Data)
+            {
+                <tr>
+                    <td>@d.Name</td>
+                    <td>@d.DiscountTypeString</td>
+                     <td>@d.LimitationTypeString</td>
+                    <td>
+                        @if (d.UsePercentage)
+                        {
+                            @($"{d.DiscountPercentage}%")
+                        }
+                        else
+                        {
+
+                            @($"{d.DiscountAmount?.ToString("N0")} ریال")
+                        }
+                    </td>
+                    <td>@d.StartDate.ToString("yyyy/MM/dd") - @d.EndDate.ToString("yyyy/MM/dd")</td>
+                    <td>
+    @if (d.RequiresCouponCode)
+    {
+        <span>@d.CouponCode</span>
+    }
+    else
+    {
+        <i class="bi bi-dash-circle text-muted"></i>
+    }
+</td>
+                    <td>
+                        <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@d.Id">جزئیات</a>
+                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@d.Id">ویرایش</a>
+                        <form asp-action="Delete" asp-route-id="@d.Id" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('آیا مطمئن هستید؟')">حذف</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    @if (Model.TotalPages > 1)
+    {
+        @await Html.PartialAsync("_Pagination", Model)
+    }
+</div>

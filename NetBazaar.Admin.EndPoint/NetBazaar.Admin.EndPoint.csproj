@@ -30,5 +30,4 @@
   <ItemGroup>
     <ProjectReference Include="..\NetBazaar.Infrastructure\NetBazaar.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>
