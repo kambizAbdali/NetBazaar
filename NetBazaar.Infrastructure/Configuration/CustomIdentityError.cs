@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace NetBazaar.Infrastructure.Identity
 {
@@ -32,7 +33,6 @@ namespace NetBazaar.Infrastructure.Identity
                 Description = $"ایمیل '{email}' قبلاً در سیستم ثبت شده است."
             };
         }
-
         public override IdentityError InvalidEmail(string? email)
         {
             return new IdentityError
@@ -41,7 +41,6 @@ namespace NetBazaar.Infrastructure.Identity
                 Description = "فرمت ایمیل وارد شده معتبر نیست."
             };
         }
-
         // خطاهای مربوط به رمز عبور
         public override IdentityError PasswordTooShort(int length)
         {

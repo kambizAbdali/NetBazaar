@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews(options =>
 {
-    options.Filters.Add<GlobalExceptionFilter>();
-    options.Filters.Add<PreserveModelFilter>(); //To fully utilize GlobalExceptionFilter, we may need another Action Filter to preserve the model"
+options.Filters.Add<GlobalExceptionFilter>();
+options.Filters.Add<PreserveModelFilter>(); //To fully utilize GlobalExceptionFilter, we may need another Action Filter to preserve the model"
+options.Filters.Add<ValidateModelFilter>();
 });
 
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MongoDB.Driver.Linq;
 using NetBazaar.Domain.Discounts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using NetBazaar.Domain.Extensions;
+using DateTimeExtensions = NetBazaar.Domain.Extensions.DateTimeExtensions;
 namespace NetBazaar.Admin.EndPoint.ViewModels.Discounts
 {
     public class CreateDiscountViewModel : IValidatableObject
@@ -20,11 +22,18 @@ namespace NetBazaar.Admin.EndPoint.ViewModels.Discounts
         [Range(1, int.MaxValue, ErrorMessage = "مبلغ تخفیف باید بزرگتر از صفر باشد.")]
         public int? DiscountAmount { get; set; }
 
-        [Required(ErrorMessage = "تاریخ شروع الزامی است.")]
-        public DateTime StartDate { get; set; } = DateTime.Now;
+        // برای نمایش و دریافت از کاربر (شمسی)
+        [Required(ErrorMessage = " تاریخ شروع الزامی است.")]
+        [Display(Name = "تاریخ شروع")]
+        public string StartDatePersian { get; set; } = DateTimeExtensions.GetCurrentPersianDate();
 
         [Required(ErrorMessage = "تاریخ پایان الزامی است.")]
-        public DateTime EndDate { get; set; } = DateTime.Now.AddDays(7);
+        [Display(Name = "تاریخ پایان")]
+        public string EndDatePersian { get; set; } = DateTimeExtensions.GetCurrentPersianDate();
+
+        // فقط برای عملیات داخلی (میلادی)
+        public DateTime StartDate => DateTimeExtensions.FromPersianDateString(StartDatePersian);
+        public DateTime EndDate => DateTimeExtensions.FromPersianDateString(EndDatePersian);
 
         public bool RequiresCouponCode { get; set; } = false;
 

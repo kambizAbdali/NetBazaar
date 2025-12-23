@@ -3,7 +3,7 @@
     ViewData["Title"] = "ایجاد تخفیف";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<link href="~/mds.bs.datetimepicker/mds.bs.datetimepicker.style.css" rel="stylesheet" />
 <div class="container py-4">
     <h2 class="mb-4"><i class="bi bi-percent me-2"></i>@ViewData["Title"]</h2>
 
@@ -41,15 +41,18 @@
             </div>
         </div>
 
+
         <!-- تاریخ شروع و پایان -->
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label fw-bold">تاریخ شروع</label>
-                <input asp-for="StartDate" class="form-control" type="date" />
+                <input type="text" name="StartDatePersian" class="form-control" id="StartDate-text" placeholder="تاریخ شروع">
+
             </div>
             <div class="col-md-6">
                 <label class="form-label fw-bold">تاریخ پایان</label>
-                <input asp-for="EndDate" class="form-control" type="date" />
+                <input type="text" name="EndDatePersian" class="form-control" id="EndDate-text" placeholder="تاریخ پایان">
+
             </div>
         </div>
 
@@ -103,30 +106,30 @@
         </div>
 
 
-<!-- بخش جدید Multi-Select -->
-<div class="mb-3">
-    <label class="form-label fw-bold">محصولات</label>
-    
-    <!-- Select اصلی -->
-    <select id="catalogItemsSelect" class="form-control" multiple="multiple" 
-            placeholder="برای جستجو تایپ کنید... (اختیاری)">
-        @if (Model.CatalogItems != null)
-        {
-            foreach (var item in Model.CatalogItems)
-            {
-                <option value="@item.Value" selected="@item.Selected">@item.Text</option>
-            }
-        }
-    </select>
-    
-    <!-- فیلد مخفی برای ذخیره آی‌دی‌ها -->
-    <input type="hidden" asp-for="CatalogItemIdsRaw" id="catalogItemIdsRaw" />
-    
-    <small class="form-text text-muted">
-        محصولات مرتبط با این تخفیف را انتخاب کنید (اختیاری). برای جستجو تایپ کنید.
-    </small>
-    <span asp-validation-for="SelectedCatalogItemIds" class="text-danger"></span>
-</div>
+        <!-- بخش جدید Multi-Select -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">محصولات</label>
+
+            <!-- Select اصلی -->
+            <select id="catalogItemsSelect" class="form-control" multiple="multiple"
+                    placeholder="برای جستجو تایپ کنید... (اختیاری)">
+                @if (Model.CatalogItems != null)
+                {
+                    foreach (var item in Model.CatalogItems)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                    }
+                }
+            </select>
+
+            <!-- فیلد مخفی برای ذخیره آی‌دی‌ها -->
+            <input type="hidden" asp-for="CatalogItemIdsRaw" id="catalogItemIdsRaw" />
+
+            <small class="form-text text-muted">
+                محصولات مرتبط با این تخفیف را انتخاب کنید (اختیاری). برای جستجو تایپ کنید.
+            </small>
+            <span asp-validation-for="SelectedCatalogItemIds" class="text-danger"></span>
+        </div>
 
 
 
@@ -140,8 +143,30 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/mds.bs.datetimepicker/mds.bs.datetimepicker.js"></script>
+
+    <script>
+             new mds.MdsPersianDateTimePicker(document.querySelector('#StartDate-text'), {
+          targetTextSelector: '#StartDate-text',
+          selectedDate: new Date('@Model.StartDate'),
+          selectedDateToShow: new Date('@Model.StartDate'),
+           isGregorian: false,
+            persianNumber: true, // این گزینه اعداد را فارسی می‌کند
+        });
+
+            new mds.MdsPersianDateTimePicker(document.querySelector('#EndDate-text'), {
+          targetTextSelector: '#EndDate-text',
+          selectedDate: new Date('@Model.EndDate'),
+          selectedDateToShow: new Date('@Model.EndDate'),
+           isGregorian: false,
+            persianNumber: true, // این گزینه اعداد را فارسی می‌کند
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             // مقداردهی اولیه Tom Select
@@ -150,35 +175,35 @@
                 valueField: 'value',
                 labelField: 'text',
                 searchField: 'text',
-                options: @Html.Raw(Model.CatalogItems != null ? 
-                    Json.Serialize(Model.CatalogItems) : "[]"),
-                items: @Html.Raw(Model.SelectedCatalogItemIds != null ? 
-                    Json.Serialize(Model.SelectedCatalogItemIds.Select(id => id.ToString())) : "[]"),
-                create: false,
-                maxItems: null,
-                placeholder: 'برای جستجو تایپ کنید... (اختیاری)',
-                render: {
-                    option: function(data, escape) {
-                        return '<div class="d-flex justify-content-between">' +
-                               '<span>' + escape(data.text) + '</span>' +
-                               '</div>';
-                    },
-                    item: function(data, escape) {
-                        return '<div>' + escape(data.text) + '</div>';
-                    }
-                },
-                onInitialize: function() {
-                    // مقداردهی اولیه بر اساس داده‌های موجود
-                    var initialIds = $('#catalogItemIdsRaw').val();
-                    if (initialIds) {
-                        this.setValue(initialIds.split(','));
-                    }
-                },
-                onChange: function(values) {
-                    // به‌روزرسانی فیلد مخفی
-                    $('#catalogItemIdsRaw').val(values.join(','));
-                }
-            });
+                options: @Html.Raw(Model.CatalogItems != null ?
+                                                                    Json.Serialize(Model.CatalogItems) : "[]"),
+        items: @Html.Raw(Model.SelectedCatalogItemIds != null ?
+                                                        Json.Serialize(Model.SelectedCatalogItemIds.Select(id => id.ToString())) : "[]"),
+        create: false,
+        maxItems: null,
+        placeholder: 'برای جستجو تایپ کنید... (اختیاری)',
+        render: {
+            option: function(data, escape) {
+                return '<div class="d-flex justify-content-between">' +
+                       '<span>' + escape(data.text) + '</span>' +
+                       '</div>';
+            },
+            item: function(data, escape) {
+                return '<div>' + escape(data.text) + '</div>';
+            }
+        },
+        onInitialize: function() {
+            // مقداردهی اولیه بر اساس داده‌های موجود
+            var initialIds = $('#catalogItemIdsRaw').val();
+            if (initialIds) {
+                this.setValue(initialIds.split(','));
+            }
+        },
+        onChange: function(values) {
+            // به‌روزرسانی فیلد مخفی
+            $('#catalogItemIdsRaw').val(values.join(','));
+        }
+    });
 
             // توابع قبلی برای نمایش/مخفی کردن بخش‌ها
             function toggleCoupon() {
@@ -220,5 +245,5 @@
         });
     </script>
 }
-    <!-- در _AdminLayout.cshtml در بخش head یا قبل از بستن body -->
+<!-- در _AdminLayout.cshtml در بخش head یا قبل از بستن body -->
 }

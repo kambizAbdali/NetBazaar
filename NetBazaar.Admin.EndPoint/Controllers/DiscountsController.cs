@@ -6,6 +6,7 @@ using NetBazaar.Application.DTOs.Discounts;
 using NetBazaar.Application.Interfaces;
 using NetBazaar.Application.Interfaces.Catalog;
 using NetBazaar.Domain.Discounts;
+using NetBazaar.Domain.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,6 +48,11 @@ namespace NetBazaar.Admin.EndPoint.Controllers
 
             var discount = await _discountService.GetByIdAsync(id);
             if (discount == null) return NotFound();
+
+            // تبدیل تاریخ‌ها به شمسی برای نمایش
+            ViewBag.StartDatePersian = discount.StartDate.ToPersianDateString();
+            ViewBag.EndDatePersian = discount.EndDate.ToPersianDateString();
+
             return View(discount);
         }
 
@@ -99,8 +105,8 @@ namespace NetBazaar.Admin.EndPoint.Controllers
                 UsePercentage = discount.UsePercentage,
                 DiscountPercentage = discount.DiscountPercentage,
                 DiscountAmount = discount.DiscountAmount,
-                StartDate = discount.StartDate,
-                EndDate = discount.EndDate,
+                StartDatePersian = discount.StartDate.ToPersianDateString(),
+                EndDatePersian = discount.EndDate.ToPersianDateString(),
                 RequiresCouponCode = discount.RequiresCouponCode,
                 CouponCode = discount.CouponCode,
                 DiscountType = discount.DiscountType,
