@@ -1,4 +1,5 @@
-﻿using NetBazaar.Domain.Enums;
+﻿using NetBazaar.Domain.Discounts;
+using NetBazaar.Domain.Enums;
 using NetBazaar.Domain.ValueObjects;
 using System.Net;
 
@@ -10,7 +11,9 @@ namespace NetBazaar.Domain.Entities.Orders
 
         private Order() { } // For EF Core
 
-        public Order(string buyerId, Address address, PaymentMethod paymentMethod)
+        // New code: تغییر سازنده برای دریافت تخفیف
+        public Order(string buyerId, Address address, PaymentMethod paymentMethod,
+            decimal? discountAmount = null, int? discountId = null, Discount? discount = null)
         {
             BuyerId = buyerId;
             Address = address;
@@ -18,8 +21,18 @@ namespace NetBazaar.Domain.Entities.Orders
             PaymentStatus = PaymentStatus.Pending;
             OrderStatus = OrderStatus.Processing;
             OrderDate = DateTime.Now;
+
+            // New code: ست کردن مقادیر تخفیف
+            DiscountAmount = discountAmount ?? 0;
+            DiscountId = discountId;
+            Discount = discount;
         }
 
+
+        // New code: اضافه کردن فیلدهای تخفیف
+        public decimal DiscountAmount { get; private set; }
+        public int? DiscountId { get; private set; }
+        public Discount? Discount { get; private set; }
         public int Id { get; private set; }
         public string BuyerId { get; private set; }
         public DateTime OrderDate { get; private set; }
@@ -34,11 +47,11 @@ namespace NetBazaar.Domain.Entities.Orders
         public DateTime? DeliveryDate { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
 
-        public void AddOrderItem(OrderItem orderItem) 
+        public void AddOrderItem(OrderItem orderItem)
         {
             _orderItems.Add(orderItem);
         }
-        public void AddAddress( Address address)
+        public void AddAddress(Address address)
         {
             Address = address;
         }
@@ -61,7 +74,25 @@ namespace NetBazaar.Domain.Entities.Orders
             DeliveryDate = DateTime.Now;
         }
 
-        // مجموع مبلغ سفارش (UnitPrice × Units برای همه آیتم‌ها)
-        public decimal GetTotalAmount() => _orderItems.Sum(i => i.UnitPrice * i.Units);
+
+        // New code: محاسبه مجموع مبلغ سفارش بدون تخفیف
+        public decimal GetTotalAmountWithoutDiscount() => _orderItems.Sum(i => i.UnitPrice * i.Units);
+
+        // New code: محاسبه مجموع مبلغ سفارش با احتساب تخفیف
+        public decimal GetTotalAmount() => GetTotalAmountWithoutDiscount() - DiscountAmount;
+
+        // New code: متد اعمال تخفیف
+        public void ApplyDiscount(decimal discountAmount, int? discountId = null, Discount? discount = null)
+        {
+            if (discountAmount < 0)
+                throw new ArgumentException("مبلغ تخفیف نمی‌تواند منفی باشد");
+
+            if (discountAmount > GetTotalAmountWithoutDiscount())
+                throw new ArgumentException("مبلغ تخفیف نمی‌تواند بیشتر از جمع کل سفارش باشد");
+
+            DiscountAmount = discountAmount;
+            DiscountId = discountId;
+            Discount = discount;
+        }
     }
 }

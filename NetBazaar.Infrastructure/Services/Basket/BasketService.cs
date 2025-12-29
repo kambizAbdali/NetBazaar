@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver.Core.Misc;
 using NetBazaar.Application.DTOs.Basket;
+using NetBazaar.Application.Interfaces;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Infrastructure.Services.Catalog;
@@ -25,12 +26,14 @@ namespace NetBazaar.Infrastructure.Services.Basket
         private readonly INetBazaarDbContext _context;
         private readonly IMapper _mapper;
         private readonly IImageUrlService _imageUrlService;
+        private readonly IDiscountService _discountService; // New code
 
-        public BasketService(INetBazaarDbContext context, IMapper mapper, IImageUrlService imageUrlService)
+        public BasketService(INetBazaarDbContext context, IMapper mapper, IImageUrlService imageUrlService, IDiscountService discountService)
         {
             _context = context;
             _mapper = mapper;
             _imageUrlService = imageUrlService;
+            _discountService = discountService;
         }
 
         public async Task<BasketDto> GetOrCreateBasketForUserAsync(string buyerId)
@@ -217,6 +220,7 @@ namespace NetBazaar.Infrastructure.Services.Basket
         // متدهای کمکی خصوصی
         private async Task<Domain.Entities.Basket.Basket> GetBasketByBuyerIdAsync(string buyerId)
         {
+
             var basket = await _context.Baskets
                 .Include(b => b.Items)
                     .ThenInclude(i => i.CatalogItem)
@@ -227,7 +231,9 @@ namespace NetBazaar.Infrastructure.Services.Basket
                 .Include(b => b.Items)
                     .ThenInclude(i => i.CatalogItem)
                         .ThenInclude(ci => ci.Images.OrderBy(img => img.SortOrder))
+                .Include(b => b.Discount) // New code: include discount
                 .FirstOrDefaultAsync(b => b.BuyerId == buyerId);
+
 
             if (basket != null)
             {
@@ -264,6 +270,7 @@ namespace NetBazaar.Infrastructure.Services.Basket
         private async Task<BasketDto> MapBasketToDtoAsync(Domain.Entities.Basket.Basket basket)
         {
             var basketDto = _mapper.Map<BasketDto>(basket);
+            basketDto.DiscountAmount = basket.DiscountAmount;
 
             // مپ کردن آیتم‌ها با اطلاعات کامل
             foreach (var itemDto in basketDto.Items)

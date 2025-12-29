@@ -49,9 +49,51 @@
                         }
                     </tbody>
                 </table>
-                <div class="alert alert-info">
-                    جمع کل: <strong>@Model.Basket.TotalPrice.ToString("N0") تومان</strong>
+                <div class="p-3 mb-3 border border-info rounded bg-light">
+
+
+                    @{
+                        // تعیین عنوان بر اساس وجود یا عدم وجود کد تخفیف
+                        string finalPriceTitle = !string.IsNullOrEmpty(Model.Basket.DiscountCouponCode)
+                        ? "مبلغ قابل پرداخت (با تخفیف):"
+                        : "جمع کل اقلام:";
+                    }
+
+                    <!-- کادر اصلی اطلاعات (همان استایل alert-info بدون نیاز به جاوااسکریپت) -->
+                    <div class="p-3 mb-3 border border-info rounded bg-light shadow-sm">
+
+                        @if (!string.IsNullOrEmpty(Model.Basket.DiscountCouponCode))
+                        {
+                            <!-- نمایش قیمت خام (خط خورده) فقط در صورت اعمال تخفیف -->
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">جمع کل (قیمت خام):</span>
+                                <!-- text-decoration-line-through برای خط خوردگی -->
+                                <span class="text-muted text-decoration-line-through">
+                                    @Model.Basket.TotalPriceWithoutDiscount.ToString("N0") تومان
+                                </span>
+                            </div>
+
+                            <!-- جداکننده بصری بین قیمت خام و قیمت نهایی -->
+                            <hr class="my-2">
+                        }
+
+                        <!-- نمایش مبلغ نهایی (چه با تخفیف و چه بدون تخفیف) -->
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- نمایش عنوان پویا -->
+                            <h5 class="mb-0">@finalPriceTitle</h5>
+
+                            <!-- نمایش مبلغ نهایی - برجسته و رنگی -->
+                            <h5 class="text-success mb-0">
+                                <strong>@Model.Basket.TotalPrice.ToString("N0") تومان</strong>
+                            </h5>
+                        </div>
+                    </div>
+
+
                 </div>
+
+
             }
         </div>
     </div>
@@ -63,7 +105,7 @@
         <!-- انتخاب آدرس -->
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-              
+
 
                 <h3 class="card-title mb-0">
                     <i class="bi bi-geo-alt me-2"></i>انتخاب آدرس تحویل

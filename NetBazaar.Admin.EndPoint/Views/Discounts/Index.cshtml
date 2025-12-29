@@ -38,7 +38,7 @@
                             @($"{d.DiscountAmount?.ToString("N0")} ریال")
                         }
                     </td>
-                    <td>@d.StartDate.ToString("yyyy/MM/dd") - @d.EndDate.ToString("yyyy/MM/dd")</td>
+                    <td>@d.StartDate.ToPersianDateString() - @d.EndDate.ToPersianDateString()</td>
                     <td>
     @if (d.RequiresCouponCode)
     {

@@ -29,7 +29,7 @@
         </dd>
 
         <dt class="col-sm-3">بازه</dt>
-        <dd class="col-sm-9">@Model.StartDate.ToString("yyyy/MM/dd") - @Model.EndDate.ToString("yyyy/MM/dd")</dd>
+        <dd class="col-sm-9">@Model.StartDate.ToPersianDateString() - @Model.EndDate.ToPersianDateString()</dd>
 
         <dt class="col-sm-3">کد تخفیف</dt>
         <dd class="col-sm-9">@Model.CouponCode</dd>

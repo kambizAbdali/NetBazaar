@@ -12,13 +12,15 @@
 }
 else
 {
-    <table class="table">
+   <table class="table">
         <thead>
             <tr>
                 <th>شماره سفارش</th>
                 <th>تاریخ</th>
                 <th>وضعیت</th>
                 <th>مبلغ کل</th>
+                <th>تخفیف</th>
+                <th>مبلغ قابل پرداخت</th>
                 <th>روش پرداخت</th>
                 <th></th>
             </tr>
@@ -28,20 +30,44 @@ else
             {
                 <tr>
                     <td>@order.Id</td>
-                    <td>@order.OrderDate.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>@order.OrderDate.ToPersianDateTimeString()</td>
                     <td>@order.OrderStatus</td>
-                    <td>@order.TotalPrice.ToString("N0") تومان</td>
+                    <td>
+                        @if (order.DiscountAmount > 0)
+                        {
+                            <del class="text-muted">@order.TotalPriceWithoutDiscount.ToString("N0") تومان</del>
+                        }
+                        else
+                        {
+                            @order.TotalPriceWithoutDiscount.ToString("N0") <span>تومان</span>
+                        }
+                    </td>
+                    <!-- New code: نمایش تخفیف -->
+                    <td>
+                        @if (order.DiscountAmount > 0)
+                        {
+                            <span class="text-success">@order.DiscountAmount.ToString("N0") تومان</span>
+                            @if (!string.IsNullOrEmpty(order.DiscountCouponCode))
+                            {
+                                <br /><small class="text-muted">@order.DiscountCouponCode</small>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                    <td class="fw-bold">@order.TotalPrice.ToString("N0") تومان</td>
                     <td>@order.PaymentMethod</td>
                     <td>
                         <a href="@Url.Action("Details", "Orders", new { id = order.Id })" class="btn btn-sm btn-primary">
                             جزئیات
                         </a>
-                        <!-- نمایش دکمه پرداخت فقط اگر وضعیت پرداخت Pending باشد -->
                         @if (order.PaymentStatusKey.ToString() == "Pending" && order.PaymentMethodKey == "Online")
                         {
                             <a href="@Url.Action("Index", "Payment", new { orderId = @order.Id })"
                                class="btn btn-primary">
-                                <i class="bi bi-credit-card"></i> تکمیل فرایند پرداخت
+                                <i class="bi bi-credit-card"></i> پرداخت
                             </a>
                         }
                     </td>

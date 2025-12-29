@@ -18,17 +18,15 @@
 
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success mb-4">
                     @TempData["SuccessMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
 
             @if (TempData["ErrorMessage"] != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger mb-4">
                     @TempData["ErrorMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
 
@@ -140,19 +138,78 @@
                                     <i class="fas fa-arrow-right me-2"></i>ادامه خرید
                                 </a>
                             </div>
+
+
+
+
+
                             <div class="col-md-6">
+                                <!-- New code: بخش کد تخفیف -->
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">کد تخفیف</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- تغییر قسمت نمایش پیام موفقیت کد تخفیف -->
+                                        @if (Model.DiscountAmount > 0)
+                                        {
+                                            <div class="alert-success mb-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <p class="mb-1">کد تخفیف <strong>@Model.DiscountCouponCode</strong> با موفقیت اعمال شد.</p>
+                                                        <p class="mb-0">مبلغ تخفیف: <strong>@Model.DiscountAmount.ToString("N0") تومان</strong></p>
+                                                    </div>
+                                                    <form asp-action="RemoveDiscount" method="post" class="d-inline">
+                                                        <input type="hidden" name="basketId" value="@Model.Id" />
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm">حذف تخفیف</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="ApplyDiscount" method="post" class="form-inline">
+                                                <input type="hidden" name="basketId" value="@Model.Id" />
+                                                <div class="input-group">
+                                                    <input type="text" name="couponCode" class="form-control" placeholder="کد تخفیف خود را وارد کنید" required />
+                                                    <button type="submit" class="btn btn-primary">اعمال تخفیف</button>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+
                                 <div class="card bg-light">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>تعداد کل محصولات:</span>
                                             <span class="fw-bold">@Model.TotalItems عدد</span>
                                         </div>
-                                        <div class="d-flex justify-content-between mb-3">
+                                        <div class="d-flex justify-content-between mb-2">
                                             <span>جمع کل سبد خرید:</span>
+                                            <span class="fw-bold">@Model.TotalPriceWithoutDiscount.ToString("N0") تومان</span>
+                                        </div>
+                                        @if (Model.DiscountAmount > 0)
+                                        {
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>تخفیف:</span>
+                                                <span class="fw-bold text-success">@Model.DiscountAmount.ToString("N0") تومان</span>
+                                            </div>
+                                        }
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span>مبلغ قابل پرداخت:</span>
                                             <span class="fw-bold text-primary h5" id="basket-total-price">
                                                 @Model.TotalPrice.ToString("N0") تومان
                                             </span>
                                         </div>
+
+
+
+
+
+
+
+
                                         <div class="d-grid">
                                             @if (User.Identity.IsAuthenticated)
                                             {
@@ -267,26 +324,26 @@
                     }
                 });
             }
+        function showToast(message, type) {
+            // ایجاد و نمایش toast
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+            toast.style.top = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.zIndex = '9999';
+            toast.style.paddingRight = '3rem'; // فضا برای دکمه بستن
 
-            function showToast(message, type) {
-                // ایجاد و نمایش toast
-                const toast = document.createElement('div');
-                toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
-                toast.style.top = '20px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%)';
-                toast.style.zIndex = '9999';
-                toast.innerHTML = `
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close"
+                        style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);"
+                        onclick="this.parentElement.remove()">
+                </button>
+            `;
 
-                document.body.appendChild(toast);
-
-                setTimeout(() => {
-                    toast.remove();
-                }, 3000);
-            }
+            document.body.appendChild(toast);
+        }
 
             // تابع برای رفرش MiniBasket با AJAX
             async function refreshMiniBasket() {
@@ -382,5 +439,17 @@
             font-weight: 600;
             color: #6c757d;
         }
+
+
+        .discount-alert {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid transparent;
+        }
+
+        
     </style>
 }

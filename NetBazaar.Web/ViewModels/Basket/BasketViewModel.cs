@@ -9,5 +9,10 @@
         public int TotalItems { get; set; }
         public bool IsEmpty { get; set; } = true;
         public bool HasItems => Items?.Any() == true;
+
+        // New code
+        public decimal DiscountAmount { get; set; }
+        public string? DiscountCouponCode { get; set; }
+        public decimal TotalPriceWithoutDiscount { get; set; }
     }
 }

@@ -34,5 +34,34 @@ namespace NetBazaar.Domain.Discounts
 
         // ارتباطات (اختیاری)
         public ICollection<CatalogItem>? CatalogItems { get; set; }
+
+        // New code: متد محاسبه مبلغ تخفیف
+        public decimal CalculateDiscountAmount(decimal totalPrice)
+        {
+            if (UsePercentage && DiscountPercentage.HasValue)
+            {
+                return totalPrice * (DiscountPercentage.Value / 100.0m);
+            }
+            else if (!UsePercentage && DiscountAmount.HasValue)
+            {
+                // اگر مبلغ تخفیف بیشتر از کل قیمت نباشد
+                return Math.Min(totalPrice, DiscountAmount.Value);
+            }
+            return 0;
+        }
+
+        // New code: بررسی اعتبار تخفیف
+        public bool IsValid()
+        {
+            var now = DateTime.Now;
+            return now >= StartDate && now <= EndDate;
+        }
+
+        // New code: بررسی کد تخفیف
+        public bool ValidateCouponCode(string couponCode)
+        {
+            if (!RequiresCouponCode) return true;
+            return CouponCode.Equals(couponCode, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

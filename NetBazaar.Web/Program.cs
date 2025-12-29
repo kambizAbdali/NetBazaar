@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using NetBazaar.Application.Interfaces.Catalog;
+using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Infrastructure.DependencyInjection;
 using NetBazaar.Infrastructure.Services;
@@ -45,10 +46,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-
-
-
-
 // اجرای Seed
 using (var scope = app.Services.CreateScope())
 {
@@ -62,7 +59,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseRouting();
 
