@@ -26,7 +26,11 @@ namespace NetBazaar.Infrastructure.MappingProfiles
                 .ForMember(dest => dest.PaymenStatus, opt => opt.MapFrom(src => src.PaymentStatus.ToPersianString()))
                 .ForMember(dest => dest.PaymentStatusKey, opt => opt.MapFrom(src => src.PaymentStatus.ToString()))
                 .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus.ToPersianString()))
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderItems));
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderItems))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.GetTotalAmount()))
+                .ForMember(dest => dest.DiscountAmount, opt => opt.MapFrom(src => src.DiscountAmount))
+                .ForMember(dest => dest.DiscountCouponCode,
+                 opt => opt.MapFrom(src => src.Discount != null ? src.Discount.CouponCode : null));
         }
     }
 }

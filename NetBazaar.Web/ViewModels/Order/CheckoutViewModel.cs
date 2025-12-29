@@ -25,6 +25,4 @@ namespace NetBazaar.Web.EndPoint.ViewModels.Order
         [Required(ErrorMessage = "انتخاب روش پرداخت الزامی است.")]
         public PaymentMethod PaymentMethod { get; set; }
     }
-
-
 }

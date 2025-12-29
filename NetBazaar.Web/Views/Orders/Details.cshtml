@@ -69,9 +69,24 @@
                             <td class="fw-bold text-primary">@item.TotalPrice.ToString("N0") تومان</td>
                         </tr>
                     }
-                    <!-- ردیف جمع کل -->
+                    <!-- ردیف جمع کل بدون تخفیف -->
+                    <tr class="table-light">
+                        <td colspan="4" class="text-end">جمع کل کالاها:</td>
+                        <td>@Model.TotalPriceWithoutDiscount.ToString("N0") تومان</td>
+                    </tr>
+
+                    <!-- New code: ردیف تخفیف -->
+                    @if (Model.DiscountAmount > 0)
+                    {
+                        <tr class="table-success">
+                            <td colspan="4" class="text-end">تخفیف:</td>
+                            <td class="text-success">-@Model.DiscountAmount.ToString("N0") تومان</td>
+                        </tr>
+                    }
+
+                    <!-- ردیف جمع نهایی -->
                     <tr class="table-info fw-bold">
-                        <td colspan="4" class="text-end">جمع کل سفارش:</td>
+                        <td colspan="4" class="text-end">مبلغ قابل پرداخت:</td>
                         <td>@Model.TotalPrice.ToString("N0") تومان</td>
                     </tr>
                 </tbody>
@@ -79,19 +94,35 @@
         </div>
     </div>
 
-    <div class="alert alert-info">
-        <strong>جمع کل سفارش:</strong>
-        <span class="fw-bold h5">@Model.TotalPrice.ToString("N0") تومان</span>
-    </div>
 
+    <!-- New code: تغییر در بخش جمع کل -->
+    <div class="alert alert-info">
+        <div class="row">
+            <div class="col-md-4">
+                <strong>جمع کل کالاها:</strong>
+                <span>@Model.TotalPriceWithoutDiscount.ToString("N0") تومان</span>
+            </div>
+            @if (Model.DiscountAmount > 0)
+            {
+                <div class="col-md-4">
+                    <strong>تخفیف:</strong>
+                    <span class="text-success">@Model.DiscountAmount.ToString("N0") تومان</span>
+                </div>
+            }
+            <div class="col-md-4">
+                <strong>مبلغ قابل پرداخت:</strong>
+                <span class="fw-bold h5">@Model.TotalPrice.ToString("N0") تومان</span>
+            </div>
+        </div>
+    </div>
    
-   <!-- نمایش دکمه پرداخت فقط اگر وضعیت پرداخت Pending باشد -->
+
     @if (Model.PaymentStatusKey.ToString() == "Pending")
     {
-            <a href="@Url.Action("Index", "Payment", new { orderId = Model.Id })"
-               class="btn btn-primary">
-                <i class="bi bi-credit-card"></i> تکمیل فرایند پرداخت
-            </a>
+        <a href="@Url.Action("Index", "Payment", new { orderId = Model.Id })"
+           class="btn btn-primary">
+            <i class="bi bi-credit-card"></i> تکمیل فرایند پرداخت
+        </a>
     }
     <a href="@Url.Action("Index", "Orders")" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> بازگشت به لیست سفارش‌ها

@@ -123,7 +123,9 @@ namespace NetBazaar.Application.Services
             PaymentMethod paymentMethod,
             Basket basket)
         {
-            var order = new Order(buyerId, address, paymentMethod);
+            var order = new Order(buyerId, address, paymentMethod,  discountAmount: basket.DiscountAmount,
+                discountId: basket.DiscountId,
+                discount: basket.Discount);
 
             foreach (var basketItem in basket.Items)
             {

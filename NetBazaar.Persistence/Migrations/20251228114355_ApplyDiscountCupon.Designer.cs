@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetBazaar.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using NetBazaar.Infrastructure.Data;
 namespace NetBazaar.Persistence.Migrations
 {
     [DbContext(typeof(NetBazaarDbContext))]
-    partial class NetBazaarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251228114355_ApplyDiscountCupon")]
+    partial class ApplyDiscountCupon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -396,12 +399,6 @@ namespace NetBazaar.Persistence.Migrations
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("DiscountId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -418,8 +415,6 @@ namespace NetBazaar.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DiscountId");
 
                     b.ToTable("Orders", (string)null);
                 });
@@ -656,10 +651,6 @@ namespace NetBazaar.Persistence.Migrations
 
             modelBuilder.Entity("NetBazaar.Domain.Entities.Orders.Order", b =>
                 {
-                    b.HasOne("NetBazaar.Domain.Discounts.Discount", "Discount")
-                        .WithMany()
-                        .HasForeignKey("DiscountId");
-
                     b.OwnsOne("NetBazaar.Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<int>("OrderId")
@@ -700,8 +691,6 @@ namespace NetBazaar.Persistence.Migrations
 
                     b.Navigation("Address")
                         .IsRequired();
-
-                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("NetBazaar.Domain.Entities.Orders.OrderItem", b =>

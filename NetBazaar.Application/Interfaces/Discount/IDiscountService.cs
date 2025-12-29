@@ -15,5 +15,9 @@ namespace NetBazaar.Application.Interfaces
         Task<List<DiscountListItemDto>> GetAllAsync();
         Task DeleteAsync(int id);
         Task<PaginatedResult<DiscountListItemDto>> GetListAsync(int page, int pageSize);
+
+        Task<bool> ApplyDiscountAsync(string couponCode, int basketId, string buyerId);
+        Task<bool> RemoveDiscountAsync(int basketId, string buyerId);
+        Task<Discount?> GetDiscountByCouponCodeAsync(string couponCode);
     }
 }

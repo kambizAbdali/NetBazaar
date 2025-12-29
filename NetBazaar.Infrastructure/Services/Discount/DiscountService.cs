@@ -10,6 +10,7 @@ using NetBazaar.Domain.Entities.Catalog;
 using NetBazaar.Domain.Extensions;
 using NetBazaar.Infrastructure.Data;
 using NetBazaar.Persistence; // نام‌فضای DbContext پروژه
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -120,6 +121,55 @@ namespace NetBazaar.Application.Services
                 PageSize = pageSize,
                 TotalCount = totalCount
             };
+        }
+
+        public async Task<bool> ApplyDiscountAsync(string couponCode, int basketId, string buyerId)
+        {
+            // یافتن تخفیف بر اساس کد کوپن
+            var discount = await _context.Discounts
+                .FirstOrDefaultAsync(d => d.CouponCode == couponCode && d.RequiresCouponCode);
+
+            if (discount == null)
+                return false;
+
+            // بررسی تاریخ اعتبار تخفیف
+            if (discount.StartDate > DateTime.Now || discount.EndDate < DateTime.Now)
+                return false;
+
+            // یافتن سبد خرید و اطمینان از اینکه متعلق به کاربر است
+            var basket = await _context.Baskets
+                .Include(b => b.Items)
+                .Include(b => b.Discount)
+                .FirstOrDefaultAsync(b => b.Id == basketId && b.BuyerId == buyerId);
+
+            if (basket == null)
+                return false;
+
+            // اعمال تخفیف
+            basket.ApplyDiscount(discount);
+            _context.Baskets.Update(basket);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveDiscountAsync(int basketId, string buyerId)
+        {
+            var basket = await _context.Baskets
+                .FirstOrDefaultAsync(b => b.Id == basketId && b.BuyerId == buyerId);
+
+            if (basket == null)
+                return false;
+
+            basket.RemoveDiscount();
+            _context.Baskets.Update(basket);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<Discount?> GetDiscountByCouponCodeAsync(string couponCode)
+        {
+            return await _context.Discounts
+                .FirstOrDefaultAsync(d => d.CouponCode == couponCode && d.RequiresCouponCode);
         }
     }
 }

@@ -28,6 +28,7 @@ public class OrdersController : BaseController
     {
         var buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var basket = await _basketService.GetBasketForUserAsync(buyerId);
+       
         var addresses = await _userAddressService.GetAddressesAsync(buyerId);
 
         var vm = new CheckoutViewModel
@@ -89,7 +90,6 @@ public class OrdersController : BaseController
         }
         catch (Exception ex)
         {
-
             throw;
         }
         

@@ -16,6 +16,13 @@
         public string OrderStatus { get; set; }
 
         public List<OrderItemDto> Items { get; set; } = new();
-        public decimal TotalPrice => Items.Sum(i => i.TotalPrice);
+
+        // New code: اضافه کردن فیلدهای تخفیف
+        public decimal DiscountAmount { get; set; }
+        public string? DiscountCouponCode { get; set; }
+
+        // New code: محاسبه قیمت‌ها با تخفیف
+        public decimal TotalPriceWithoutDiscount => Items.Sum(i => i.TotalPrice);
+        public decimal TotalPrice => TotalPriceWithoutDiscount - DiscountAmount;
     }
 }

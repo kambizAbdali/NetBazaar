@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver.Core.Events;
 using NetBazaar.Application.DTOs.Basket;
+using NetBazaar.Application.Interfaces;
 using NetBazaar.Application.Interfaces.Basket;
 using NetBazaar.Domain.Entities.Basket;
 using NetBazaar.EndPoint.Controllers;
@@ -15,12 +16,14 @@ namespace NetBazaar.Web.EndPoint.Controllers
     public class BasketController : BaseController
     {
         private readonly IBasketService _basketService;
+        private readonly IDiscountService _discountService; // New code
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BasketController(IBasketService basketService, IHttpContextAccessor httpContextAccessor)
+        public BasketController(IBasketService basketService, IHttpContextAccessor httpContextAccessor, IDiscountService discountService)
         {
             _basketService = basketService;
             _httpContextAccessor = httpContextAccessor;
+            _discountService = discountService;
         }
 
         private static BasketDto basket;
@@ -47,11 +50,87 @@ namespace NetBazaar.Web.EndPoint.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "خطا در بارگذاری سبد خرید";
+                TempData[OperationErrorKey] = "خطا در بارگذاری سبد خرید";
                 return View(new BasketViewModel { IsEmpty = true });
             }
         }
 
+        // New code: اکشن اعمال تخفیف
+        [HttpPost]
+        public async Task<IActionResult> ApplyDiscount(string couponCode, int basketId)
+        {
+            try
+            {
+                var buyerId = await GetOrCreateBuyerIdAsync();
+                var success = await _discountService.ApplyDiscountAsync(couponCode, basketId, buyerId);
+
+                if (!success)
+                {
+                    TempData[OperationErrorKey] = "کد تخفیف معتبر نیست یا منقضی شده است.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData[OperationErrorKey] = "خطا در اعمال کد تخفیف.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // New code: اکشن حذف تخفیف
+        [HttpPost]
+        public async Task<IActionResult> RemoveDiscount(int basketId)
+        {
+            try
+            {
+                var buyerId = await GetOrCreateBuyerIdAsync();
+                var success = await _discountService.RemoveDiscountAsync(basketId, buyerId);
+
+                if (success)
+                {
+                    TempData[OperationSuccessKey] = "تخفیف با موفقیت حذف شد.";
+                }
+                else
+                {
+                    TempData[OperationErrorKey] = "خطا در حذف تخفیف.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData[OperationErrorKey] = "خطا در حذف تخفیف.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // تغییر در متد MapToViewModel برای نمایش تخفیف
+        private BasketViewModel MapToViewModel(BasketDto basket)
+        {
+            return new BasketViewModel
+            {
+                Id = basket.Id,
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(item => new BasketItemViewModel
+                {
+                    Id = item.Id,
+                    CatalogItemId = item.CatalogItemId,
+                    Name = item.CatalogItemName,
+                    ImageUrl = item.CatalogItemImageUrl,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    TotalPrice = item.TotalPrice,
+                    BrandName = item.BrandName,
+                    CategoryName = item.CategoryName,
+                    AvailableStock = item.AvailableStock
+                }).ToList(),
+                TotalPrice = basket.TotalPrice,
+                TotalPriceWithoutDiscount = basket.TotalPriceWithoutDiscount, // New code
+                DiscountAmount = basket.DiscountAmount, // New code
+                DiscountCouponCode = basket.DiscountCouponCode, // New code
+                TotalItems = basket.TotalItems,
+                IsEmpty = !basket.Items.Any()
+            };
+        }
         //[HttpPost]
         //public async Task<IActionResult> AddItem(int catalogItemId, int quantity = 1)
         //{
@@ -59,7 +138,7 @@ namespace NetBazaar.Web.EndPoint.Controllers
         //    {
         //        if (quantity <= 0)
         //        {
-        //            TempData["ErrorMessage"] = "تعداد باید بیشتر از صفر باشد";
+        //            TempData[OperationErrorKey] = "تعداد باید بیشتر از صفر باشد";
         //            return RedirectToAction("ProductDetail", "Product", new { id = catalogItemId });
         //        }
 
@@ -68,12 +147,12 @@ namespace NetBazaar.Web.EndPoint.Controllers
 
         //        await _basketService.AddItemToBasketAsync(basket.Id, catalogItemId, quantity);
 
-        //        TempData["SuccessMessage"] = "محصول به سبد خرید اضافه شد";
+        //        TempData[OperationSuccessKey] = "محصول به سبد خرید اضافه شد";
         //        return RedirectToAction("Index");
         //    }
         //    catch (Exception ex)
         //    {
-        //        TempData["ErrorMessage"] = "خطا در افزودن محصول به سبد خرید";
+        //        TempData[OperationErrorKey] = "خطا در افزودن محصول به سبد خرید";
         //        return RedirectToAction("ProductDetail", "Product", new { id = catalogItemId });
         //    }
         //}
@@ -122,7 +201,7 @@ namespace NetBazaar.Web.EndPoint.Controllers
                  await _basketService.RemoveItemFromBasketAsync(basketItemId);
                  basket = await _basketService.GetBasketForUserAsync(buyerId);
                 var items = basket.Items.ToList();
-                TempData["SuccessMessage"] = "محصول از سبد خرید حذف شد";
+                TempData[OperationSuccessKey] = "محصول از سبد خرید حذف شد";
                 return Json(new
                 {
                     success = true,
@@ -132,7 +211,7 @@ namespace NetBazaar.Web.EndPoint.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "خطا در حذف محصول از سبد خرید";
+                TempData[OperationErrorKey] = "خطا در حذف محصول از سبد خرید";
             }
             return RedirectToAction("Index");
         }
@@ -148,12 +227,12 @@ namespace NetBazaar.Web.EndPoint.Controllers
                 if (basket != null)
                 {
                     await _basketService.ClearBasketAsync(basket.Id);
-                    TempData["SuccessMessage"] = "سبد خرید خالی شد";
+                    TempData[OperationSuccessKey] = "سبد خرید خالی شد";
                 }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "خطا در خالی کردن سبد خرید";
+                TempData[OperationErrorKey] = "خطا در خالی کردن سبد خرید";
             }
 
             return RedirectToAction("Index");
@@ -184,31 +263,6 @@ namespace NetBazaar.Web.EndPoint.Controllers
             }
 
             return buyerId;
-        }
-
-        private BasketViewModel MapToViewModel(BasketDto basket)
-        {
-            return new BasketViewModel
-            {
-                Id = basket.Id,
-                BuyerId = basket.BuyerId,
-                Items = basket.Items.Select(item => new BasketItemViewModel
-                {
-                    Id = item.Id,
-                    CatalogItemId = item.CatalogItemId,
-                    Name = item.CatalogItemName,
-                    ImageUrl = item.CatalogItemImageUrl,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice,
-                    TotalPrice = item.TotalPrice,
-                    BrandName = item.BrandName,
-                    CategoryName = item.CategoryName,
-                    AvailableStock = item.AvailableStock
-                }).ToList(),
-                TotalPrice = basket.TotalPrice,
-                TotalItems = basket.TotalItems,
-                IsEmpty = !basket.Items.Any()
-            };
         }
 
         [HttpPost]

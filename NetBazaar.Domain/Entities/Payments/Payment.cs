@@ -1,7 +1,12 @@
-﻿using NetBazaar.Domain.Enums;
+﻿using Microsoft.Extensions.Options;
+using NetBazaar.Domain.Discounts;
+using NetBazaar.Domain.Entities.Basket;
+using NetBazaar.Domain.Entities.Orders;
+using NetBazaar.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NetBazaar.Domain.Entities.Payments
 {
